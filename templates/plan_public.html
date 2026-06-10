@@ -2,6 +2,33 @@
 {% block title %}NutriPrint — {{ plan.student_name }}'s Meal Plan{% endblock %}
 
 {% block head %}
+<style>
+@media print {
+
+  .sticky,
+  button,
+  a {
+    display: none !important;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #poster,
+  #poster * {
+    visibility: visible;
+  }
+
+  #poster {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}
+</style>
+
 <!-- Open Graph tags for WhatsApp preview -->
 <meta property="og:title"       content="Weekly Meal Plan for {{ plan.student_name }}"/>
 <meta property="og:description" content="{{ plan.school_name }} · {{ plan.diet_pref }} · {{ plan.region }} · Karnataka"/>
@@ -10,7 +37,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto px-4 py-10">
+<div id="poster" class="max-w-4xl mx-auto px-4 py-10">
 
   <!-- Header card -->
   <div class="gradient-hero rounded-2xl p-8 text-white mb-8">
