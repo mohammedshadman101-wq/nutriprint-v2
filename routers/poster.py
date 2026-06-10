@@ -74,6 +74,31 @@ async def plan_public(
             detail=str(e)
         )
 
+@router.get("/report/{share_token}", response_class=HTMLResponse)
+async def health_report(
+    request: Request,
+    share_token: str
+):
+    try:
+        row, plan = _get_plan_by_token(share_token)
+
+        return templates.TemplateResponse(
+            "health_report.html",
+            {
+                "request": request,
+                "plan": plan,
+                "share_token": share_token,
+            }
+        )
+
+    except HTTPException:
+        raise
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
 
 @router.get("/poster/{share_token}/pdf")
 async def download_pdf(
