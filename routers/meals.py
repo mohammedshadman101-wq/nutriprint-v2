@@ -88,10 +88,12 @@ async def generate_meal(data: MealInput):
 
         row = saved.data[0]
 
+        print("ROW:", row)
+        
         plan.plan_id = str(row["id"])
         plan.share_token = str(row["share_token"])
-        
-        return plan
+
+return plan
 
     except Exception as e:
         import traceback
