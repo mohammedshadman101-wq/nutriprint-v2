@@ -7,6 +7,7 @@ from models.schemas import MealPlan
 
 import io
 import json
+import re
 
 router = APIRouter(tags=["Poster"])
 templates = Jinja2Templates(directory="templates")
@@ -34,11 +35,14 @@ def _get_plan_by_token(token: str):
     if isinstance(plan_json, str):
         plan_json = json.loads(plan_json)
 
-    plan = MealPlan(
-        **plan_json,
-        plan_id=str(row["id"]),
-        share_token=str(row["share_token"])
-    )
+    # Prevent duplicate keyword errors
+    plan_json.pop("plan_id", None)
+    plan_json.pop("share_token", None)
+
+    plan_json["plan_id"] = str(row["id"])
+    plan_json["share_token"] = str(row["share_token"])
+
+    plan = MealPlan(**plan_json)
 
     return row, plan
 
@@ -81,15 +85,17 @@ async def download_pdf(
 
         row, plan = _get_plan_by_token(share_token)
 
-        plan_data = plan.model_dump()
+        try:
+            plan_data = plan.model_dump()
+        except AttributeError:
+            plan_data = plan.dict()
+
         plan_data["share_token"] = share_token
 
         pdf_bytes = generate_poster_pdf(
             plan=plan_data,
             base_url=str(request.base_url),
         )
-
-        import re
 
         safe_name = re.sub(
             r"[^a-zA-Z0-9_-]",
