@@ -36,8 +36,12 @@ async function generateMeal() {
 
     if (!res.ok) throw new Error('Generation failed');
     const plan = await res.json();
-    currentPlan = plan;
-    renderMealPlan(plan);
+currentPlan = plan;
+renderMealPlan(plan);
+
+if (plan.plan_id) {
+  loadNutritionGap(plan.plan_id, plan.age_group);
+}
 
   } catch(e) {
     alert('Error generating plan. Please try again.');
