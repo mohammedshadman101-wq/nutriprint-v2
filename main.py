@@ -68,3 +68,14 @@ async def chat_proxy(data: dict):
     class CM(BaseModel):
         message: str
     return await chat(CM(message=data["message"]))
+
+@app.get("/api/impact")
+async def impact_proxy():
+    from models.db import supabase
+    plans    = supabase.table("meal_plans").select("id", count="exact").execute()
+    students = supabase.table("students").select("id",   count="exact").execute()
+    return {
+        "total_plans"   : plans.count    or 0,
+        "total_students": students.count or 0,
+        "total_foods"   : 53,
+    }
