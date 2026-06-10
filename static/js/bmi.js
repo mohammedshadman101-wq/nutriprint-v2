@@ -30,8 +30,11 @@ async function calculateBMI() {
   }
 
   const data = await res.json();
+  
   lastBMIResult = data;
+  
   showBMIResult(data);
+  showGrowthChart(data.student_name);
 }
 
 function showBMIResult(data) {
@@ -110,16 +113,21 @@ async function showGrowthChart(studentName) {
   if (records.length < 2) return; // Need at least 2 points
 
   // Inject chart container
+  const oldChart = document.getElementById('growthChartWrapper');
+  if (oldChart) oldChart.remove();
+  
   document.getElementById('bmiResult').insertAdjacentHTML(
-    'beforeend',
-    `<div class="mt-6">
-       <p class="heading font-bold text-gray-800 mb-3">
-         📈 Growth Trend
-         <span class="kn text-orange-400 text-sm ml-1">ಬೆಳವಣಿಗೆ ಗ್ರಾಫ್</span>
-       </p>
-       <canvas id="growthChart" height="120"></canvas>
-     </div>`
-  );
+  'beforeend',
+  `<div id="growthChartWrapper" class="mt-6">
+     <p class="heading font-bold text-gray-800 mb-3">
+       📈 Growth Trend
+       <span class="kn text-orange-400 text-sm ml-1">
+         ಬೆಳವಣಿಗೆ ಗ್ರಾಫ್
+       </span>
+     </p>
+     <canvas id="growthChart" height="120"></canvas>
+   </div>`
+);
 
   const ctx = document.getElementById('growthChart').getContext('2d');
   new Chart(ctx, {
