@@ -170,4 +170,50 @@ async function showGrowthChart(studentName) {
       }
     }
   });
+
+  async function runDemo() {
+  // Scroll to BMI
+  document.querySelector('#bmi').scrollIntoView({behavior:'smooth'});
+  await sleep(800);
+
+  // Autofill BMI form with typing effect
+  await typeInto('bmiName',   'Priya Shetty');
+  await typeInto('bmiAge',    '10');
+  document.getElementById('bmiGender').value = 'girl';
+  await typeInto('bmiHeight', '132');
+  await typeInto('bmiWeight', '24');
+  await sleep(500);
+
+  // Calculate
+  await calculateBMI();
+  await sleep(1500);
+
+  // Scroll to meal
+  document.querySelector('#meal').scrollIntoView({behavior:'smooth'});
+  await sleep(800);
+
+  // Autofill meal form
+  await typeInto('mealSchool',   'Govt High School Mangalore');
+  await typeInto('mealStudent',  'Priya Shetty');
+  document.getElementById('mealDiet').value     = 'vegetarian';
+  document.getElementById('mealRegion').value   = 'mangalore';
+  document.getElementById('mealStrategy').value = 'calcium_iron';
+  await sleep(500);
+
+  // Generate
+  await generateMeal();
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function typeInto(id, text) {
+  const el = document.getElementById(id);
+  el.value = '';
+  for (const ch of text) {
+    el.value += ch;
+    await sleep(50);
+  }
+}
 }
