@@ -202,3 +202,60 @@ async def recent_plans(teacher_id: str):
         return {"plans": plans.data}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+ICMR_RDA = {
+    "5-8":  {"calories":1350,"protein_g":20,"calcium_mg":600,"iron_mg":13},
+    "9-12": {"calories":1700,"protein_g":30,"calcium_mg":800,"iron_mg":16},
+    "13-15":{"calories":2100,"protein_g":45,"calcium_mg":800,"iron_mg":22},
+}
+
+FIX_FOODS = {
+    "calories" : {"en":"Ragi Mudde, Groundnut Laddu, Ghee Rice",
+                  "kn":"ರಾಗಿ ಮುದ್ದೆ, ಕಡಲೆಕಾಯಿ ಉಂಡೆ, ತುಪ್ಪದ ಅನ್ನ"},
+    "protein_g": {"en":"Horsegram Saaru, Sprouted Moong, Egg Curry",
+                  "kn":"ಹುರಳಿ ಸಾರು, ಮೊಳಕೆ ಹೆಸರುಕಾಳು, ಮೊಟ್ಟೆ ಸಾಲನ್"},
+    "calcium_mg":{"en":"Drumstick Leaves, Ragi Dosa, Curd Rice",
+                  "kn":"ನುಗ್ಗೆ ಸೊಪ್ಪು, ರಾಗಿ ದೋಸೆ, ಮೊಸರು ಅನ್ನ"},
+    "iron_mg":   {"en":"Banana Flower Curry, Palak Dal, Methi Paratha",
+                  "kn":"ಬಾಳೆ ಹೂವಿನ ಪಲ್ಯ, ಪಾಲಕ್ ಬೇಳೆ, ಮೆಂತ್ಯ ಪರಾಠ"},
+}
+
+@router.post("/nutrition-gap")
+async def nutrition_gap(plan_id: str, age_group: str):
+    from models.db import supabase
+    plan = supabase.table("meal_plans")\
+        .select("plan_json")\
+        .eq("id", plan_id).single().execute()
+
+    if not plan.data:
+        raise HTTPException(status_code=404, detail="Plan not found")
+
+    pj  = plan.data["plan_json"]
+    rda = ICMR_RDA.get(age_group, ICMR_RDA["9-12"])
+
+    gaps = []
+    nutrients = ["calories","protein_g","calcium_mg","iron_mg"]
+    labels    = ["Calories","Protein","Calcium","Iron"]
+    units     = ["kcal","g","mg","mg"]
+
+    avg_keys  = ["avg_daily_cal","avg_protein_g","avg_calcium_mg","avg_iron_mg"]
+
+    for i, key in enumerate(nutrients):
+        getting = pj.get(avg_keys[i], 0)
+        needed  = rda[key]
+        gap     = round(needed - getting, 1)
+        pct     = round((getting / needed) * 100, 1)
+        status  = "🔴 Critical" if pct < 60 else "⚠️ Low" if pct < 85 else "✅ Good"
+        gaps.append({
+            "nutrient"   : labels[i],
+            "unit"       : units[i],
+            "getting"    : getting,
+            "needed"     : needed,
+            "gap"        : gap,
+            "percent"    : pct,
+            "status"     : status,
+            "fix_en"     : FIX_FOODS[key]["en"] if gap > 0 else None,
+            "fix_kn"     : FIX_FOODS[key]["kn"] if gap > 0 else None,
+        })
+
+    return {"gaps": gaps, "age_group": age_group, "rda": rda}
