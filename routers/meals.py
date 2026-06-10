@@ -3,8 +3,10 @@ from models.schemas import MealInput, MealPlan, RegenerateDay
 from models.db import supabase
 from services.groq_engine import generate_groq_plan
 from services.fallback_engine import generate_fallback_plan, DAYS_KN
+
 import secrets
 import json
+import traceback
 
 router = APIRouter(prefix="/api/meal", tags=["Meals"])
 
@@ -12,32 +14,34 @@ router = APIRouter(prefix="/api/meal", tags=["Meals"])
 @router.post("/generate", response_model=MealPlan)
 async def generate_meal(data: MealInput):
     try:
-        # Check cache
-        cached = supabase.table("meal_plans")\
-            .select("*")\
-            .eq("age_group", data.age_group.value)\
-            .eq("diet_pref", data.diet_pref.value)\
-            .eq("region", data.region.value)\
-            .eq("month", data.month)\
-            .eq("strategy", data.strategy.value)\
-            .limit(1)\
+        # Cache disabled for now to avoid stale student data
+        cached = (
+            supabase.table("meal_plans")
+            .select("*")
+            .eq("age_group", data.age_group.value)
+            .eq("diet_pref", data.diet_pref.value)
+            .eq("region", data.region.value)
+            .eq("month", data.month)
+            .eq("strategy", data.strategy.value)
+            .limit(1)
             .execute()
+        )
 
+        # Keep disabled until caching is redesigned
         if False and cached.data:
             row = cached.data[0]
-        
-            if isinstance(row["plan_json"], str):
-                plan_json = json.loads(row["plan_json"])
-            else:
-                plan_json = row["plan_json"]
-        
+
+            plan_json = row["plan_json"]
+
+            if isinstance(plan_json, str):
+                plan_json = json.loads(plan_json)
+
             plan_json["plan_id"] = str(row["id"])
             plan_json["share_token"] = str(row["share_token"])
-        
-            plan = MealPlan(**plan_json)
-            return plan
-    
-        # Generate new plan
+
+            return MealPlan(**plan_json)
+
+        # Generate fresh plan
         plan = generate_groq_plan(
             school_name=data.school_name,
             student_name=data.student_name,
@@ -51,11 +55,14 @@ async def generate_meal(data: MealInput):
             allergies=data.allergies,
         )
 
-        print("PLAN TYPE:", type(plan))
-        print("PLAN:", plan)
-        
         share_token = secrets.token_urlsafe(16)
-        
+
+        # Pydantic v1/v2 compatibility
+        try:
+            plan_json = plan.model_dump()
+        except AttributeError:
+            plan_json = plan.dict()
+
         insert_data = {
             "student_name": data.student_name,
             "school_name": data.school_name,
@@ -67,7 +74,7 @@ async def generate_meal(data: MealInput):
             "strategy": data.strategy.value,
             "bmi_class": data.bmi_class.value if data.bmi_class else None,
             "allergies": data.allergies,
-            "plan_json": plan.dict(),
+            "plan_json": plan_json,
             "avg_daily_cal": plan.avg_daily_cal,
             "avg_protein_g": plan.avg_protein_g,
             "avg_calcium_mg": plan.avg_calcium_mg,
@@ -80,23 +87,27 @@ async def generate_meal(data: MealInput):
         if data.student_id:
             insert_data["student_id"] = data.student_id
 
-        saved = supabase.table("meal_plans")\
-            .insert(insert_data)\
+        saved = (
+            supabase.table("meal_plans")
+            .insert(insert_data)
             .execute()
+        )
 
-        print("SAVED DATA:", saved.data)
+        if not saved.data:
+            raise Exception("Database insert failed")
 
         row = saved.data[0]
 
-        print("ROW:", row)
-        
         plan.plan_id = str(row["id"])
         plan.share_token = str(row["share_token"])
 
-return plan
+        return plan
 
     except Exception as e:
-        import traceback
         traceback.print_exc()
         print("MEAL ERROR:", repr(e))
-        raise HTTPException(status_code=500, detail=str(e))
+
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
