@@ -23,18 +23,18 @@ async def generate_meal(data: MealInput):
             .execute()
 
         if cached.data:
-    row = cached.data[0]
-
-    if isinstance(row["plan_json"], str):
-        plan_json = json.loads(row["plan_json"])
-    else:
-        plan_json = row["plan_json"]
-
-    plan_json["plan_id"] = str(row["id"])
-    plan_json["share_token"] = str(row["share_token"])
-
-    plan = MealPlan(**plan_json)
-    return plan
+            row = cached.data[0]
+        
+            if isinstance(row["plan_json"], str):
+                plan_json = json.loads(row["plan_json"])
+            else:
+                plan_json = row["plan_json"]
+        
+            plan_json["plan_id"] = str(row["id"])
+            plan_json["share_token"] = str(row["share_token"])
+        
+            plan = MealPlan(**plan_json)
+            return plan
     
         # Generate new plan
         plan = generate_groq_plan(
