@@ -87,3 +87,79 @@ function startVoice(fieldId) {
     document.getElementById(fieldId).value = val;
   };
 }
+
+async function showGrowthChart(studentName) {
+  // Only shows if same student assessed before
+  const records = JSON.parse(
+    localStorage.getItem(`bmi_history_${studentName}`) || '[]'
+  );
+
+  // Save current result to history
+  if (lastBMIResult) {
+    records.push({
+      date : new Date().toLocaleDateString('en-IN'),
+      bmi  : lastBMIResult.bmi_value,
+      class: lastBMIResult.classification,
+    });
+    localStorage.setItem(
+      `bmi_history_${studentName}`,
+      JSON.stringify(records)
+    );
+  }
+
+  if (records.length < 2) return; // Need at least 2 points
+
+  // Inject chart container
+  document.getElementById('bmiResult').insertAdjacentHTML(
+    'beforeend',
+    `<div class="mt-6">
+       <p class="heading font-bold text-gray-800 mb-3">
+         📈 Growth Trend
+         <span class="kn text-orange-400 text-sm ml-1">ಬೆಳವಣಿಗೆ ಗ್ರಾಫ್</span>
+       </p>
+       <canvas id="growthChart" height="120"></canvas>
+     </div>`
+  );
+
+  const ctx = document.getElementById('growthChart').getContext('2d');
+  new Chart(ctx, {
+    type : 'line',
+    data : {
+      labels   : records.map(r => r.date),
+      datasets : [{
+        label           : 'BMI',
+        data            : records.map(r => r.bmi),
+        borderColor     : '#1D9E75',
+        backgroundColor : 'rgba(29,158,117,0.1)',
+        borderWidth     : 3,
+        pointRadius     : 6,
+        pointBackgroundColor: records.map(r =>
+          r.class === 'normal'      ? '#10B981' :
+          r.class === 'underweight' ? '#3B82F6' :
+          r.class === 'overweight'  ? '#F97316' : '#EF4444'
+        ),
+        tension: 0.4,
+        fill   : true,
+      }]
+    },
+    options: {
+      responsive : true,
+      plugins    : {
+        legend : { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx =>
+              `BMI: ${ctx.raw} — ${records[ctx.dataIndex].class}`
+          }
+        }
+      },
+      scales: {
+        y: {
+          min  : 10,
+          max  : 30,
+          title: { display:true, text:'BMI (kg/m²)' }
+        }
+      }
+    }
+  });
+}
