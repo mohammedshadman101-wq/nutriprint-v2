@@ -29,6 +29,46 @@
         <span class="lang-kn kn">🍱 ಊಟದ ಯೋಜನೆ ತಯಾರಿಸಿ</span>
       </a>
     </div>
+    <!-- Live impact counters -->
+<div class="grid grid-cols-3 gap-6 mt-12 max-w-lg mx-auto">
+  <div class="text-center">
+    <p class="text-3xl font-extrabold heading" id="cntPlans">0</p>
+    <p class="text-green-200 text-xs mt-1">Meal Plans Generated</p>
+  </div>
+  <div class="text-center">
+    <p class="text-3xl font-extrabold heading" id="cntStudents">0</p>
+    <p class="text-green-200 text-xs mt-1">Students Assessed</p>
+  </div>
+  <div class="text-center">
+    <p class="text-3xl font-extrabold heading" id="cntFoods">53</p>
+    <p class="text-green-200 text-xs mt-1">Karnataka Foods</p>
+  </div>
+</div>
+
+<script>
+// Fetch real counts from Supabase
+async function loadImpact() {
+  try {
+    const res  = await fetch('/api/impact');
+    const data = await res.json();
+    animateCount('cntPlans',    data.total_plans    ?? 0);
+    animateCount('cntStudents', data.total_students ?? 0);
+  } catch(e) {}
+}
+
+function animateCount(id, target) {
+  let current  = 0;
+  const step   = Math.ceil(target / 40);
+  const el     = document.getElementById(id);
+  const timer  = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = current;
+    if (current >= target) clearInterval(timer);
+  }, 40);
+}
+
+loadImpact();
+</script>
 
     <!-- Stats -->
     <div class="grid grid-cols-3 gap-6 mt-16 max-w-xl mx-auto">
