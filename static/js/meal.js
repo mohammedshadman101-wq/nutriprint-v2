@@ -136,6 +136,10 @@ function renderMealPlan(plan) {
         class="flex-1 border-2 border-gray-300 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-50 transition heading">
         🖨️ Print
       </button>
+      <button onclick="downloadReportCard()"
+  class="flex-1 bg-blue-500 text-white font-bold py-3 rounded-xl hover:bg-blue-600 transition heading">
+  🏥 Health Report
+</button>
     </div>`;
 
   container.classList.remove('hidden');
@@ -163,12 +167,26 @@ function downloadPDF() {
   window.open(`/poster/${currentPlan.share_token}/pdf`, '_blank');
 }
 
+function downloadReportCard() {
+  if (!currentPlan?.share_token) {
+    alert('Please generate a plan first');
+    return;
+  }
+
+  window.open(
+    `/report/${currentPlan.share_token}`,
+    '_blank'
+  );
+}
+
+
 function shareWhatsApp() {
   if (!currentPlan?.share_token) {
     alert('Please generate a plan first');
     return;
   }
 
+  
   // CRITICAL: use share_token URL, NOT homepage
   const planURL = `${window.location.origin}/plan/${currentPlan.share_token}`;
   const msg     = encodeURIComponent(
