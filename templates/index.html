@@ -1,0 +1,448 @@
+{% extends "base.html" %}
+{% block title %}NutriPrint — Karnataka School Nutrition{% endblock %}
+
+{% block content %}
+
+<!-- ── HERO ──────────────────────────────────────────── -->
+<section class="gradient-hero text-white py-20 px-4">
+  <div class="max-w-4xl mx-auto text-center">
+    <span class="bg-white/20 text-white text-xs font-semibold px-4 py-1.5 rounded-full">
+      🇮🇳 Made for Karnataka Schools
+    </span>
+    <h1 class="heading font-extrabold text-4xl md:text-5xl mt-6 mb-2 leading-tight">
+      <span class="lang-en">Nourishing Karnataka's Children</span>
+      <span class="lang-kn kn">ಕರ್ನಾಟಕದ ಮಕ್ಕಳ ಪೋಷಣೆ</span>
+    </h1>
+    <p class="text-green-100 text-lg mt-3 mb-8 max-w-2xl mx-auto">
+      <span class="lang-en">AI-powered BMI assessment and personalized weekly meal plans using local Karnataka foods — bilingual, printable, shareable.</span>
+      <span class="lang-kn kn">ಸ್ಥಳೀಯ ಕರ್ನಾಟಕ ಆಹಾರ ಬಳಸಿ AI ಆಧಾರಿತ BMI ಮೌಲ್ಯಮಾಪನ ಮತ್ತು ವೈಯಕ್ತಿಕ ಊಟದ ಯೋಜನೆ.</span>
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="#bmi"
+        class="bg-white text-primary font-bold px-8 py-3 rounded-full hover:bg-green-50 transition heading">
+        <span class="lang-en">📏 Assess BMI</span>
+        <span class="lang-kn kn">📏 BMI ಅಳೆಯಿರಿ</span>
+      </a>
+      <a href="#meal"
+        class="border-2 border-white text-white font-bold px-8 py-3 rounded-full hover:bg-white/10 transition heading">
+        <span class="lang-en">🍱 Generate Meal Plan</span>
+        <span class="lang-kn kn">🍱 ಊಟದ ಯೋಜನೆ ತಯಾರಿಸಿ</span>
+      </a>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-3 gap-6 mt-16 max-w-xl mx-auto">
+      <div>
+        <p class="text-3xl font-extrabold heading">93%</p>
+        <p class="text-green-200 text-xs mt-1">
+          <span class="lang-en">Kids eat junk food daily</span>
+          <span class="lang-kn kn">ಮಕ್ಕಳು ಜಂಕ್ ಫುಡ್ ತಿನ್ನುತ್ತಾರೆ</span>
+        </p>
+      </div>
+      <div>
+        <p class="text-3xl font-extrabold heading">1Cr+</p>
+        <p class="text-green-200 text-xs mt-1">
+          <span class="lang-en">Children malnourished</span>
+          <span class="lang-kn kn">ಮಕ್ಕಳು ಅಪೌಷ್ಟಿಕರು</span>
+        </p>
+      </div>
+      <div>
+        <p class="text-3xl font-extrabold heading">₹0</p>
+        <p class="text-green-200 text-xs mt-1">
+          <span class="lang-en">Cost to use NutriPrint</span>
+          <span class="lang-kn kn">NutriPrint ಬಳಸಲು ಖರ್ಚಿಲ್ಲ</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ───────────────────────────────────── -->
+<section class="py-16 px-4 bg-white">
+  <div class="max-w-4xl mx-auto text-center">
+    <h2 class="heading font-bold text-2xl text-gray-800 mb-2">
+      <span class="lang-en">How It Works</span>
+      <span class="lang-kn kn">ಹೇಗೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ</span>
+    </h2>
+    <div class="grid md:grid-cols-3 gap-8 mt-10">
+      <div class="card-hover bg-green-50 rounded-2xl p-6">
+        <div class="text-4xl mb-4">📏</div>
+        <h3 class="heading font-bold text-gray-800">
+          <span class="lang-en">1. Assess BMI</span>
+          <span class="lang-kn kn">1. BMI ಅಳೆಯಿರಿ</span>
+        </h3>
+        <p class="text-sm text-gray-500 mt-2">
+          <span class="lang-en">Enter height, weight, age. Get IAP pediatric percentile instantly.</span>
+          <span class="lang-kn kn">ಎತ್ತರ, ತೂಕ, ವಯಸ್ಸು ನಮೂದಿಸಿ. IAP ಶೇಕಡಾವಾರು ತಕ್ಷಣ ಪಡೆಯಿರಿ.</span>
+        </p>
+      </div>
+      <div class="card-hover bg-orange-50 rounded-2xl p-6">
+        <div class="text-4xl mb-4">🤖</div>
+        <h3 class="heading font-bold text-gray-800">
+          <span class="lang-en">2. AI Generates Plan</span>
+          <span class="lang-kn kn">2. AI ಯೋಜನೆ ತಯಾರಿಸುತ್ತದೆ</span>
+        </h3>
+        <p class="text-sm text-gray-500 mt-2">
+          <span class="lang-en">Groq AI builds a 7-day plan using local Karnataka foods under ₹150/day.</span>
+          <span class="lang-kn kn">Groq AI ₹150/ದಿನದ ಒಳಗೆ 7 ದಿನದ ಯೋಜನೆ ತಯಾರಿಸುತ್ತದೆ.</span>
+        </p>
+      </div>
+      <div class="card-hover bg-blue-50 rounded-2xl p-6">
+        <div class="text-4xl mb-4">📄</div>
+        <h3 class="heading font-bold text-gray-800">
+          <span class="lang-en">3. Print & Share</span>
+          <span class="lang-kn kn">3. ಮುದ್ರಿಸಿ ಮತ್ತು ಹಂಚಿಕೊಳ್ಳಿ</span>
+        </h3>
+        <p class="text-sm text-gray-500 mt-2">
+          <span class="lang-en">Download bilingual A4 poster. Share via WhatsApp to parents.</span>
+          <span class="lang-kn kn">ದ್ವಿಭಾಷಾ A4 ಪೋಸ್ಟರ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ. WhatsApp ಮೂಲಕ ಪೋಷಕರಿಗೆ ಕಳುಹಿಸಿ.</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BMI TRACKER ────────────────────────────────────── -->
+<section id="bmi" class="py-16 px-4">
+  <div class="max-w-2xl mx-auto">
+    <h2 class="heading font-bold text-2xl text-gray-800 mb-1 text-center">
+      <span class="lang-en">📏 BMI Tracker</span>
+      <span class="lang-kn kn">📏 BMI ಟ್ರ್ಯಾಕರ್</span>
+    </h2>
+    <p class="text-center text-sm text-gray-500 mb-8 kn">
+      IAP ಶಿಶು ಬೆಳವಣಿಗೆ ಚಾರ್ಟ್ ಆಧಾರಿತ
+    </p>
+
+    <div class="bg-white rounded-2xl shadow-sm border p-8">
+      <!-- Name -->
+      <div class="mb-4">
+        <label class="text-sm font-medium text-gray-700">
+          <span class="lang-en">Student Name / </span>
+          <span class="kn">ವಿದ್ಯಾರ್ಥಿ ಹೆಸರು</span>
+        </label>
+        <input id="bmiName" type="text" placeholder="e.g. Priya"
+          class="w-full mt-1 px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary"/>
+      </div>
+
+      <!-- Age + Gender -->
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="text-sm font-medium text-gray-700">
+            <span class="lang-en">Age / </span>
+            <span class="kn">ವಯಸ್ಸು</span>
+          </label>
+          <input id="bmiAge" type="number" min="5" max="15" placeholder="5–15"
+            class="w-full mt-1 px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary"/>
+        </div>
+        <div>
+          <label class="text-sm font-medium text-gray-700">
+            <span class="lang-en">Gender / </span>
+            <span class="kn">ಲಿಂಗ</span>
+          </label>
+          <select id="bmiGender"
+            class="w-full mt-1 px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+            <option value="boy">Boy / ಹುಡುಗ</option>
+            <option value="girl">Girl / ಹುಡುಗಿ</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Height + Weight with mic -->
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <div>
+          <label class="text-sm font-medium text-gray-700">
+            <span class="lang-en">Height (cm) / </span>
+            <span class="kn">ಎತ್ತರ (cm)</span>
+          </label>
+          <div class="flex gap-2 mt-1">
+            <input id="bmiHeight" type="number" placeholder="e.g. 135"
+              class="flex-1 px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary"/>
+            <button onclick="startVoice('bmiHeight')"
+              class="px-3 py-2.5 bg-green-50 border border-primary rounded-xl text-primary hover:bg-green-100 transition"
+              title="Voice input">🎤</button>
+          </div>
+        </div>
+        <div>
+          <label class="text-sm font-medium text-gray-700">
+            <span class="lang-en">Weight (kg) / </span>
+            <span class="kn">ತೂಕ (kg)</span>
+          </label>
+          <div class="flex gap-2 mt-1">
+            <input id="bmiWeight" type="number" placeholder="e.g. 28"
+              class="flex-1 px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary"/>
+            <button onclick="startVoice('bmiWeight')"
+              class="px-3 py-2.5 bg-green-50 border border-primary rounded-xl text-primary hover:bg-green-100 transition"
+              title="Voice input">🎤</button>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="calculateBMI()"
+        class="w-full bg-primary text-white font-bold py-3 rounded-xl hover:bg-green-700 transition heading text-base">
+        <span class="lang-en">Calculate BMI</span>
+        <span class="lang-kn kn">BMI ಲೆಕ್ಕ ಹಾಕಿ</span>
+      </button>
+    </div>
+
+    <!-- BMI Result Card -->
+    <div id="bmiResult" class="hidden mt-6 bg-white rounded-2xl shadow-sm border p-8">
+      <div class="flex items-start justify-between mb-4">
+        <div>
+          <h3 id="resultName" class="heading font-bold text-xl text-gray-800"></h3>
+          <p id="resultBMI"   class="text-gray-500 text-sm mt-0.5"></p>
+        </div>
+        <span id="resultBadge" class="px-4 py-1.5 rounded-full text-sm font-bold"></span>
+      </div>
+
+      <!-- Gauge bar -->
+      <div class="mb-4">
+        <div class="flex justify-between text-xs text-gray-400 mb-1">
+          <span>Underweight</span><span>Normal</span><span>Overweight</span><span>Obese</span>
+        </div>
+        <div class="w-full bg-gray-100 rounded-full h-3">
+          <div id="gaugeBar"
+            class="h-3 rounded-full transition-all duration-700"
+            style="width:0%"></div>
+        </div>
+        <p id="resultPercentile" class="text-xs text-gray-500 mt-1 text-right"></p>
+      </div>
+
+      <!-- Advice -->
+      <div id="resultAdviceEN" class="text-sm text-gray-700 bg-green-50 rounded-xl p-4 mb-2"></div>
+      <div id="resultAdviceKN" class="text-sm text-gray-700 bg-orange-50 rounded-xl p-4 kn"></div>
+
+      <!-- Action button -->
+      <button onclick="prefillMealForm()"
+        class="mt-6 w-full border-2 border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary hover:text-white transition heading">
+        <span class="lang-en">🍱 Generate Meal Plan for this Student</span>
+        <span class="lang-kn kn">🍱 ಈ ವಿದ್ಯಾರ್ಥಿಗೆ ಊಟದ ಯೋಜನೆ ತಯಾರಿಸಿ</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ── MEAL PLANNER ───────────────────────────────────── -->
+<section id="meal" class="py-16 px-4 bg-white">
+  <div class="max-w-2xl mx-auto">
+    <h2 class="heading font-bold text-2xl text-gray-800 mb-1 text-center">
+      <span class="lang-en">🍱 AI Meal Plan Generator</span>
+      <span class="lang-kn kn">🍱 AI ಊಟದ ಯೋಜನೆ</span>
+    </h2>
+    <p class="text-center text-sm text-gray-500 mb-8">
+      Powered by Groq · Local Karnataka Foods · Under ₹150/day
+    </p>
+
+    <div class="bg-gray-50 rounded-2xl border p-8">
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="text-sm font-medium text-gray-700">
+            <span class="lang-en">School Name</span>
+            <span class="lang-kn kn">ಶಾಲೆಯ ಹೆಸರು</span>
+          </label>
+          <input id="mealSchool" type="text" placeholder="Govt HS Mangalore"
+            class="w-full mt-1 px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white"/>
+        </div>
+        <div>
+          <label class="text-sm font-medium text-gray-700">
+            <span class="lang-en">Student Name</span>
+            <span class="lang-kn kn">ವಿದ್ಯಾರ್ಥಿ ಹೆಸರು</span>
+          </label>
+          <input id="mealStudent" type="text" placeholder="Priya"
+            class="w-full mt-1 px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white"/>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="text-sm font-medium text-gray-700">
+            <span class="lang-en">Age Group</span>
+            <span class="lang-kn kn">ವಯೋಮಾನ</span>
+          </label>
+          <select id="mealAge"
+            class="w-full mt-1 px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white">
+            <option value="5-8">5–8 years</option>
+            <option value="9-12" selected>9–12 years</option>
+            <option value="13-15">13–15 years</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-sm font-medium text-gray-700">
+            <span class="lang-en">Diet Type</span>
+            <span class="lang-kn kn">ಆಹಾರ ವಿಧ</span>
+          </label>
+          <select id="mealDiet"
+            class="w-full mt-1 px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white">
+            <option value="vegetarian">Vegetarian / ಸಸ್ಯಾಹಾರ</option>
+            <option value="eggetarian">Eggetarian / ಮೊಟ್ಟೆ</option>
+            <option value="non-vegetarian">Non-Veg / ಮಾಂಸಾಹಾರ</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="text-sm font-medium text-gray-700">
+            <span class="lang-en">Region</span>
+            <span class="lang-kn kn">ಪ್ರದೇಶ</span>
+          </label>
+          <select id="mealRegion"
+            class="w-full mt-1 px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white">
+            <option value="mangalore">Mangalore</option>
+            <option value="udupi">Udupi</option>
+            <option value="shivamogga">Shivamogga</option>
+            <option value="bengaluru_rural">Bengaluru Rural</option>
+            <option value="mysuru">Mysuru</option>
+            <option value="hubli_dharwad">Hubli-Dharwad</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-sm font-medium text-gray-700">
+            <span class="lang-en">Month</span>
+            <span class="lang-kn kn">ತಿಂಗಳು</span>
+          </label>
+          <select id="mealMonth"
+            class="w-full mt-1 px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white">
+            <option>january</option><option>february</option>
+            <option>march</option><option>april</option>
+            <option>may</option><option>june</option>
+            <option>july</option><option>august</option>
+            <option>september</option><option>october</option>
+            <option>november</option><option>december</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <label class="text-sm font-medium text-gray-700">
+          <span class="lang-en">Nutrition Strategy</span>
+          <span class="lang-kn kn">ಪೋಷಣೆ ತಂತ್ರ</span>
+        </label>
+        <select id="mealStrategy"
+          class="w-full mt-1 px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white">
+          <option value="standard">Standard Balanced</option>
+          <option value="high_protein">High Protein</option>
+          <option value="calcium_iron">Calcium + Iron Rich (Anti-Anaemia)</option>
+          <option value="calorie_control">Calorie Control</option>
+        </select>
+      </div>
+
+      <button onclick="generateMeal()"
+        id="generateBtn"
+        class="w-full bg-saffron text-white font-bold py-3 rounded-xl hover:bg-orange-600 transition heading text-base">
+        <span class="lang-en">⚡ Generate AI Meal Plan</span>
+        <span class="lang-kn kn">⚡ AI ಊಟದ ಯೋಜನೆ ತಯಾರಿಸಿ</span>
+      </button>
+    </div>
+
+    <!-- Loading -->
+    <div id="mealLoading" class="hidden text-center py-12">
+      <div class="spinner mx-auto mb-4"></div>
+      <p class="text-gray-600 font-medium">AI Engine Balancing Nutrients...</p>
+      <p class="text-gray-400 text-sm kn mt-1">AI ಪೋಷಕಾಂಶಗಳನ್ನು ಸಮತೋಲನಗೊಳಿಸುತ್ತಿದೆ...</p>
+    </div>
+
+    <!-- Meal Plan Result -->
+    <div id="mealResult" class="hidden mt-8"></div>
+  </div>
+</section>
+
+<!-- ── FOOD SHOWCASE ───────────────────────────────────── -->
+<section id="foods" class="py-16 px-4">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="heading font-bold text-2xl text-gray-800 mb-2 text-center">
+      <span class="lang-en">🥗 Karnataka Food Catalog</span>
+      <span class="lang-kn kn">🥗 ಕರ್ನಾಟಕ ಆಹಾರ ಪಟ್ಟಿ</span>
+    </h2>
+
+    <!-- Filters -->
+    <div class="flex flex-wrap gap-3 justify-center mb-8">
+      <select id="filterDiet" onchange="loadFoods()"
+        class="px-4 py-2 border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+        <option value="">All Diets</option>
+        <option value="vegetarian">Vegetarian</option>
+        <option value="eggetarian">Eggetarian</option>
+        <option value="non-vegetarian">Non-Veg</option>
+      </select>
+      <select id="filterRegion" onchange="loadFoods()"
+        class="px-4 py-2 border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+        <option value="">All Regions</option>
+        <option value="mangalore">Mangalore</option>
+        <option value="udupi">Udupi</option>
+        <option value="shivamogga">Shivamogga</option>
+        <option value="bengaluru_rural">Bengaluru Rural</option>
+        <option value="mysuru">Mysuru</option>
+        <option value="hubli_dharwad">Hubli-Dharwad</option>
+      </select>
+      <select id="filterHighlight" onchange="loadFoods()"
+        class="px-4 py-2 border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+        <option value="">All Types</option>
+        <option value="high-calcium">High Calcium</option>
+        <option value="high-iron">High Iron</option>
+        <option value="high-protein">High Protein</option>
+        <option value="anti-anaemia">Anti-Anaemia</option>
+      </select>
+    </div>
+
+    <div id="foodGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+
+    <div class="text-center mt-8">
+      <button onclick="loadMoreFoods()"
+        id="loadMoreBtn"
+        class="border border-primary text-primary px-8 py-2.5 rounded-full font-semibold hover:bg-primary hover:text-white transition text-sm">
+        Load More
+      </button>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/bmi.js"></script>
+<script src="/static/js/meal.js"></script>
+<script>
+  // Set current month in meal form
+  const months = ["january","february","march","april","may","june",
+                  "july","august","september","october","november","december"];
+  document.getElementById('mealMonth').value = months[new Date().getMonth()];
+
+  // Load food catalog
+  let foodPage = 1;
+  async function loadFoods(reset=true) {
+    if (reset) { foodPage=1; document.getElementById('foodGrid').innerHTML=''; }
+    const diet      = document.getElementById('filterDiet').value;
+    const region    = document.getElementById('filterRegion').value;
+    const highlight = document.getElementById('filterHighlight').value;
+    let url = `/api/foods?page=${foodPage}&limit=8`;
+    if (diet)      url += `&diet=${diet}`;
+    if (region)    url += `&region=${region}`;
+    if (highlight) url += `&highlight=${highlight}`;
+    const res  = await fetch(url);
+    const data = await res.json();
+    const grid = document.getElementById('foodGrid');
+    data.foods.forEach(f => {
+      grid.innerHTML += `
+        <div class="bg-white rounded-2xl p-4 border card-hover text-center">
+          <div class="text-4xl mb-2">${f.image_emoji}</div>
+          <p class="font-bold text-gray-800 text-sm">${f.name_en}</p>
+          <p class="text-xs text-orange-500 kn mt-0.5">${f.name_kn}</p>
+          <div class="flex justify-around mt-3 text-xs text-gray-500">
+            <span>🔥${f.calories_per_100g}cal</span>
+            <span>💪${f.protein_g}g</span>
+          </div>
+          <div class="flex justify-around text-xs text-gray-500">
+            <span>🦴${f.calcium_mg}mg</span>
+            <span>🩸${f.iron_mg}mg</span>
+          </div>
+          <p class="text-xs text-primary font-semibold mt-2">₹${f.cost_inr}/serving</p>
+        </div>`;
+    });
+    document.getElementById('loadMoreBtn').style.display =
+      foodPage >= data.total_pages ? 'none' : 'inline-block';
+  }
+
+  function loadMoreFoods() { foodPage++; loadFoods(false); }
+
+  loadFoods();
+</script>
+{% endblock %}

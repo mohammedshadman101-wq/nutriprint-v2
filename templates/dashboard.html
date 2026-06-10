@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+{% block title %}NutriPrint — Teacher Dashboard{% endblock %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 py-10">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h1 class="heading font-extrabold text-2xl text-gray-800">
+        <span class="lang-en">📊 Teacher Dashboard</span>
+        <span class="lang-kn kn">📊 ಶಿಕ್ಷಕರ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್</span>
+      </h1>
+      <p class="text-gray-400 text-sm mt-1" id="teacherInfo">Loading...</p>
+    </div>
+    <button onclick="exportCSV()"
+      class="bg-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-green-700 transition">
+      📥 Export CSV
+    </button>
+  </div>
+
+  <!-- Not logged in message -->
+  <div id="notLoggedIn" class="hidden bg-orange-50 border border-orange-200 rounded-2xl p-8 text-center mb-8">
+    <p class="text-4xl mb-3">🔒</p>
+    <p class="heading font-bold text-gray-800 text-lg">Login Required</p>
+    <p class="text-gray-500 text-sm mt-2 mb-4">Please login to view your dashboard</p>
+    <button onclick="openLogin()"
+      class="bg-primary text-white px-6 py-2.5 rounded-full font-semibold hover:bg-green-700 transition">
+      Login as Teacher
+    </button>
+  </div>
+
+  <!-- Stats cards -->
+  <div id="dashContent" class="hidden">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="bg-white rounded-2xl border p-5 card-hover text-center">
+        <p class="text-3xl font-extrabold heading text-primary" id="statStudents">—</p>
+        <p class="text-xs text-gray-400 mt-1">
+          <span class="lang-en">Total Students</span>
+          <span class="lang-kn kn">ಒಟ್ಟು ವಿದ್ಯಾರ್ಥಿಗಳು</span>
+        </p>
+      </div>
+      <div class="bg-white rounded-2xl border p-5 card-hover text-center">
+        <p class="text-3xl font-extrabold heading text-saffron" id="statPlans">—</p>
+        <p class="text-xs text-gray-400 mt-1">
+          <span class="lang-en">Plans Generated</span>
+          <span class="lang-kn kn">ಯೋಜನೆಗಳು ತಯಾರಾಗಿವೆ</span>
+        </p>
+      </div>
+      <div class="bg-white rounded-2xl border p-5 card-hover text-center">
+        <p class="text-3xl font-extrabold heading text-blue-500" id="statThisMonth">—</p>
+        <p class="text-xs text-gray-400 mt-1">
+          <span class="lang-en">This Month</span>
+          <span class="lang-kn kn">ಈ ತಿಂಗಳು</span>
+        </p>
+      </div>
+      <div class="bg-white rounded-2xl border p-5 card-hover text-center">
+        <p class="text-3xl font-extrabold heading text-green-500" id="statAssessments">—</p>
+        <p class="text-xs text-gray-400 mt-1">
+          <span class="lang-en">BMI Assessments</span>
+          <span class="lang-kn kn">BMI ಮೌಲ್ಯಮಾಪನಗಳು</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Charts row -->
+    <div class="grid md:grid-cols-2 gap-6 mb-8">
+      <!-- BMI distribution pie -->
+      <div class="bg-white rounded-2xl border p-6">
+        <h3 class="heading font-bold text-gray-800 mb-4">
+          <span class="lang-en">BMI Distribution</span>
+          <span class="lang-kn kn">BMI ವಿತರಣೆ</span>
+        </h3>
+        <canvas id="bmiPieChart" height="200"></canvas>
+      </div>
+
+      <!-- Recent plans -->
+      <div class="bg-white rounded-2xl border p-6">
+        <h3 class="heading font-bold text-gray-800 mb-4">
+          <span class="lang-en">Recent Meal Plans</span>
+          <span class="lang-kn kn">ಇತ್ತೀಚಿನ ಊಟದ ಯೋಜನೆಗಳು</span>
+        </h3>
+        <div id="recentPlans" class="space-y-3">
+          <p class="text-gray-400 text-sm">Loading...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Student list -->
+    <div class="bg-white rounded-2xl border overflow-hidden">
+      <div class="px-6 py-4 border-b flex items-center justify-between">
+        <h3 class="heading font-bold text-gray-800">
+          <span class="lang-en">Your Students</span>
+          <span class="lang-kn kn">ನಿಮ್ಮ ವಿದ್ಯಾರ್ಥಿಗಳು</span>
+        </h3>
+        <input
+          type="text"
+          placeholder="Search student..."
+          oninput="filterStudents(this.value)"
+          class="text-sm px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-primary"/>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 text-gray-500 text-xs uppercase">
+            <tr>
+              <th class="px-6 py-3 text-left">Student</th>
+              <th class="px-6 py-3 text-left">Age</th>
+              <th class="px-6 py-3 text-left">Last BMI</th>
+              <th class="px-6 py-3 text-left">Status</th>
+              <th class="px-6 py-3 text-left">Date</th>
+              <th class="px-6 py-3 text-left">Action</th>
+            </tr>
+          </thead>
+          <tbody id="studentTable" class="divide-y divide-gray-100">
+            <tr>
+              <td colspan="6" class="px-6 py-8 text-center text-gray-400">
+                Loading students...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const teacherId = localStorage.getItem('teacher_id');
+
+const BADGE = {
+  underweight : 'badge-underweight',
+  normal      : 'badge-normal',
+  overweight  : 'badge-overweight',
+  obese       : 'badge-obese',
+};
+
+let allStudents = [];
+
+window.addEventListener('DOMContentLoaded', async () => {
+  if (!teacherId) {
+    document.getElementById('notLoggedIn').classList.remove('hidden');
+    return;
+  }
+  document.getElementById('dashContent').classList.remove('hidden');
+  await loadDashboard();
+});
+
+async function loadDashboard() {
+  try {
+    // Load stats
+    const statsRes = await fetch(`/api/bmi/dashboard/stats?teacher_id=${teacherId}`);
+    if (statsRes.ok) {
+      const stats = await statsRes.json();
+      document.getElementById('statStudents').textContent    = stats.total_students    ?? 0;
+      document.getElementById('statPlans').textContent       = stats.total_plans       ?? 0;
+      document.getElementById('statThisMonth').textContent   = stats.plans_this_month  ?? 0;
+      document.getElementById('statAssessments').textContent = stats.total_assessments ?? 0;
+      document.getElementById('teacherInfo').textContent     =
+        `${stats.teacher_name ?? ''} · ${stats.school_name ?? ''}`;
+
+      // BMI pie chart
+      if (stats.bmi_distribution?.length) {
+        renderPieChart(stats.bmi_distribution);
+      }
+    }
+
+    // Load students
+    const studRes  = await fetch(`/api/bmi/dashboard/students?teacher_id=${teacherId}`);
+    if (studRes.ok) {
+      const data = await studRes.json();
+      allStudents = data.students ?? [];
+      renderStudentTable(allStudents);
+    }
+
+    // Load recent plans
+    const planRes  = await fetch(`/api/bmi/dashboard/recent-plans?teacher_id=${teacherId}`);
+    if (planRes.ok) {
+      const data = await planRes.json();
+      renderRecentPlans(data.plans ?? []);
+    }
+
+  } catch(e) {
+    console.error('Dashboard error:', e);
+  }
+}
+
+function renderPieChart(distribution) {
+  const ctx    = document.getElementById('bmiPieChart').getContext('2d');
+  const colors = {
+    underweight : '#3B82F6',
+    normal      : '#10B981',
+    overweight  : '#F97316',
+    obese       : '#EF4444',
+  };
+  new Chart(ctx, {
+    type : 'doughnut',
+    data : {
+      labels   : distribution.map(d => d.classification),
+      datasets : [{
+        data            : distribution.map(d => d.count),
+        backgroundColor : distribution.map(d => colors[d.classification] ?? '#9CA3AF'),
+        borderWidth     : 2,
+        borderColor     : '#ffffff',
+      }]
+    },
+    options: {
+      responsive  : true,
+      plugins     : {
+        legend : { position: 'bottom', labels: { font: { size: 11 } } }
+      }
+    }
+  });
+}
+
+function renderStudentTable(students) {
+  const tbody = document.getElementById('studentTable');
+  if (!students.length) {
+    tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-gray-400">
+      No students yet. Assess a student from the homepage.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = students.map(s => `
+    <tr class="hover:bg-gray-50 transition">
+      <td class="px-6 py-4 font-medium text-gray-800">${s.name}</td>
+      <td class="px-6 py-4 text-gray-500">${s.age} yrs · ${s.gender}</td>
+      <td class="px-6 py-4 text-gray-700 font-semibold">${s.last_bmi ?? '—'}</td>
+      <td class="px-6 py-4">
+        ${s.classification
+          ? `<span class="px-3 py-1 rounded-full text-xs font-bold ${BADGE[s.classification]}">
+              ${s.classification.toUpperCase()}
+             </span>`
+          : '<span class="text-gray-300 text-xs">Not assessed</span>'}
+      </td>
+      <td class="px-6 py-4 text-gray-400 text-xs">${s.last_assessed ?? '—'}</td>
+      <td class="px-6 py-4">
+        <button
+          onclick="reassessStudent('${s.name}', ${s.age}, '${s.gender}')"
+          class="text-xs text-primary border border-primary px-3 py-1.5 rounded-full hover:bg-primary hover:text-white transition">
+          Reassess
+        </button>
+      </td>
+    </tr>`).join('');
+}
+
+function renderRecentPlans(plans) {
+  const container = document.getElementById('recentPlans');
+  if (!plans.length) {
+    container.innerHTML = '<p class="text-gray-400 text-sm">No plans yet.</p>';
+    return;
+  }
+  container.innerHTML = plans.map(p => `
+    <a href="/plan/${p.share_token}"
+      class="flex items-center justify-between p-3 bg-gray-50 rounded-xl hover:bg-green-50 transition">
+      <div>
+        <p class="font-semibold text-gray-800 text-sm">${p.student_name}</p>
+        <p class="text-xs text-gray-400">${p.region} · ${p.diet_pref} · ${p.month}</p>
+      </div>
+      <span class="text-xs text-primary font-bold">View →</span>
+    </a>`).join('');
+}
+
+function filterStudents(query) {
+  const filtered = allStudents.filter(s =>
+    s.name.toLowerCase().includes(query.toLowerCase())
+  );
+  renderStudentTable(filtered);
+}
+
+function reassessStudent(name, age, gender) {
+  localStorage.setItem('prefill_name',   name);
+  localStorage.setItem('prefill_age',    age);
+  localStorage.setItem('prefill_gender', gender);
+  window.location.href = '/#bmi';
+}
+
+function exportCSV() {
+  if (!teacherId) return alert('Please login first');
+  window.open(`/api/bmi/export/${teacherId}`, '_blank');
+}
+</script>
+{% endblock %}
