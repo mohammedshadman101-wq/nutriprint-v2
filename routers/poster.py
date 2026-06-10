@@ -1,61 +1,118 @@
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
+
 from models.db import supabase
 from models.schemas import MealPlan
-import io
 
-router    = APIRouter(tags=["Poster"])
+import io
+import json
+
+router = APIRouter(tags=["Poster"])
 templates = Jinja2Templates(directory="templates")
 
+
 def _get_plan_by_token(token: str):
-    result = supabase.table("meal_plans")\
-        .select("*")\
-        .eq("id", token)\
-        .single()\
+    result = (
+        supabase.table("meal_plans")
+        .select("*")
+        .eq("share_token", token)
+        .single()
         .execute()
+    )
+
     if not result.data:
-        raise HTTPException(status_code=404, detail="Plan not found")
+        raise HTTPException(
+            status_code=404,
+            detail="Plan not found"
+        )
+
     row = result.data
-    return row, MealPlan(**{
-        **row["plan_json"],
-        "plan_id"    : str(row["id"]),
-        "share_token": str(row["share_token"]),
-    })
+
+    plan_json = row.get("plan_json", {})
+
+    if isinstance(plan_json, str):
+        plan_json = json.loads(plan_json)
+
+    plan = MealPlan(
+        **plan_json,
+        plan_id=str(row["id"]),
+        share_token=str(row["share_token"])
+    )
+
+    return row, plan
+
 
 @router.get("/plan/{share_token}", response_class=HTMLResponse)
-async def plan_public(request: Request, share_token: str):
+async def plan_public(
+    request: Request,
+    share_token: str
+):
     try:
         row, plan = _get_plan_by_token(share_token)
-        return templates.TemplateResponse("plan_public.html", {
-            "request"     : request,
-            "plan"        : plan,
-            "share_token" : share_token,
-            "base_url"    : str(request.base_url),
-        })
+
+        return templates.TemplateResponse(
+            "plan_public.html",
+            {
+                "request": request,
+                "plan": plan,
+                "share_token": share_token,
+                "base_url": str(request.base_url),
+            }
+        )
+
+    except HTTPException:
+        raise
+
     except Exception as e:
-        raise HTTPException(status_code=404, detail="Plan not found")
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
+
 
 @router.get("/poster/{share_token}/pdf")
-async def download_pdf(share_token: str, request: Request):
+async def download_pdf(
+    share_token: str,
+    request: Request
+):
     try:
         from services.pdf_generator import generate_poster_pdf
 
         row, plan = _get_plan_by_token(share_token)
 
+        plan_data = plan.model_dump()
+        plan_data["share_token"] = share_token
+
         pdf_bytes = generate_poster_pdf(
-            plan     = plan.dict(),
-            base_url = str(request.base_url),
+            plan=plan_data,
+            base_url=str(request.base_url),
         )
 
-        filename = f"NutriPrint_{plan.student_name.replace(' ','_')}.pdf"
+        import re
+
+        safe_name = re.sub(
+            r"[^a-zA-Z0-9_-]",
+            "",
+            plan.student_name.replace(" ", "_")
+        )
+
+        filename = f"NutriPrint_{safe_name}.pdf"
 
         return StreamingResponse(
             io.BytesIO(pdf_bytes),
-            media_type = "application/pdf",
-            headers    = {
-                "Content-Disposition": f"attachment; filename={filename}"
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition":
+                f'attachment; filename="{filename}"'
             }
         )
+
+    except HTTPException:
+        raise
+
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
