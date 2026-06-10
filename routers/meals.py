@@ -89,7 +89,7 @@ async def generate_meal(data: MealInput):
         row = saved.data[0]
 
         plan.plan_id = str(row["id"])
-        plan.share_token = str(row["share_token"])
+        plan.share_token = str(row["id"])
 
         return plan
 
