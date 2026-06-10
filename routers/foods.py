@@ -75,3 +75,14 @@ async def chat(data: ChatMessage):
         temperature = 0.5,
     )
     return {"reply": res.choices[0].message.content}
+
+@router.get("/impact")
+async def impact():
+    from models.db import supabase
+    plans    = supabase.table("meal_plans").select("id", count="exact").execute()
+    students = supabase.table("students").select("id",   count="exact").execute()
+    return {
+        "total_plans"   : plans.count    or 0,
+        "total_students": students.count or 0,
+        "total_foods"   : 53,
+    }
