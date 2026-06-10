@@ -56,6 +56,20 @@
 </head>
 <body>
 
+  <!-- Cold start banner -->
+  <div id="coldBanner"
+    class="hidden bg-amber-50 border-b border-amber-200 text-center py-2 text-xs text-amber-700 font-medium">
+    ⏳ Server is waking up... please wait 20 seconds
+  </div>
+  
+  <script>
+    // Show banner if server is slow to respond
+    const t = setTimeout(() => {
+      document.getElementById('coldBanner').classList.remove('hidden');
+    }, 4000);
+    window.addEventListener('load', () => clearTimeout(t));
+  </script>
+
 <!-- ── NAVBAR ─────────────────────────────────────────── -->
 <nav class="bg-white shadow-sm sticky top-0 z-50">
   <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
