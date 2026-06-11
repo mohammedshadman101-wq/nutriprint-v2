@@ -134,7 +134,11 @@ function renderMealPlan(plan) {
         class="flex-1 bg-green-500 text-white font-bold py-3 rounded-xl hover:bg-green-600 transition heading">
         📲 Share via WhatsApp
       </button>
-      <button onclick="window.print()"
+      <button onclick="if (currentPlan && currentPlan.share_token) {
+    window.open('/poster/' + currentPlan.share_token + '/pdf', '_blank');
+  } else {
+    alert('Please generate a plan first');
+  }"
         class="flex-1 border-2 border-gray-300 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-50 transition heading">
         🖨️ Print
       </button>
