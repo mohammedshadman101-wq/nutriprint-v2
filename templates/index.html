@@ -467,7 +467,10 @@ loadImpact();
   // Set current month in meal form
   const months = ["january","february","march","april","may","june",
                   "july","august","september","october","november","december"];
-  document.getElementById('mealMonth').value = months[new Date().getMonth()];
+  const mealMonth = document.getElementById('mealMonth');
+if (mealMonth) {
+  mealMonth.value = months[new Date().getMonth()];
+}
 
   // Load food catalog
   let foodPage = 1;
