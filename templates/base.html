@@ -450,7 +450,10 @@
     });
     if (res.ok) {
       const data = await res.json();
-      localStorage.setItem('teacher_id', data.user_id);
+      localStorage.setItem('auth_user_id', data.user_id);
+      if (data.teacher_id) {
+        localStorage.setItem('teacher_id', data.teacher_id);
+      }
       closeLogin();
       document.getElementById('loginBtn').textContent = '✅ Logged In';
     } else {
@@ -459,6 +462,8 @@
   }
 </script>
 
+<script src="/static/js/splash.js"></script>
+<script src="/static/js/animations.js"></script>
 {% block scripts %}{% endblock %}
   <!-- Chatbot button -->
 <button onclick="toggleChat()"

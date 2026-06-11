@@ -94,6 +94,7 @@ class MealPlan(BaseModel):
     region         : str
     month          : str
     strategy       : str
+    allergies      : List[str] = []
     bmi_class      : Optional[str] = None
     week           : List[MealDay]
     avg_daily_cal  : float
@@ -106,6 +107,7 @@ class MealPlan(BaseModel):
 class MealInput(BaseModel):
     school_name  : str  = Field(..., min_length=2, max_length=200)
     teacher_name : Optional[str] = None
+    teacher_id   : Optional[str] = None
     student_name : Optional[str] = "Student"
     student_id   : Optional[str] = None
     age_group    : AgeGroup

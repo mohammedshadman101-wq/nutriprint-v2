@@ -1,7 +1,9 @@
 from supabase import create_client
 from config import SUPABASE_URL, SUPABASE_KEY
 
-print("SUPABASE_URL =", repr(SUPABASE_URL))
-print("SUPABASE_KEY EXISTS =", bool(SUPABASE_KEY))
+if not SUPABASE_URL or not SUPABASE_KEY:
+    raise RuntimeError(
+        "SUPABASE_URL and SUPABASE_KEY environment variables are required"
+    )
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)

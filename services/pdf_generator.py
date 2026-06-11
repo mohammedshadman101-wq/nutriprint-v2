@@ -408,7 +408,8 @@ def generate_poster_pdf(plan: dict, base_url: str) -> bytes:
     story.append(Spacer(1, 3*mm))
 
     # ── FOOTER WITH QR ────────────────────────────────────
-    plan_url  = f"{base_url}plan/{share_token}"
+    base = base_url if base_url.endswith("/") else f"{base_url}/"
+    plan_url = f"{base}plan/{share_token}"
     qr_image  = None
 
     try:

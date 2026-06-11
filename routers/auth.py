@@ -1,7 +1,8 @@
-from fastapi import APIRouter, HTTPException, Response, Cookie
+import os
+
+from fastapi import APIRouter, HTTPException, Response
 from pydantic import BaseModel
 from models.db import supabase
-from typing import Optional
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -40,16 +41,25 @@ async def verify(data: VerifyInput, response: Response):
 
         # Set session cookie
         response.set_cookie(
-            key      = "session",
-            value    = session.access_token,
-            httponly = True,
-            secure   = True,
-            samesite = "lax",
-            max_age  = 60 * 60 * 24 * 7,  # 7 days
+            key="session",
+            value=session.access_token,
+            httponly=True,
+            secure=os.getenv("ENVIRONMENT", "development") == "production",
+            samesite="lax",
+            max_age=60 * 60 * 24 * 7,
         )
+        teacher_id = None
+        existing = supabase.table("teachers")\
+            .select("id")\
+            .eq("auth_user_id", session.user.id)\
+            .execute()
+        if existing.data:
+            teacher_id = existing.data[0]["id"]
+
         return {
             "success"     : True,
             "user_id"     : session.user.id,
+            "teacher_id"  : teacher_id,
             "access_token": session.access_token,
         }
     except Exception as e:

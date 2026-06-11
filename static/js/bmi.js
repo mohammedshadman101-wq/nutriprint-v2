@@ -21,6 +21,7 @@ async function calculateBMI() {
       gender,
       height_cm    : parseFloat(height),
       weight_kg    : parseFloat(weight),
+      teacher_id   : localStorage.getItem('teacher_id') || null,
     })
   });
 
@@ -32,6 +33,7 @@ async function calculateBMI() {
   const data = await res.json();
   
   lastBMIResult = data;
+  window.lastBMIResult = data;
   
   showBMIResult(data);
   showGrowthChart(data.student_name);
@@ -170,38 +172,6 @@ async function showGrowthChart(studentName) {
       }
     }
   });
-
-  async function runDemo() {
-  // Scroll to BMI
-  document.querySelector('#bmi').scrollIntoView({behavior:'smooth'});
-  await sleep(800);
-
-  // Autofill BMI form with typing effect
-  await typeInto('bmiName',   'Priya Shetty');
-  await typeInto('bmiAge',    '10');
-  document.getElementById('bmiGender').value = 'girl';
-  await typeInto('bmiHeight', '132');
-  await typeInto('bmiWeight', '24');
-  await sleep(500);
-
-  // Calculate
-  await calculateBMI();
-  await sleep(1500);
-
-  // Scroll to meal
-  document.querySelector('#meal').scrollIntoView({behavior:'smooth'});
-  await sleep(800);
-
-  // Autofill meal form
-  await typeInto('mealSchool',   'Govt High School Mangalore');
-  await typeInto('mealStudent',  'Priya Shetty');
-  document.getElementById('mealDiet').value     = 'vegetarian';
-  document.getElementById('mealRegion').value   = 'mangalore';
-  document.getElementById('mealStrategy').value = 'calcium_iron';
-  await sleep(500);
-
-  // Generate
-  await generateMeal();
 }
 
 function sleep(ms) {
@@ -216,4 +186,30 @@ async function typeInto(id, text) {
     await sleep(50);
   }
 }
+
+async function runDemo() {
+  document.querySelector('#bmi').scrollIntoView({behavior:'smooth'});
+  await sleep(800);
+
+  await typeInto('bmiName',   'Priya Shetty');
+  await typeInto('bmiAge',    '10');
+  document.getElementById('bmiGender').value = 'girl';
+  await typeInto('bmiHeight', '132');
+  await typeInto('bmiWeight', '24');
+  await sleep(500);
+
+  await calculateBMI();
+  await sleep(1500);
+
+  document.querySelector('#meal').scrollIntoView({behavior:'smooth'});
+  await sleep(800);
+
+  await typeInto('mealSchool',   'Govt High School Mangalore');
+  await typeInto('mealStudent',  'Priya Shetty');
+  document.getElementById('mealDiet').value     = 'vegetarian';
+  document.getElementById('mealRegion').value   = 'mangalore';
+  document.getElementById('mealStrategy').value = 'calcium_iron';
+  await sleep(500);
+
+  await generateMeal();
 }

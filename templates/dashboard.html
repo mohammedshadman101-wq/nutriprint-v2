@@ -126,6 +126,23 @@
       </div>
     </div>
 
+    <!-- Class Progress Section -->
+    <div class="mt-8 bg-white rounded-2xl border overflow-hidden">
+      <div class="px-6 py-4 border-b bg-gradient-to-r from-primary to-green-700">
+        <h3 class="heading font-bold text-white text-lg">
+          🏫 Class Health Overview
+          <span class="kn text-green-200 text-base ml-2">
+            ತರಗತಿಯ ಆರೋಗ್ಯ ಸ್ಥಿತಿ
+          </span>
+        </h3>
+      </div>
+      <div id="classProgress" class="p-6">
+        <p class="text-gray-400 text-sm text-center py-8">
+          Loading class data...
+        </p>
+      </div>
+    </div>
+
   </div>
 </div>
 {% endblock %}
@@ -185,6 +202,8 @@ async function loadDashboard() {
       const data = await planRes.json();
       renderRecentPlans(data.plans ?? []);
     }
+
+    await loadClassProgress();
 
   } catch(e) {
     console.error('Dashboard error:', e);
@@ -255,7 +274,7 @@ function renderPieChart(distribution) {
       </div>
     </div>`).join('');
 
-  const topStudents = d.leaderboard.slice(0, 5).map((s, i) => `
+  const topStudents = (d.top_5 || []).map((s, i) => `
     <div class="flex items-center justify-between py-2 border-b last:border-0">
       <div class="flex items-center gap-3">
         <span class="text-lg">${['🥇','🥈','🥉','4️⃣','5️⃣'][i]}</span>
@@ -375,7 +394,7 @@ function renderPieChart(distribution) {
           </span>
         </h4>
         <div class="bg-red-50 rounded-2xl border border-red-100 p-4">
-          ${d.bottom_5.map(s => `
+          ${(d.needs_attention || []).map(s => `
             <div class="flex items-center justify-between
               py-2 border-b last:border-0">
               <div>
@@ -432,10 +451,6 @@ function renderPieChart(distribution) {
   });
 }
 
-// Call it in loadDashboard()
-// Add at the end of loadDashboard():
-await loadClassProgress();
-
 function renderStudentTable(students) {
   const tbody = document.getElementById('studentTable');
   if (!students.length) {
@@ -465,24 +480,6 @@ function renderStudentTable(students) {
       </td>
     </tr>`).join('');
 }
-
-  <!-- Class Progress Section -->
-<div class="mt-8 bg-white rounded-2xl border overflow-hidden">
-  <div class="px-6 py-4 border-b bg-gradient-to-r from-primary to-green-700">
-    <h3 class="heading font-bold text-white text-lg">
-      🏫 Class Health Overview
-      <span class="kn text-green-200 text-base ml-2">
-        ತರಗತಿಯ ಆರೋಗ್ಯ ಸ್ಥಿತಿ
-      </span>
-    </h3>
-  </div>
-
-  <div id="classProgress" class="p-6">
-    <p class="text-gray-400 text-sm text-center py-8">
-      Loading class data...
-    </p>
-  </div>
-</div>
 
 function renderRecentPlans(plans) {
   const container = document.getElementById('recentPlans');

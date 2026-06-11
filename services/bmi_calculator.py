@@ -123,3 +123,90 @@ def calculate_bmi(
         advice_kn      = advice["kn"],
         color          = advice["color"],
     )
+# ─── ICMR RDA Standards ──────────────────────────────────
+
+ICMR_RDA = {
+    "5-8":   {
+        "calories"   : 1350,
+        "protein_g"  : 20,
+        "calcium_mg" : 600,
+        "iron_mg"    : 13,
+    },
+    "9-12":  {
+        "calories"   : 1700,
+        "protein_g"  : 30,
+        "calcium_mg" : 800,
+        "iron_mg"    : 16,
+    },
+    "13-15": {
+        "calories"   : 2100,
+        "protein_g"  : 45,
+        "calcium_mg" : 800,
+        "iron_mg"    : 22,
+    },
+}
+
+# ─── Fix Foods per Deficiency ─────────────────────────────
+
+FIX_FOODS = {
+    "calories": {
+        "en": "Ragi Mudde, Groundnut Laddu, Ghee Rice, Banana Sheera",
+        "kn": "ರಾಗಿ ಮುದ್ದೆ, ಕಡಲೆಕಾಯಿ ಉಂಡೆ, ತುಪ್ಪದ ಅನ್ನ, ಬಾಳೆಹಣ್ಣಿನ ಶಿರಾ",
+    },
+    "protein_g": {
+        "en": "Horsegram Saaru, Sprouted Moong, Egg Curry, Avarekalu Saaru",
+        "kn": "ಹುರಳಿ ಸಾರು, ಮೊಳಕೆ ಹೆಸರುಕಾಳು, ಮೊಟ್ಟೆ ಸಾಲನ್, ಅವರೆಕಾಳು ಸಾರು",
+    },
+    "calcium_mg": {
+        "en": "Drumstick Leaves, Ragi Dosa, Curd Rice, Ragi Malt",
+        "kn": "ನುಗ್ಗೆ ಸೊಪ್ಪು, ರಾಗಿ ದೋಸೆ, ಮೊಸರು ಅನ್ನ, ರಾಗಿ ಮಾಲ್ಟ್",
+    },
+    "iron_mg": {
+        "en": "Banana Flower Curry, Palak Dal, Methi Paratha, Dill Leaves Dal",
+        "kn": "ಬಾಳೆ ಹೂವಿನ ಪಲ್ಯ, ಪಾಲಕ್ ಬೇಳೆ, ಮೆಂತ್ಯ ಪರಾಠ, ಸಬ್ಬಸಿಗೆ ಸೊಪ್ಪು ಬೇಳೆ",
+    },
+}
+
+# ─── Nutrition Gap Calculator ─────────────────────────────
+
+def calculate_nutrition_gap(plan_data: dict, age_group: str) -> list:
+    rda = ICMR_RDA.get(age_group, ICMR_RDA["9-12"])
+
+    checks = [
+        ("calories",   "Calories", "kcal", plan_data.get("avg_daily_cal",  0)),
+        ("protein_g",  "Protein",  "g",    plan_data.get("avg_protein_g",  0)),
+        ("calcium_mg", "Calcium",  "mg",   plan_data.get("avg_calcium_mg", 0)),
+        ("iron_mg",    "Iron",     "mg",   plan_data.get("avg_iron_mg",    0)),
+    ]
+
+    gaps = []
+    for key, label, unit, getting in checks:
+        needed = rda[key]
+        gap    = round(needed - getting, 1)
+        pct    = round((getting / needed) * 100, 1) if needed else 0
+
+        if pct < 60:
+            status       = "critical"
+            status_label = "🔴 Critical"
+        elif pct < 85:
+            status       = "low"
+            status_label = "⚠️ Low"
+        else:
+            status       = "good"
+            status_label = "✅ Good"
+
+        gaps.append({
+            "nutrient"    : label,
+            "key"         : key,
+            "unit"        : unit,
+            "getting"     : round(getting, 1),
+            "needed"      : needed,
+            "gap"         : gap,
+            "percent"     : pct,
+            "status"      : status,
+            "status_label": status_label,
+            "fix_en"      : FIX_FOODS[key]["en"] if gap > 0 else None,
+            "fix_kn"      : FIX_FOODS[key]["kn"] if gap > 0 else None,
+        })
+
+    return gaps

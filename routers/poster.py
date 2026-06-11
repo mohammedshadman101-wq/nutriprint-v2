@@ -55,13 +55,17 @@ async def plan_public(
     try:
         row, plan = _get_plan_by_token(share_token)
 
+        base = str(request.base_url)
+        if not base.endswith("/"):
+            base += "/"
+
         return templates.TemplateResponse(
             "plan_public.html",
             {
                 "request": request,
                 "plan": plan,
                 "share_token": share_token,
-                "base_url": str(request.base_url),
+                "base_url": base,
             }
         )
 

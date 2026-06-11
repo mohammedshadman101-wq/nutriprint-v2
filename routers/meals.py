@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 from models.schemas import MealInput, MealPlan, RegenerateDay
 from models.db import supabase
 from services.groq_engine import generate_groq_plan
-from services.fallback_engine import generate_fallback_plan, DAYS_KN
+from services.fallback_engine import generate_fallback_plan
 
 import secrets
 import json
@@ -86,6 +86,8 @@ async def generate_meal(data: MealInput):
 
         if data.student_id:
             insert_data["student_id"] = data.student_id
+        if data.teacher_id:
+            insert_data["teacher_id"] = data.teacher_id
 
         saved = (
             supabase.table("meal_plans")
@@ -111,3 +113,68 @@ async def generate_meal(data: MealInput):
             status_code=500,
             detail=str(e)
         )
+
+
+@router.patch("/{plan_id}/day")
+async def regenerate_day(plan_id: str, data: RegenerateDay):
+    try:
+        result = (
+            supabase.table("meal_plans")
+            .select("*")
+            .eq("id", plan_id)
+            .single()
+            .execute()
+        )
+
+        if not result.data:
+            raise HTTPException(status_code=404, detail="Plan not found")
+
+        row = result.data
+        plan_json = row["plan_json"]
+        if isinstance(plan_json, str):
+            plan_json = json.loads(plan_json)
+
+        fallback = generate_fallback_plan(
+            school_name=row.get("school_name", ""),
+            student_name=row.get("student_name", "Student"),
+            teacher_name=row.get("teacher_name", ""),
+            age_group=row.get("age_group", "9-12"),
+            diet_pref=row.get("diet_pref", "vegetarian"),
+            region=row.get("region", "mangalore"),
+            month=row.get("month", "january"),
+            strategy=row.get("strategy", "standard"),
+            bmi_class=row.get("bmi_class"),
+        )
+
+        new_day = next(
+            (d for d in fallback.week if d.day == data.day_name),
+            None,
+        )
+        if not new_day:
+            raise HTTPException(status_code=400, detail="Invalid day name")
+
+        for i, day in enumerate(plan_json.get("week", [])):
+            if day.get("day") == data.day_name:
+                try:
+                    plan_json["week"][i] = new_day.model_dump()
+                except AttributeError:
+                    plan_json["week"][i] = new_day.dict()
+                break
+        else:
+            raise HTTPException(status_code=400, detail="Day not found in plan")
+
+        supabase.table("meal_plans").update(
+            {"plan_json": plan_json}
+        ).eq("id", plan_id).execute()
+
+        try:
+            day_payload = new_day.model_dump()
+        except AttributeError:
+            day_payload = new_day.dict()
+
+        return {"day": day_payload}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

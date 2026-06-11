@@ -4,8 +4,6 @@ from config import GROQ_API_KEY
 from models.schemas import MealPlan, MealDay, MealItem
 from services.fallback_engine import generate_fallback_plan, DAYS_KN
 
-print("GROQ_API_KEY exists:", bool(GROQ_API_KEY))
-print("GROQ_API_KEY prefix:", GROQ_API_KEY[:8] if GROQ_API_KEY else "MISSING")
 client = Groq(api_key=GROQ_API_KEY)
 
 ICMR_RDA = {
@@ -86,8 +84,11 @@ def generate_groq_plan(
     month        : str,
     strategy     : str,
     bmi_class    : str = None,
-    allergies    : list = [],
+    allergies    : list = None,
 ) -> MealPlan:
+
+    if allergies is None:
+        allergies = []
 
     prompt_data = {
         "age_group": age_group,

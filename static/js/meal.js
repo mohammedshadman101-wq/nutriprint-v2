@@ -31,6 +31,8 @@ async function generateMeal() {
         region,
         month,
         strategy,
+        teacher_id   : localStorage.getItem('teacher_id') || null,
+        bmi_class    : window.lastBMIResult?.classification || null,
       })
     });
 
