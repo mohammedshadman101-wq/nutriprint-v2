@@ -1,27 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
-  <defs>
-    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#FFF3E0"/>
-      <stop offset="100%" stop-color="#FFE0B2"/>
-    </radialGradient>
-    <linearGradient id="ball" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#8B4513"/>
-      <stop offset="100%" stop-color="#5D2E0C"/>
-    </linearGradient>
-    <linearGradient id="stem" x1="50%" y1="0%" x2="50%" y2="100%">
-      <stop offset="0%" stop-color="#4CAF50"/>
-      <stop offset="100%" stop-color="#2E7D32"/>
-    </linearGradient>
-  </defs>
-  <circle cx="40" cy="40" r="38" fill="url(#bg)" stroke="#FFCC80" stroke-width="1.5"/>
-  <!-- Ragi Mudde ball -->
-  <circle cx="40" cy="48" r="18" fill="url(#ball)"/>
-  <ellipse cx="34" cy="42" rx="5" ry="3" fill="rgba(255,255,255,0.12)" transform="rotate(-20,34,42)"/>
-  <!-- Stem and grain head -->
-  <line x1="40" y1="30" x2="40" y2="18" stroke="url(#stem)" stroke-width="2.5" stroke-linecap="round"/>
-  <ellipse cx="40" cy="14" rx="5" ry="8" fill="#8BC34A"/>
-  <!-- Grain dots on stalk -->
-  <circle cx="37" cy="22" r="2" fill="#558B2F"/>
-  <circle cx="43" cy="25" r="2" fill="#558B2F"/>
-  <circle cx="37" cy="28" r="2" fill="#558B2F"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Ragi Mudde — dark millet ball with grain stalk -->
+  <circle cx="32" cy="42" r="16" fill="#6D4C41" stroke="#4E342E" stroke-width="1.5"/>
+  <ellipse cx="27" cy="37" rx="4" ry="2.5" fill="rgba(255,255,255,0.14)" transform="rotate(-15,27,37)"/>
+  <!-- Stalk -->
+  <line x1="32" y1="26" x2="32" y2="16" stroke="#558B2F" stroke-width="2" stroke-linecap="round"/>
+  <!-- Grain ear -->
+  <ellipse cx="32" cy="12" rx="4" ry="7" fill="#8BC34A" stroke="#558B2F" stroke-width="1"/>
+  <circle cx="30" cy="19" r="1.5" fill="#558B2F"/>
+  <circle cx="34" cy="22" r="1.5" fill="#558B2F"/>
+  <circle cx="30" cy="25" r="1.5" fill="#558B2F"/>
 </svg>

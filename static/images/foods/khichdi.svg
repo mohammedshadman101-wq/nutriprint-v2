@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Khichdi / Pongal / Bisibelebath — bowl of porridge -->
+  <!-- Bowl outer -->
+  <path d="M10 34 Q10 52 32 54 Q54 52 54 34 Z" fill="#8D6E63" stroke="#6D4C41" stroke-width="1.5"/>
+  <!-- Bowl inner -->
+  <path d="M13 34 Q13 50 32 52 Q51 50 51 34 Z" fill="#A1887F"/>
+  <!-- Khichdi filling -->
+  <ellipse cx="32" cy="34" rx="21" ry="7" fill="#F9A825" stroke="#F57F17" stroke-width="1"/>
+  <!-- Surface texture — rice/dal grains -->
+  <circle cx="25" cy="33" r="1.5" fill="#FFF176"/>
+  <circle cx="32" cy="31" r="1.5" fill="#FFF176"/>
+  <circle cx="39" cy="33" r="1.5" fill="#FFF176"/>
+  <circle cx="28" cy="36" r="1.2" fill="#FFEE58"/>
+  <circle cx="36" cy="35" r="1.2" fill="#FFEE58"/>
+  <!-- Ghee pool -->
+  <ellipse cx="32" cy="30" rx="5" ry="2" fill="#FFD54F" opacity="0.7"/>
+  <!-- Steam -->
+  <path d="M26 28 Q24 23 26 18" stroke="#BDBDBD" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+  <path d="M32 26 Q30 21 32 16" stroke="#BDBDBD" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+  <path d="M38 28 Q40 23 38 18" stroke="#BDBDBD" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+</svg>

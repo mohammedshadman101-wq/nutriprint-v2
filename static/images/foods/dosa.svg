@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Dosa / Idli — golden crepe rolled shape -->
+  <!-- Plate -->
+  <ellipse cx="32" cy="46" rx="26" ry="8" fill="#E0E0E0" stroke="#BDBDBD" stroke-width="1.5"/>
+  <!-- Rolled dosa -->
+  <path d="M10 38 Q12 28 32 26 Q52 28 54 38 Q50 44 32 44 Q14 44 10 38Z" fill="#F9A825" stroke="#F57F17" stroke-width="1.5"/>
+  <!-- Crispy edge shading -->
+  <path d="M10 38 Q12 30 32 28 Q52 30 54 38" stroke="#E65100" stroke-width="1" fill="none" opacity="0.5"/>
+  <!-- Fold line -->
+  <path d="M20 36 Q32 32 44 36" stroke="#FB8C00" stroke-width="1.5" stroke-dasharray="2 2"/>
+  <!-- Steam -->
+  <path d="M26 24 Q24 20 26 16" stroke="#BDBDBD" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+  <path d="M32 22 Q30 18 32 14" stroke="#BDBDBD" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+</svg>

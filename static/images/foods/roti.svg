@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Jowar Roti / Chapati — round flatbread with char spots -->
+  <!-- Shadow -->
+  <ellipse cx="33" cy="48" rx="20" ry="5" fill="rgba(0,0,0,0.07)"/>
+  <!-- Roti base -->
+  <circle cx="32" cy="34" r="21" fill="#FFCC80" stroke="#FB8C00" stroke-width="1.5"/>
+  <!-- Inner texture gradient circle -->
+  <circle cx="32" cy="34" r="18" fill="#FFE082" opacity="0.6"/>
+  <!-- Char spots (typical of tawa roti) -->
+  <circle cx="24" cy="28" r="3" fill="#BF360C" opacity="0.25"/>
+  <circle cx="38" cy="22" r="2" fill="#BF360C" opacity="0.20"/>
+  <circle cx="40" cy="38" r="2.5" fill="#BF360C" opacity="0.18"/>
+  <circle cx="26" cy="40" r="2" fill="#BF360C" opacity="0.20"/>
+  <circle cx="36" cy="44" r="1.5" fill="#BF360C" opacity="0.15"/>
+  <!-- Edge char -->
+  <circle cx="32" cy="14" r="1.5" fill="#BF360C" opacity="0.3"/>
+</svg>
