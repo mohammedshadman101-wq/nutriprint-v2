@@ -83,6 +83,15 @@ class MealDay(BaseModel):
     lunch     : MealItem
     dinner    : MealItem
 
+class AIRecommendation(BaseModel):
+    id                   : str
+    title                : str
+    short_action         : str
+    detailed_explanation : str
+    parent_guidance      : str
+    language             : str = "en"
+    destinations         : List[str] = []
+
 class MealPlan(BaseModel):
     plan_id        : Optional[str] = None
     share_token    : Optional[str] = None
@@ -103,6 +112,7 @@ class MealPlan(BaseModel):
     avg_iron_mg    : float
     total_cost_inr : float
     generated_by   : str = "groq"
+    ai_recommendations: List[AIRecommendation] = []
 
 class MealInput(BaseModel):
     school_name  : str  = Field(..., min_length=2, max_length=200)
@@ -117,6 +127,39 @@ class MealInput(BaseModel):
     strategy     : Strategy = Strategy.standard
     bmi_class    : Optional[BMIClass] = None
     allergies    : List[str] = []
+    ai_recommendations: List[AIRecommendation] = []
+
+class AIChatMessage(BaseModel):
+    role    : str
+    content : str
+
+class StudentProfile(BaseModel):
+    student_name   : Optional[str] = "Student"
+    age            : Optional[str] = None
+    age_group      : Optional[str] = None
+    gender         : Optional[str] = None
+    height_cm      : Optional[float] = None
+    weight_kg      : Optional[float] = None
+    bmi_value      : Optional[float] = None
+    bmi_class      : Optional[str] = None
+    activity_level : Optional[str] = None
+    health_notes   : Optional[str] = None
+    diet_pref      : Optional[str] = None
+    region         : Optional[str] = None
+    month          : Optional[str] = None
+    strategy       : Optional[str] = None
+    allergies      : List[str] = []
+
+class AIAdvisorRequest(BaseModel):
+    question : str = Field(..., min_length=1, max_length=800)
+    language : str = "auto"
+    profile  : StudentProfile
+    history  : List[AIChatMessage] = []
+
+class AIAdvisorResponse(BaseModel):
+    answer          : str
+    recommendations : List[AIRecommendation] = []
+    generated_by    : str = "groq"
 
 class RegenerateDay(BaseModel):
     plan_id  : str

@@ -83,6 +83,32 @@
   {{ food_equivalents_section(food_equivalents) }}
   {% endif %}
 
+  {% if ai_report_recommendations %}
+  <div class="section-divider"><span>AI Nutrition Recommendations</span></div>
+  <div class="bg-white rounded-2xl border p-4 sm:p-6 mb-8">
+    <div class="grid gap-4">
+      {% for rec in ai_report_recommendations %}
+      <div class="border-l-4 border-primary bg-green-50/60 rounded-r-xl p-4">
+        <p class="font-bold text-green-900 text-sm">{{ rec.title }}</p>
+        <p class="text-sm text-slate-700 mt-2">{{ rec.detailed_explanation }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if ai_parent_recommendations %}
+  <div class="section-divider"><span>Parent Guidance</span></div>
+  <div class="grid sm:grid-cols-2 gap-4 mb-8">
+    {% for rec in ai_parent_recommendations %}
+    <div class="bg-orange-50 border border-orange-200 rounded-xl p-4">
+      <p class="font-bold text-orange-800 text-sm">{{ rec.title }}</p>
+      <p class="text-xs text-orange-700 mt-2">{{ rec.parent_guidance }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
   <!-- Sample day portions -->
   <div class="section-divider"><span>📋 Sample Day — Portion Guide</span></div>
   {% set sample_day = plan.week[0] %}

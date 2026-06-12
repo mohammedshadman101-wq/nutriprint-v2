@@ -12,7 +12,7 @@
       <span class="sublabel text-white/90">Meal workflow</span>
       <h1 class="heading mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">Meal Planner</h1>
       <p class="mt-4 max-w-2xl text-white/88">
-        Generate a printable 7-day school meal plan using student details, regional preferences, and budget-aware nutrition rules.
+        Consult the AI nutrition co-pilot first, then generate a printable 7-day school meal plan using student details, regional preferences, and budget-aware nutrition rules.
       </p>
       <div class="mt-6 flex flex-wrap gap-3">
         <a href="#mealForm" class="btn-secondary bg-white text-primaryDark hover:bg-slate-50">Start Planning</a>
@@ -21,8 +21,8 @@
     </div>
     <div class="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
       <div class="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur"><p class="text-sm font-semibold text-white/70">1</p><h2 class="mt-1 text-lg font-bold text-white">Student details</h2><p class="mt-1 text-sm text-white/80">Enter school, student, age group, diet, region, and strategy.</p></div>
-      <div class="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur"><p class="text-sm font-semibold text-white/70">2</p><h2 class="mt-1 text-lg font-bold text-white">Generate poster</h2><p class="mt-1 text-sm text-white/80">Create a balanced weekly plan with nutrients and cost summaries.</p></div>
-      <div class="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur"><p class="text-sm font-semibold text-white/70">3</p><h2 class="mt-1 text-lg font-bold text-white">Print and share</h2><p class="mt-1 text-sm text-white/80">Download PDFs, print posters, or share meal plans with parents.</p></div>
+      <div class="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur"><p class="text-sm font-semibold text-white/70">2</p><h2 class="mt-1 text-lg font-bold text-white">AI consultation</h2><p class="mt-1 text-sm text-white/80">Ask questions and choose advice for reports, parents, and posters.</p></div>
+      <div class="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur"><p class="text-sm font-semibold text-white/70">3</p><h2 class="mt-1 text-lg font-bold text-white">Generate and share</h2><p class="mt-1 text-sm text-white/80">Create the plan and include selected AI recommendations automatically.</p></div>
     </div>
   </div>
 </section>
@@ -35,12 +35,18 @@
       <div><label class="mb-2 block text-sm font-semibold text-slate-700">School Name</label><input id="mealSchool" type="text" placeholder="Govt HS Mangalore" class="input-field"/></div>
       <div><label class="mb-2 block text-sm font-semibold text-slate-700">Student Name</label><input id="mealStudent" type="text" placeholder="Priya" class="input-field"/></div>
       <div><label class="mb-2 block text-sm font-semibold text-slate-700">Age Group</label><select id="mealAge" class="select-field"><option value="5-8">5–8 years</option><option value="9-12" selected>9–12 years</option><option value="13-15">13–15 years</option></select></div>
+      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Gender</label><select id="mealGender" class="select-field"><option value="">Not specified</option><option value="girl">Girl</option><option value="boy">Boy</option></select></div>
+      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Activity Level</label><select id="mealActivity" class="select-field"><option value="moderate">Moderate school activity</option><option value="low">Low activity</option><option value="high">High activity / sports</option></select></div>
+      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Height (cm)</label><input id="mealHeight" type="number" min="50" max="250" step="0.1" placeholder="132" class="input-field"/></div>
+      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Weight (kg)</label><input id="mealWeight" type="number" min="5" max="150" step="0.1" placeholder="28" class="input-field"/></div>
       <div><label class="mb-2 block text-sm font-semibold text-slate-700">Diet Type</label><select id="mealDiet" class="select-field"><option value="vegetarian">Vegetarian</option><option value="eggetarian">Eggetarian</option><option value="non-vegetarian">Non-Veg</option></select></div>
       <div><label class="mb-2 block text-sm font-semibold text-slate-700">Region</label><select id="mealRegion" class="select-field"><option value="mangalore">Mangalore</option><option value="udupi">Udupi</option><option value="shivamogga">Shivamogga</option><option value="bengaluru_rural">Bengaluru Rural</option><option value="mysuru">Mysuru</option><option value="hubli_dharwad">Hubli-Dharwad</option></select></div>
       <div><label class="mb-2 block text-sm font-semibold text-slate-700">Month</label><select id="mealMonth" class="select-field"><option>january</option><option>february</option><option>march</option><option>april</option><option>may</option><option>june</option><option>july</option><option>august</option><option>september</option><option>october</option><option>november</option><option>december</option></select></div>
       <div class="sm:col-span-2"><label class="mb-2 block text-sm font-semibold text-slate-700">Nutrition Strategy</label><select id="mealStrategy" class="select-field"><option value="standard">Standard Balanced</option><option value="high_protein">High Protein</option><option value="calcium_iron">Calcium + Iron Rich</option><option value="calorie_control">Calorie Control</option></select></div>
+      <div class="sm:col-span-2"><label class="mb-2 block text-sm font-semibold text-slate-700">Health Notes</label><textarea id="mealHealthNotes" rows="3" placeholder="Allergies, appetite, anemia concern, sports, doctor notes..." class="input-field resize-none"></textarea></div>
     </div>
-    <button id="generateBtn" onclick="generateMeal()" class="btn-primary mt-6 w-full py-3">Generate Meal Plan</button>
+    <div id="advisorPanel" class="mt-6"></div>
+    <button id="generateBtn" onclick="generateMeal()" class="btn-primary mt-6 w-full py-3">Generate Meal Plan with Selected AI Advice</button>
   </div>
 
   <div class="space-y-6">
@@ -48,14 +54,13 @@
       <div class="sublabel">Workflow</div>
       <div class="mt-4 grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
         <div class="rounded-2xl bg-slate-50 p-4"><h3 class="font-semibold text-slate-900">Input student data</h3><p class="mt-1 text-sm text-slate-600">Use age group, diet, and region to guide plan generation.</p></div>
-        <div class="rounded-2xl bg-slate-50 p-4"><h3 class="font-semibold text-slate-900">Generate poster</h3><p class="mt-1 text-sm text-slate-600">Create a 7-day plan with calories, nutrients, and day-by-day meals.</p></div>
-        <div class="rounded-2xl bg-slate-50 p-4"><h3 class="font-semibold text-slate-900">Print and download</h3><p class="mt-1 text-sm text-slate-600">Export a PDF poster or open the printable plan page for parents.</p></div>
+        <div class="rounded-2xl bg-slate-50 p-4"><h3 class="font-semibold text-slate-900">Ask the AI co-pilot</h3><p class="mt-1 text-sm text-slate-600">Get English or Kannada guidance before generating.</p></div>
+        <div class="rounded-2xl bg-slate-50 p-4"><h3 class="font-semibold text-slate-900">Print and download</h3><p class="mt-1 text-sm text-slate-600">Selected advice appears in parent guidance, report, and poster.</p></div>
       </div>
     </div>
 
     <div id="mealLoading" class="hidden soft-card p-8 text-center"><div class="spinner mx-auto"></div><p class="mt-4 text-sm font-medium text-slate-600">Generating nutrient-balanced meal plan...</p></div>
     <div id="mealResult" class="hidden"></div>
-    <div id="advisorPanel" class="hidden"></div>
   </div>
 </section>
 {% endblock %}

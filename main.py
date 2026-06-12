@@ -6,7 +6,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers import bmi, meals, foods, auth, poster
+from routers import ai_advisor, bmi, meals, foods, auth, poster
 from routers.foods import impact
 
 app = FastAPI(
@@ -34,6 +34,7 @@ app.include_router(foods.router)
 app.include_router(auth.router)
 app.include_router(auth.legacy_router)
 app.include_router(poster.router)
+app.include_router(ai_advisor.router)
 
 
 @app.get("/", response_class=HTMLResponse)

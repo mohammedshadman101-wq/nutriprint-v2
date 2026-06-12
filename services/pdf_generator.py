@@ -14,6 +14,7 @@ from reportlab.graphics import renderPDF
 import io
 import qrcode
 from PIL import Image as PILImage
+from xml.sax.saxutils import escape
 
 # ── Colors ───────────────────────────────────────────────
 PRIMARY    = colors.HexColor('#1D9E75')
@@ -303,6 +304,48 @@ def generate_poster_pdf(plan: dict, base_url: str) -> bytes:
             ('RIGHTPADDING', (0,0), (-1,-1), 6),
         ]))
         story.append(advice_table)
+        story.append(Spacer(1, 3*mm))
+
+    # ── AI ACTION TIPS ───────────────────────────────────
+    ai_recs = [
+        rec for rec in plan.get('ai_recommendations', [])
+        if 'poster' in (rec.get('destinations') or [])
+    ][:5]
+
+    if ai_recs:
+        tip_title_style = ParagraphStyle(
+            'AITipTitle',
+            fontSize=8,
+            textColor=PRIMARY,
+            fontName='Helvetica-Bold',
+            leading=11,
+        )
+        tip_style = ParagraphStyle(
+            'AITip',
+            fontSize=7,
+            textColor=colors.HexColor('#166534'),
+            fontName='Helvetica-Bold',
+            leading=10,
+        )
+        tip_cells = [[Paragraph('AI Action Tips', tip_title_style)]]
+        for i in range(0, len(ai_recs), 2):
+            left = escape(ai_recs[i].get('short_action', ''))
+            right = escape(ai_recs[i + 1].get('short_action', '')) if i + 1 < len(ai_recs) else ''
+            tip_cells.append([
+                Paragraph(f'✓ {left}', tip_style),
+                Paragraph(f'✓ {right}', tip_style) if right else Paragraph('', tip_style),
+            ])
+        tips_table = Table(tip_cells, colWidths=[W*0.5, W*0.5])
+        tips_table.setStyle(TableStyle([
+            ('SPAN', (0,0), (-1,0)),
+            ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#F0FDF4')),
+            ('BOX', (0,0), (-1,-1), 0.5, colors.HexColor('#BBF7D0')),
+            ('TOPPADDING', (0,0), (-1,-1), 4),
+            ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+            ('LEFTPADDING', (0,0), (-1,-1), 6),
+            ('RIGHTPADDING', (0,0), (-1,-1), 6),
+        ]))
+        story.append(tips_table)
         story.append(Spacer(1, 3*mm))
 
     # ── 7-DAY MEAL TABLE ──────────────────────────────────

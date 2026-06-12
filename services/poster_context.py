@@ -16,6 +16,14 @@ def build_poster_context(plan, share_token: str, base_url: str) -> dict:
     age_group = plan_data.get("age_group", "9-12")
     gaps = calculate_nutrition_gap(plan_data, age_group)
     equivalents = get_food_equivalents(age_group)
+    ai_recommendations = plan_data.get("ai_recommendations") or []
+
+    def by_destination(destination: str, limit=None):
+        items = [
+            rec for rec in ai_recommendations
+            if destination in (rec.get("destinations") or [])
+        ]
+        return items[:limit] if limit else items
 
     def food_icon_lookup(name):
         return get_food_icon(name)
@@ -39,4 +47,7 @@ def build_poster_context(plan, share_token: str, base_url: str) -> dict:
         "icmr_rda": ICMR_RDA.get(age_group, ICMR_RDA["9-12"]),
         "food_icon_lookup": food_icon_lookup,
         "meal_macros": meal_macros,
+        "ai_report_recommendations": by_destination("report"),
+        "ai_parent_recommendations": by_destination("parent"),
+        "ai_poster_recommendations": by_destination("poster", 5),
     }

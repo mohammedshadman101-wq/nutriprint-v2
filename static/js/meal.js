@@ -76,6 +76,7 @@ async function generateMeal() {
   const region   = document.getElementById('mealRegion').value;
   const month    = document.getElementById('mealMonth').value;
   const strategy = document.getElementById('mealStrategy').value;
+  const selectedAIRecommendations = window.NutriPrintAdvisor?.getSelectedRecommendations?.() || [];
 
   if (!school) {
     alert('Please enter school name / ಶಾಲೆಯ ಹೆಸರು ನಮೂದಿಸಿ');
@@ -100,6 +101,7 @@ async function generateMeal() {
         strategy,
         teacher_id   : localStorage.getItem('teacher_id') || null,
         bmi_class    : window.lastBMIResult?.classification || null,
+        ai_recommendations: selectedAIRecommendations,
       })
     });
 
@@ -190,6 +192,7 @@ function renderMealPlan(plan) {
 
     <div id="equivContainer"></div>
     <div id="gapContainer"></div>
+    ${renderAISelectionSummary(plan.ai_recommendations || [])}
 
     <h3 class="heading font-bold text-gray-800 mb-3 text-sm">
       📅 7-Day Meal Plan with Portions
@@ -221,8 +224,27 @@ function renderMealPlan(plan) {
 
   if (window.NutriPrintAdvisor) {
     const advisorPanel = document.getElementById('advisorPanel');
-    window.NutriPrintAdvisor.renderMeal(advisorPanel, plan, window.lastBMIResult);
+    if (advisorPanel && !advisorPanel.innerHTML.trim()) {
+      window.NutriPrintAdvisor.render(advisorPanel);
+    }
   }
+}
+
+function renderAISelectionSummary(recommendations) {
+  if (!recommendations.length) return '';
+  const rows = recommendations.map(rec => `
+    <div class="rounded-xl border border-green-100 bg-green-50/60 p-3">
+      <p class="text-sm font-bold text-green-800">${rec.title}</p>
+      <p class="mt-1 text-xs text-green-700">${rec.short_action}</p>
+    </div>`).join('');
+  return `
+    <div class="bg-white rounded-2xl border p-4 sm:p-6 mb-6">
+      <h3 class="heading font-bold text-gray-800 mb-3 text-sm">
+        AI Nutrition Recommendations
+        <span class="kn text-orange-400 text-xs ml-1">AI ಪೌಷ್ಟಿಕಾಂಶ ಸಲಹೆಗಳು</span>
+      </h3>
+      <div class="grid sm:grid-cols-2 gap-3">${rows}</div>
+    </div>`;
 }
 
 async function regenerateDay(dayName) {

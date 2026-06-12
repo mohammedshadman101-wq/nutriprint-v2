@@ -12,6 +12,16 @@
   padding: 1.25rem;
 }
 
+.advisor-profile {
+  margin-top: 0.85rem;
+  border-radius: 0.85rem;
+  background: rgba(255, 255, 255, 0.14);
+  padding: 0.7rem 0.85rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.92);
+}
+
 .advisor-kicker {
   font-size: 0.72rem;
   letter-spacing: 0.14em;
@@ -34,6 +44,208 @@
 
 .advisor-body {
   padding: 1rem;
+}
+
+.advisor-chat-grid {
+  display: grid;
+  gap: 0.85rem;
+}
+
+@media (min-width: 1024px) {
+  .advisor-chat-grid {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  }
+}
+
+.advisor-chat-card,
+.advisor-selected-card {
+  background: white;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 1rem;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+  padding: 0.9rem;
+}
+
+.advisor-chat-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.advisor-select,
+.advisor-chip,
+.advisor-input,
+.advisor-send {
+  border-radius: 0.8rem;
+  font-size: 0.82rem;
+}
+
+.advisor-select {
+  border: 1px solid #D1D5DB;
+  background: #F8FAFC;
+  color: #334155;
+  padding: 0.55rem 0.65rem;
+  font-weight: 700;
+}
+
+.advisor-chip {
+  border: 1px solid rgba(29, 158, 117, 0.25);
+  background: #F0FDF4;
+  color: #0F5E46;
+  padding: 0.55rem 0.7rem;
+  font-weight: 800;
+}
+
+.advisor-messages {
+  min-height: 13rem;
+  max-height: 20rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  border-radius: 0.9rem;
+  background: #F8FAF9;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  padding: 0.75rem;
+}
+
+.advisor-message {
+  max-width: 92%;
+  border-radius: 0.9rem;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.advisor-message.user {
+  align-self: flex-end;
+  background: #1D9E75;
+  color: white;
+}
+
+.advisor-message.assistant {
+  align-self: flex-start;
+  background: white;
+  color: #334155;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.advisor-dot {
+  display: inline-block;
+  width: 0.42rem;
+  height: 0.42rem;
+  margin-right: 0.22rem;
+  border-radius: 999px;
+  background: #1D9E75;
+  animation: advisorPulse 0.9s infinite ease-in-out;
+}
+
+.advisor-dot:nth-child(2) { animation-delay: 0.12s; }
+.advisor-dot:nth-child(3) { animation-delay: 0.24s; }
+
+@keyframes advisorPulse {
+  0%, 100% { opacity: 0.3; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-2px); }
+}
+
+.advisor-input-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 520px) {
+  .advisor-input-row {
+    flex-direction: column;
+  }
+}
+
+.advisor-input {
+  min-width: 0;
+  flex: 1;
+  border: 1px solid #D1D5DB;
+  padding: 0.7rem 0.8rem;
+  outline: none;
+}
+
+.advisor-input:focus {
+  border-color: #1D9E75;
+  box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.12);
+}
+
+.advisor-send {
+  border: none;
+  background: #F97316;
+  color: white;
+  padding: 0.7rem 1rem;
+  font-weight: 900;
+}
+
+.advisor-rec-list {
+  margin-top: 0.75rem;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.advisor-empty {
+  border-radius: 0.9rem;
+  background: #F8FAF9;
+  border: 1px dashed rgba(29, 158, 117, 0.28);
+  color: #64748B;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  padding: 0.9rem;
+}
+
+.advisor-rec-card {
+  border: 1px solid rgba(29, 158, 117, 0.16);
+  border-radius: 1rem;
+  padding: 0.85rem;
+  background: linear-gradient(180deg, #FFFFFF, #F8FAF9);
+}
+
+.advisor-rec-title {
+  font-size: 0.9rem;
+  font-weight: 900;
+  color: #0F172A;
+}
+
+.advisor-rec-action {
+  margin-top: 0.25rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #0F5E46;
+}
+
+.advisor-rec-body {
+  margin-top: 0.45rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #64748B;
+}
+
+.advisor-check-grid {
+  display: grid;
+  gap: 0.38rem;
+  margin-top: 0.75rem;
+}
+
+.advisor-check {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 0.75rem;
+  background: #F8FAFC;
+  padding: 0.48rem 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #334155;
+}
+
+.advisor-check input {
+  accent-color: #1D9E75;
 }
 
 @media (min-width: 640px) {

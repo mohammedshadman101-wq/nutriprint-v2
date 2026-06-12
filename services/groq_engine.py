@@ -1,10 +1,10 @@
 import json
 from groq import Groq
 from config import GROQ_API_KEY
-from models.schemas import MealPlan, MealDay, MealItem
+from models.schemas import MealPlan, MealDay, MealItem, AIRecommendation
 from services.fallback_engine import generate_fallback_plan, DAYS_KN
 
-client = Groq(api_key=GROQ_API_KEY)
+client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
 
 ICMR_RDA = {
     "5-8":   {"calories": 1350, "protein_g": 20, "calcium_mg": 600, "iron_mg": 13},
@@ -35,6 +35,7 @@ STUDENT PROFILE:
 - BMI Classification: {data.get('bmi_class', 'normal')}
 - Strategy: {data['strategy']} — {strategy_note}
 - Allergies to avoid: {data.get('allergies', [])}
+- Teacher-selected AI recommendations to consider: {data.get('ai_recommendations', [])}
 
 ICMR DAILY TARGETS:
 - Calories: {rda['calories']} kcal
@@ -85,10 +86,13 @@ def generate_groq_plan(
     strategy     : str,
     bmi_class    : str = None,
     allergies    : list = None,
+    ai_recommendations: list = None,
 ) -> MealPlan:
 
     if allergies is None:
         allergies = []
+    if ai_recommendations is None:
+        ai_recommendations = []
 
     prompt_data = {
         "age_group": age_group,
@@ -98,9 +102,12 @@ def generate_groq_plan(
         "strategy":  strategy,
         "bmi_class": bmi_class,
         "allergies": allergies,
+        "ai_recommendations": ai_recommendations,
     }
 
     try:
+        if client is None:
+            raise RuntimeError("GROQ_API_KEY is not configured")
         response = client.chat.completions.create(
             model    = "llama-3.1-8b-instant",
             messages = [{"role": "user", "content": _build_prompt(prompt_data)}],
@@ -155,6 +162,7 @@ def generate_groq_plan(
             region         = region,
             month          = month,
             strategy       = strategy,
+            allergies      = allergies,
             bmi_class      = bmi_class,
             week           = week,
             avg_daily_cal  = round(total_cal   / 7, 1),
@@ -163,11 +171,121 @@ def generate_groq_plan(
             avg_iron_mg    = round(total_iron  / 7, 2),
             total_cost_inr = round(total_cost,  2),
             generated_by   = "groq",
+            ai_recommendations = [AIRecommendation(**r) if isinstance(r, dict) else r for r in ai_recommendations],
         )
 
     except Exception as e:
         print(f"⚠️ Groq failed: {e} — switching to fallback engine")
-        return generate_fallback_plan(
+        plan = generate_fallback_plan(
             school_name, student_name, teacher_name,
             age_group, diet_pref, region, month, strategy, bmi_class
         )
+        plan.ai_recommendations = [AIRecommendation(**r) if isinstance(r, dict) else r for r in ai_recommendations]
+        return plan
+
+
+def _advisor_system_prompt() -> str:
+    return """
+You are NutriPrint Nutrition AI Assistant, a careful child-nutrition co-pilot for Karnataka school teachers.
+Scope: nutrition, child health habits, Karnataka foods, portions, hydration, school meal planning, and parent guidance.
+Do not diagnose disease or prescribe treatment. For medical red flags, advise consulting a qualified doctor.
+Support English and Kannada. Match the teacher's requested language; if auto, use the user's language.
+Keep responses practical, low-cost, school-friendly, and culturally relevant to Karnataka.
+
+Return ONLY valid JSON:
+{
+  "answer": "brief helpful chat answer in English or Kannada",
+  "recommendations": [
+    {
+      "title": "short label",
+      "short_action": "imperative poster-ready action, max 12 words",
+      "detailed_explanation": "2-4 sentences for the report",
+      "parent_guidance": "practical home food or habit suggestion",
+      "language": "en or kn"
+    }
+  ]
+}
+Give 1-3 recommendations only when the answer contains actionable advice. Otherwise use an empty array.
+"""
+
+
+def _fallback_advisor_response(question: str, language: str) -> dict:
+    is_kn = language == "kn" or any("\u0c80" <= ch <= "\u0cff" for ch in question)
+    if is_kn:
+        return {
+            "answer": "AI ಸೇವೆ ತಾತ್ಕಾಲಿಕವಾಗಿ ಲಭ್ಯವಿಲ್ಲ. ಈ ನಡುವೆ, ಸ್ಥಳೀಯ ಆಹಾರಗಳು, ಸರಿಯಾದ ಪ್ರಮಾಣ, ನೀರಿನ ಸೇವನೆ ಮತ್ತು ನಿಯಮಿತ ಚಟುವಟಿಕೆಗೆ ಗಮನ ಕೊಡಿ.",
+            "recommendations": [{
+                "title": "ನೀರಿನ ಅಭ್ಯಾಸ",
+                "short_action": "ಪ್ರತಿದಿನ ನೀರಿನ ಬಾಟಲಿ ಕಳುಹಿಸಿ",
+                "detailed_explanation": "ಮಕ್ಕಳಿಗೆ ಶಾಲೆಯಲ್ಲಿ ನಿಯಮಿತವಾಗಿ ನೀರು ಕುಡಿಯುವ ಅಭ್ಯಾಸ ಅಗತ್ಯ. ಊಟಗಳ ನಡುವೆ ಸಣ್ಣ ಸಿಪ್‌ಗಳು ದೇಹದ ನೀರಿನ ಸಮತೋಲನ ಮತ್ತು ಗಮನ ಕಾಪಾಡಲು ಸಹಾಯ ಮಾಡುತ್ತವೆ.",
+                "parent_guidance": "ಮನೆದಿಂದ ತುಂಬಿದ ನೀರಿನ ಬಾಟಲಿ ಕಳುಹಿಸಿ ಮತ್ತು ಸಂಜೆ ಹಿಂತಿರುಗಿದಾಗ ಎಷ್ಟು ಕುಡಿದಿದ್ದಾರೆ ಎಂದು ನೋಡಿ.",
+                "language": "kn",
+            }],
+        }
+    return {
+        "answer": "The AI service is temporarily unavailable. Meanwhile, focus on local foods, sensible portions, hydration, and regular activity.",
+        "recommendations": [{
+            "title": "Hydration habit",
+            "short_action": "Send a filled water bottle daily",
+            "detailed_explanation": "Children need regular water breaks during school. Small sips between classes and meals support hydration and attention.",
+            "parent_guidance": "Send a filled bottle from home and check how much was consumed after school.",
+            "language": "en",
+        }],
+    }
+
+
+def ask_nutrition_advisor(question: str, profile: dict, history: list = None, language: str = "auto") -> dict:
+    if history is None:
+        history = []
+
+    profile_text = json.dumps(profile, ensure_ascii=False)
+    messages = [{"role": "system", "content": _advisor_system_prompt()}]
+    messages.append({
+        "role": "user",
+        "content": f"Student profile JSON:\n{profile_text}\n\nUse this profile automatically in your answer.",
+    })
+    for item in history[-8:]:
+        role = item.get("role", "user") if isinstance(item, dict) else getattr(item, "role", "user")
+        content = item.get("content", "") if isinstance(item, dict) else getattr(item, "content", "")
+        if role in {"user", "assistant"} and content:
+            messages.append({"role": role, "content": content})
+    messages.append({
+        "role": "user",
+        "content": f"Language preference: {language}. Teacher question: {question}",
+    })
+
+    try:
+        if not GROQ_API_KEY:
+            raise RuntimeError("GROQ_API_KEY is not configured")
+        if client is None:
+            raise RuntimeError("Groq client is not available")
+        response = client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=messages,
+            max_tokens=900,
+            temperature=0.35,
+            response_format={"type": "json_object"},
+        )
+        payload = json.loads(response.choices[0].message.content)
+        recommendations = []
+        for idx, rec in enumerate(payload.get("recommendations", [])[:3]):
+            recommendations.append({
+                "id": rec.get("id") or f"ai-{idx + 1}",
+                "title": rec.get("title", "Nutrition recommendation"),
+                "short_action": rec.get("short_action", rec.get("title", ""))[:120],
+                "detailed_explanation": rec.get("detailed_explanation", ""),
+                "parent_guidance": rec.get("parent_guidance", ""),
+                "language": rec.get("language", "en"),
+                "destinations": [],
+            })
+        return {
+            "answer": payload.get("answer", "I can help with nutrition, portions, hydration, and healthy habits."),
+            "recommendations": recommendations,
+        }
+    except Exception as e:
+        print(f"⚠️ Advisor Groq failed: {e}")
+        fallback = _fallback_advisor_response(question, language)
+        for idx, rec in enumerate(fallback["recommendations"]):
+            rec["id"] = f"fallback-{idx + 1}"
+            rec["destinations"] = []
+        return fallback

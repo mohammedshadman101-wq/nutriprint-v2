@@ -89,6 +89,18 @@
   </div>
   {% endif %}
 
+  <!-- AI poster actions -->
+  {% if ai_poster_recommendations %}
+  <div style="margin-bottom:8px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:6px;padding:6px 8px">
+    <p style="font-size:9px;font-weight:800;color:#065F46;margin-bottom:4px">AI Action Tips</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px 8px">
+      {% for rec in ai_poster_recommendations[:5] %}
+      <p style="font-size:7.5px;color:#166534;font-weight:600">✓ {{ rec.short_action }}</p>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
   <!-- 7-day table with portions -->
   <table style="width:100%;border-collapse:collapse;margin-bottom:8px;font-size:8px">
     <thead>
