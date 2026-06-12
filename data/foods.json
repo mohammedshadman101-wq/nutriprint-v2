@@ -3,10 +3,21 @@
     "name_en": "Ragi Mudde",
     "name_kn": "ರಾಗಿ ಮುದ್ದೆ",
     "description_en": "Dense finger millet ball — a Karnataka staple, extremely high in calcium and iron.",
-    "regions": ["mangalore", "udupi", "shivamogga", "bengaluru_rural", "mysuru"],
+    "regions": [
+      "mangalore",
+      "udupi",
+      "shivamogga",
+      "bengaluru_rural",
+      "mysuru"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["dinner", "lunch"],
-    "season_months": ["all"],
+    "meal_type": [
+      "dinner",
+      "lunch"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 328,
     "protein_g": 7.3,
     "calcium_mg": 344,
@@ -17,16 +28,31 @@
     "cost_inr": 15,
     "prep_time_min": 20,
     "image_emoji": "🟤",
-    "highlights": ["high-calcium", "high-iron", "traditional", "gluten-free"]
+    "highlights": [
+      "high-calcium",
+      "high-iron",
+      "traditional",
+      "gluten-free"
+    ]
   },
   {
     "name_en": "Ragi Dosa",
     "name_kn": "ರಾಗಿ ದೋಸೆ",
     "description_en": "Fermented finger millet crepe — probiotic-rich, light on digestion, popular breakfast.",
-    "regions": ["mangalore", "udupi", "shivamogga", "bengaluru_rural", "mysuru"],
+    "regions": [
+      "mangalore",
+      "udupi",
+      "shivamogga",
+      "bengaluru_rural",
+      "mysuru"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["breakfast"],
-    "season_months": ["all"],
+    "meal_type": [
+      "breakfast"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 215,
     "protein_g": 5.8,
     "calcium_mg": 310,
@@ -37,16 +63,30 @@
     "cost_inr": 18,
     "prep_time_min": 25,
     "image_emoji": "🫓",
-    "highlights": ["high-calcium", "fermented", "probiotic", "gluten-free"]
+    "highlights": [
+      "high-calcium",
+      "fermented",
+      "probiotic",
+      "gluten-free"
+    ]
   },
   {
     "name_en": "Jowar Roti",
     "name_kn": "ಜೋಳದ ರೊಟ್ಟಿ",
     "description_en": "Traditional sorghum flatbread — staple of North Karnataka, high protein and fiber.",
-    "regions": ["hubli_dharwad", "bengaluru_rural", "shivamogga"],
+    "regions": [
+      "hubli_dharwad",
+      "bengaluru_rural",
+      "shivamogga"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["all"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 349,
     "protein_g": 10.4,
     "calcium_mg": 28,
@@ -57,16 +97,29 @@
     "cost_inr": 12,
     "prep_time_min": 20,
     "image_emoji": "🫓",
-    "highlights": ["high-protein", "traditional", "gluten-free", "north-karnataka"]
+    "highlights": [
+      "high-protein",
+      "traditional",
+      "gluten-free",
+      "north-karnataka"
+    ]
   },
   {
     "name_en": "Coconut Rice",
     "name_kn": "ತೆಂಗಿನಕಾಯಿ ಅನ್ನ",
     "description_en": "Coastal Karnataka comfort food — steamed rice tossed with fresh grated coconut and tempering.",
-    "regions": ["mangalore", "udupi"],
+    "regions": [
+      "mangalore",
+      "udupi"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["all"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 182,
     "protein_g": 4.5,
     "calcium_mg": 12,
@@ -77,16 +130,30 @@
     "cost_inr": 20,
     "prep_time_min": 15,
     "image_emoji": "🥥",
-    "highlights": ["coastal", "gluten-free", "easy-digest"]
+    "highlights": [
+      "coastal",
+      "gluten-free",
+      "easy-digest"
+    ]
   },
   {
     "name_en": "Upma",
     "name_kn": "ಉಪ್ಮಾ",
     "description_en": "Semolina porridge with vegetables — a quick, nutritious South Indian breakfast.",
-    "regions": ["mangalore", "udupi", "bengaluru_rural", "mysuru", "shivamogga"],
+    "regions": [
+      "mangalore",
+      "udupi",
+      "bengaluru_rural",
+      "mysuru",
+      "shivamogga"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["breakfast"],
-    "season_months": ["all"],
+    "meal_type": [
+      "breakfast"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 158,
     "protein_g": 4.2,
     "calcium_mg": 18,
@@ -97,16 +164,29 @@
     "cost_inr": 15,
     "prep_time_min": 15,
     "image_emoji": "🍚",
-    "highlights": ["quick", "easy-digest", "vegetable-rich"]
+    "highlights": [
+      "quick",
+      "easy-digest",
+      "vegetable-rich"
+    ]
   },
   {
     "name_en": "Idli with Sambar",
     "name_kn": "ಇಡ್ಲಿ ಸಾಂಬಾರ್",
     "description_en": "Fermented steamed rice cakes with lentil vegetable stew — the perfect balanced breakfast.",
-    "regions": ["mangalore", "udupi", "bengaluru_rural", "mysuru"],
+    "regions": [
+      "mangalore",
+      "udupi",
+      "bengaluru_rural",
+      "mysuru"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["breakfast"],
-    "season_months": ["all"],
+    "meal_type": [
+      "breakfast"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 132,
     "protein_g": 5.1,
     "calcium_mg": 22,
@@ -117,16 +197,31 @@
     "cost_inr": 20,
     "prep_time_min": 20,
     "image_emoji": "🫓",
-    "highlights": ["fermented", "probiotic", "low-fat", "protein-rich"]
+    "highlights": [
+      "fermented",
+      "probiotic",
+      "low-fat",
+      "protein-rich"
+    ]
   },
   {
     "name_en": "Akki Roti",
     "name_kn": "ಅಕ್ಕಿ ರೊಟ್ಟಿ",
     "description_en": "Rice flour flatbread mixed with vegetables and herbs — gluten-free Karnataka breakfast.",
-    "regions": ["mangalore", "udupi", "shivamogga", "mysuru"],
+    "regions": [
+      "mangalore",
+      "udupi",
+      "shivamogga",
+      "mysuru"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["breakfast", "dinner"],
-    "season_months": ["all"],
+    "meal_type": [
+      "breakfast",
+      "dinner"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 220,
     "protein_g": 3.8,
     "calcium_mg": 15,
@@ -137,16 +232,29 @@
     "cost_inr": 16,
     "prep_time_min": 20,
     "image_emoji": "🫓",
-    "highlights": ["gluten-free", "traditional", "rice-based"]
+    "highlights": [
+      "gluten-free",
+      "traditional",
+      "rice-based"
+    ]
   },
   {
     "name_en": "Bisibelebath",
     "name_kn": "ಬಿಸಿಬೇಳೆಬಾತ್",
     "description_en": "Hot lentil rice — Karnataka's most beloved one-pot meal, rich in protein and carbs.",
-    "regions": ["bengaluru_rural", "mysuru", "shivamogga"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru",
+      "shivamogga"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["all"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 148,
     "protein_g": 6.2,
     "calcium_mg": 35,
@@ -157,16 +265,28 @@
     "cost_inr": 22,
     "prep_time_min": 35,
     "image_emoji": "🍲",
-    "highlights": ["protein-rich", "one-pot", "balanced", "traditional"]
+    "highlights": [
+      "protein-rich",
+      "one-pot",
+      "balanced",
+      "traditional"
+    ]
   },
   {
     "name_en": "Jolada Rotti with Ennegayi",
     "name_kn": "ಜೋಳದ ರೊಟ್ಟಿ ಎಣ್ಣೆಗಾಯಿ",
     "description_en": "North Karnataka sorghum bread with stuffed brinjal curry — hearty and nutritious.",
-    "regions": ["hubli_dharwad"],
+    "regions": [
+      "hubli_dharwad"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["all"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 290,
     "protein_g": 9.1,
     "calcium_mg": 40,
@@ -177,16 +297,27 @@
     "cost_inr": 25,
     "prep_time_min": 30,
     "image_emoji": "🍆",
-    "highlights": ["north-karnataka", "high-iron", "traditional"]
+    "highlights": [
+      "north-karnataka",
+      "high-iron",
+      "traditional"
+    ]
   },
   {
     "name_en": "Neer Dosa",
     "name_kn": "ನೀರ್ ದೋಸೆ",
     "description_en": "Thin water rice crepe — light, easily digestible coastal Karnataka breakfast.",
-    "regions": ["mangalore", "udupi"],
+    "regions": [
+      "mangalore",
+      "udupi"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["breakfast"],
-    "season_months": ["all"],
+    "meal_type": [
+      "breakfast"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 110,
     "protein_g": 2.8,
     "calcium_mg": 8,
@@ -197,16 +328,29 @@
     "cost_inr": 14,
     "prep_time_min": 15,
     "image_emoji": "🫓",
-    "highlights": ["low-calorie", "coastal", "gluten-free", "easy-digest"]
+    "highlights": [
+      "low-calorie",
+      "coastal",
+      "gluten-free",
+      "easy-digest"
+    ]
   },
   {
     "name_en": "Sabudana Khichdi",
     "name_kn": "ಸಬ್ಬಕ್ಕಿ ಕಿಚಡಿ",
     "description_en": "Sago pearl stir-fry with peanuts and potato — energy-dense and easy to prepare.",
-    "regions": ["bengaluru_rural", "mysuru", "hubli_dharwad"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru",
+      "hubli_dharwad"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["breakfast"],
-    "season_months": ["all"],
+    "meal_type": [
+      "breakfast"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 180,
     "protein_g": 4.0,
     "calcium_mg": 20,
@@ -217,16 +361,37 @@
     "cost_inr": 18,
     "prep_time_min": 20,
     "image_emoji": "🫙",
-    "highlights": ["energy-dense", "nut-protein"]
+    "highlights": [
+      "energy-dense",
+      "nut-protein"
+    ]
   },
   {
     "name_en": "Palak Dal",
     "name_kn": "ಪಾಲಕ್ ಬೇಳೆ",
     "description_en": "Spinach and lentil curry — iron-powerhouse dish essential for anaemia prevention.",
-    "regions": ["bengaluru_rural", "mysuru", "shivamogga", "hubli_dharwad"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru",
+      "shivamogga",
+      "hubli_dharwad"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["june", "july", "august", "september", "october", "november", "december", "january", "february"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "june",
+      "july",
+      "august",
+      "september",
+      "october",
+      "november",
+      "december",
+      "january",
+      "february"
+    ],
     "calories_per_100g": 102,
     "protein_g": 6.8,
     "calcium_mg": 73,
@@ -237,16 +402,29 @@
     "cost_inr": 20,
     "prep_time_min": 25,
     "image_emoji": "🥬",
-    "highlights": ["high-iron", "high-calcium", "anti-anaemia"]
+    "highlights": [
+      "high-iron",
+      "high-calcium",
+      "anti-anaemia"
+    ]
   },
   {
     "name_en": "Moong Dal Payasam",
     "name_kn": "ಹೆಸರುಬೇಳೆ ಪಾಯಸ",
     "description_en": "Green gram pudding with jaggery and coconut milk — high protein festive dessert.",
-    "regions": ["mangalore", "udupi", "mysuru"],
+    "regions": [
+      "mangalore",
+      "udupi",
+      "mysuru"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["all"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 210,
     "protein_g": 8.2,
     "calcium_mg": 45,
@@ -257,16 +435,28 @@
     "cost_inr": 22,
     "prep_time_min": 30,
     "image_emoji": "🍮",
-    "highlights": ["high-protein", "calcium-rich", "jaggery-based"]
+    "highlights": [
+      "high-protein",
+      "calcium-rich",
+      "jaggery-based"
+    ]
   },
   {
     "name_en": "Groundnut Chutney Rice",
     "name_kn": "ಕಡಲೆಕಾಯಿ ಚಟ್ನಿ ಅನ್ನ",
     "description_en": "Rice mixed with roasted peanut chutney — affordable, protein-rich school lunch.",
-    "regions": ["bengaluru_rural", "shivamogga", "hubli_dharwad"],
+    "regions": [
+      "bengaluru_rural",
+      "shivamogga",
+      "hubli_dharwad"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch"],
-    "season_months": ["all"],
+    "meal_type": [
+      "lunch"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 220,
     "protein_g": 9.5,
     "calcium_mg": 30,
@@ -277,16 +467,30 @@
     "cost_inr": 18,
     "prep_time_min": 15,
     "image_emoji": "🥜",
-    "highlights": ["high-protein", "peanut", "affordable"]
+    "highlights": [
+      "high-protein",
+      "peanut",
+      "affordable"
+    ]
   },
   {
     "name_en": "Sambar Rice",
     "name_kn": "ಸಾಂಬಾರ್ ಅನ್ನ",
     "description_en": "Rice cooked with tamarind-lentil vegetable stew — balanced and complete meal.",
-    "regions": ["mangalore", "udupi", "bengaluru_rural", "mysuru"],
+    "regions": [
+      "mangalore",
+      "udupi",
+      "bengaluru_rural",
+      "mysuru"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["all"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 140,
     "protein_g": 5.5,
     "calcium_mg": 42,
@@ -297,16 +501,37 @@
     "cost_inr": 20,
     "prep_time_min": 30,
     "image_emoji": "🍲",
-    "highlights": ["balanced", "vegetable-rich", "protein-lentil"]
+    "highlights": [
+      "balanced",
+      "vegetable-rich",
+      "protein-lentil"
+    ]
   },
   {
     "name_en": "Drumstick Leaves Curry",
     "name_kn": "ನುಗ್ಗೆ ಸೊಪ್ಪಿನ ಸಾರು",
     "description_en": "Moringa leaf curry — one of the most nutrient-dense greens available in Karnataka.",
-    "regions": ["mangalore", "udupi", "shivamogga", "mysuru", "bengaluru_rural"],
+    "regions": [
+      "mangalore",
+      "udupi",
+      "shivamogga",
+      "mysuru",
+      "bengaluru_rural"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["march", "april", "may", "june", "july", "august", "september"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "march",
+      "april",
+      "may",
+      "june",
+      "july",
+      "august",
+      "september"
+    ],
     "calories_per_100g": 92,
     "protein_g": 9.4,
     "calcium_mg": 440,
@@ -317,16 +542,37 @@
     "cost_inr": 15,
     "prep_time_min": 20,
     "image_emoji": "🌿",
-    "highlights": ["highest-calcium", "highest-iron", "moringa", "superfood", "anti-anaemia"]
+    "highlights": [
+      "highest-calcium",
+      "highest-iron",
+      "moringa",
+      "superfood",
+      "anti-anaemia"
+    ]
   },
   {
     "name_en": "Horsegram Saaru",
     "name_kn": "ಹುರಳಿ ಸಾರು",
     "description_en": "Kulthi lentil soup — very high in protein and iron, warming winter dish.",
-    "regions": ["shivamogga", "bengaluru_rural", "mysuru", "hubli_dharwad"],
+    "regions": [
+      "shivamogga",
+      "bengaluru_rural",
+      "mysuru",
+      "hubli_dharwad"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["october", "november", "december", "january", "february", "march"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "october",
+      "november",
+      "december",
+      "january",
+      "february",
+      "march"
+    ],
     "calories_per_100g": 321,
     "protein_g": 22,
     "calcium_mg": 287,
@@ -337,16 +583,29 @@
     "cost_inr": 18,
     "prep_time_min": 40,
     "image_emoji": "🫘",
-    "highlights": ["very-high-protein", "high-iron", "high-calcium", "winter"]
+    "highlights": [
+      "very-high-protein",
+      "high-iron",
+      "high-calcium",
+      "winter"
+    ]
   },
   {
     "name_en": "Wheat Dosa",
     "name_kn": "ಗೋಧಿ ದೋಸೆ",
     "description_en": "Whole wheat crepe — energy-rich breakfast with good fiber content.",
-    "regions": ["bengaluru_rural", "mysuru", "hubli_dharwad"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru",
+      "hubli_dharwad"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["breakfast"],
-    "season_months": ["all"],
+    "meal_type": [
+      "breakfast"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 198,
     "protein_g": 6.5,
     "calcium_mg": 22,
@@ -357,16 +616,28 @@
     "cost_inr": 15,
     "prep_time_min": 20,
     "image_emoji": "🫓",
-    "highlights": ["whole-grain", "high-fiber"]
+    "highlights": [
+      "whole-grain",
+      "high-fiber"
+    ]
   },
   {
     "name_en": "Banana Sheera",
     "name_kn": "ಬಾಳೆಹಣ್ಣಿನ ಶಿರಾ",
     "description_en": "Semolina pudding with ripe banana — energy-dense, sweet breakfast loved by children.",
-    "regions": ["mangalore", "udupi", "shivamogga", "mysuru"],
+    "regions": [
+      "mangalore",
+      "udupi",
+      "shivamogga",
+      "mysuru"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["breakfast"],
-    "season_months": ["all"],
+    "meal_type": [
+      "breakfast"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 195,
     "protein_g": 3.2,
     "calcium_mg": 18,
@@ -377,16 +648,29 @@
     "cost_inr": 16,
     "prep_time_min": 15,
     "image_emoji": "🍌",
-    "highlights": ["energy-dense", "kid-favorite", "quick"]
+    "highlights": [
+      "energy-dense",
+      "kid-favorite",
+      "quick"
+    ]
   },
   {
     "name_en": "Poha",
     "name_kn": "ಅವಲಕ್ಕಿ",
     "description_en": "Flattened rice stir-fry with mustard, curry leaves, turmeric — light and iron-fortified.",
-    "regions": ["bengaluru_rural", "mysuru", "hubli_dharwad", "shivamogga"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru",
+      "hubli_dharwad",
+      "shivamogga"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["breakfast"],
-    "season_months": ["all"],
+    "meal_type": [
+      "breakfast"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 150,
     "protein_g": 3.5,
     "calcium_mg": 10,
@@ -397,16 +681,33 @@
     "cost_inr": 12,
     "prep_time_min": 15,
     "image_emoji": "🍚",
-    "highlights": ["iron-fortified", "quick", "light"]
+    "highlights": [
+      "iron-fortified",
+      "quick",
+      "light"
+    ]
   },
   {
     "name_en": "Jackfruit Curry",
     "name_kn": "ಹಲಸಿನ ಕಾಯಿ ಪಲ್ಯ",
     "description_en": "Raw jackfruit curry — seasonal coastal dish, high fiber and meat substitute.",
-    "regions": ["mangalore", "udupi", "shivamogga"],
+    "regions": [
+      "mangalore",
+      "udupi",
+      "shivamogga"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["march", "april", "may", "june", "july"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "march",
+      "april",
+      "may",
+      "june",
+      "july"
+    ],
     "calories_per_100g": 94,
     "protein_g": 1.7,
     "calcium_mg": 37,
@@ -417,16 +718,33 @@
     "cost_inr": 20,
     "prep_time_min": 35,
     "image_emoji": "🌿",
-    "highlights": ["seasonal", "high-fiber", "meat-substitute", "summer"]
+    "highlights": [
+      "seasonal",
+      "high-fiber",
+      "meat-substitute",
+      "summer"
+    ]
   },
   {
     "name_en": "Avarekalu Saaru",
     "name_kn": "ಅವರೆಕಾಳು ಸಾರು",
     "description_en": "Hyacinth bean soup — Karnataka's winter superfood, very high protein and calcium.",
-    "regions": ["bengaluru_rural", "mysuru", "shivamogga"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru",
+      "shivamogga"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["november", "december", "january", "february"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "november",
+      "december",
+      "january",
+      "february"
+    ],
     "calories_per_100g": 340,
     "protein_g": 23,
     "calcium_mg": 260,
@@ -437,16 +755,38 @@
     "cost_inr": 20,
     "prep_time_min": 30,
     "image_emoji": "🫘",
-    "highlights": ["winter-special", "very-high-protein", "high-calcium", "seasonal"]
+    "highlights": [
+      "winter-special",
+      "very-high-protein",
+      "high-calcium",
+      "seasonal"
+    ]
   },
   {
     "name_en": "Curd Rice",
     "name_kn": "ಮೊಸರು ಅನ್ನ",
     "description_en": "Rice mixed with yogurt, tempered with mustard and curry leaves — cooling probiotic meal.",
-    "regions": ["mangalore", "udupi", "bengaluru_rural", "mysuru"],
+    "regions": [
+      "mangalore",
+      "udupi",
+      "bengaluru_rural",
+      "mysuru"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["march", "april", "may", "june", "july", "august", "september", "october"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "march",
+      "april",
+      "may",
+      "june",
+      "july",
+      "august",
+      "september",
+      "october"
+    ],
     "calories_per_100g": 135,
     "protein_g": 4.8,
     "calcium_mg": 95,
@@ -457,16 +797,34 @@
     "cost_inr": 16,
     "prep_time_min": 10,
     "image_emoji": "🍚",
-    "highlights": ["high-calcium", "probiotic", "cooling", "summer", "dairy"]
+    "highlights": [
+      "high-calcium",
+      "probiotic",
+      "cooling",
+      "summer",
+      "dairy"
+    ]
   },
   {
     "name_en": "Egg Curry with Rice",
-    "name_kn": "ಮೊಟ್ಟೆ ಸಾಲನ್ ಅನ್ನ",
+    "name_kn": "ಮೊಟ್ಟೆ ಕರಿ ಅನ್ನ",
     "description_en": "Boiled eggs in tomato-onion spice gravy with rice — high protein eggetarian meal.",
-    "regions": ["mangalore", "udupi", "bengaluru_rural", "mysuru", "shivamogga", "hubli_dharwad"],
+    "regions": [
+      "mangalore",
+      "udupi",
+      "bengaluru_rural",
+      "mysuru",
+      "shivamogga",
+      "hubli_dharwad"
+    ],
     "diet_type": "eggetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["all"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 185,
     "protein_g": 12.5,
     "calcium_mg": 52,
@@ -477,16 +835,28 @@
     "cost_inr": 35,
     "prep_time_min": 25,
     "image_emoji": "🥚",
-    "highlights": ["high-protein", "eggetarian", "iron-rich"]
+    "highlights": [
+      "high-protein",
+      "eggetarian",
+      "iron-rich"
+    ]
   },
   {
     "name_en": "Boiled Egg with Ragi Mudde",
     "name_kn": "ಮೊಟ್ಟೆ ರಾಗಿ ಮುದ್ದೆ",
     "description_en": "Hard boiled egg paired with ragi mudde — the ultimate school nutrition combination.",
-    "regions": ["bengaluru_rural", "mysuru", "shivamogga"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru",
+      "shivamogga"
+    ],
     "diet_type": "eggetarian",
-    "meal_type": ["dinner"],
-    "season_months": ["all"],
+    "meal_type": [
+      "dinner"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 260,
     "protein_g": 13.5,
     "calcium_mg": 365,
@@ -497,16 +867,31 @@
     "cost_inr": 30,
     "prep_time_min": 25,
     "image_emoji": "🥚",
-    "highlights": ["high-protein", "high-calcium", "high-iron", "eggetarian", "school-nutrition"]
+    "highlights": [
+      "high-protein",
+      "high-calcium",
+      "high-iron",
+      "eggetarian",
+      "school-nutrition"
+    ]
   },
   {
     "name_en": "Omelette with Bread",
     "name_kn": "ಆಮ್ಲೇಟ್ ಬ್ರೆಡ್",
     "description_en": "Masala omelette with whole wheat bread — quick high-protein school breakfast.",
-    "regions": ["bengaluru_rural", "mysuru", "hubli_dharwad", "mangalore"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru",
+      "hubli_dharwad",
+      "mangalore"
+    ],
     "diet_type": "eggetarian",
-    "meal_type": ["breakfast"],
-    "season_months": ["all"],
+    "meal_type": [
+      "breakfast"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 210,
     "protein_g": 14.0,
     "calcium_mg": 40,
@@ -517,16 +902,28 @@
     "cost_inr": 28,
     "prep_time_min": 10,
     "image_emoji": "🍳",
-    "highlights": ["high-protein", "quick", "eggetarian"]
+    "highlights": [
+      "high-protein",
+      "quick",
+      "eggetarian"
+    ]
   },
   {
     "name_en": "Fish Curry with Rice",
     "name_kn": "ಮೀನು ಸಾರು ಅನ್ನ",
     "description_en": "Coastal Karnataka coconut fish curry with parboiled rice — omega-3 rich traditional meal.",
-    "regions": ["mangalore", "udupi"],
+    "regions": [
+      "mangalore",
+      "udupi"
+    ],
     "diet_type": "non-vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["all"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 195,
     "protein_g": 16.5,
     "calcium_mg": 85,
@@ -537,16 +934,29 @@
     "cost_inr": 45,
     "prep_time_min": 35,
     "image_emoji": "🐟",
-    "highlights": ["omega-3", "coastal", "high-protein", "non-vegetarian"]
+    "highlights": [
+      "omega-3",
+      "coastal",
+      "high-protein",
+      "non-vegetarian"
+    ]
   },
   {
     "name_en": "Chicken Saaru with Jolada Rotti",
     "name_kn": "ಕೋಳಿ ಸಾರು ಜೋಳದ ರೊಟ್ಟಿ",
     "description_en": "Spiced chicken soup with sorghum bread — high protein North Karnataka non-veg meal.",
-    "regions": ["hubli_dharwad", "bengaluru_rural"],
+    "regions": [
+      "hubli_dharwad",
+      "bengaluru_rural"
+    ],
     "diet_type": "non-vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["all"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 270,
     "protein_g": 22.0,
     "calcium_mg": 35,
@@ -557,16 +967,31 @@
     "cost_inr": 48,
     "prep_time_min": 40,
     "image_emoji": "🍗",
-    "highlights": ["very-high-protein", "non-vegetarian", "north-karnataka"]
+    "highlights": [
+      "very-high-protein",
+      "non-vegetarian",
+      "north-karnataka"
+    ]
   },
   {
     "name_en": "Prawn Ghee Roast with Neer Dosa",
     "name_kn": "ಸೀಗಡಿ ಘೀ ರೋಸ್ಟ್ ನೀರ್ ದೋಸೆ",
     "description_en": "Mangalorean spiced prawn stir-fry with light rice crepe — coastal protein feast.",
-    "regions": ["mangalore"],
+    "regions": [
+      "mangalore"
+    ],
     "diet_type": "non-vegetarian",
-    "meal_type": ["dinner"],
-    "season_months": ["october", "november", "december", "january", "february", "march"],
+    "meal_type": [
+      "dinner"
+    ],
+    "season_months": [
+      "october",
+      "november",
+      "december",
+      "january",
+      "february",
+      "march"
+    ],
     "calories_per_100g": 240,
     "protein_g": 19.5,
     "calcium_mg": 120,
@@ -577,16 +1002,29 @@
     "cost_inr": 50,
     "prep_time_min": 30,
     "image_emoji": "🦐",
-    "highlights": ["high-protein", "coastal", "non-vegetarian", "winter-special"]
+    "highlights": [
+      "high-protein",
+      "coastal",
+      "non-vegetarian",
+      "winter-special"
+    ]
   },
   {
     "name_en": "Kelyache Shiite (Banana Flower Curry)",
     "name_kn": "ಬಾಳೆ ಹೂವಿನ ಪಲ್ಯ",
     "description_en": "Banana blossom curry — iron-rich coastal vegetable dish, naturally plant-based.",
-    "regions": ["mangalore", "udupi"],
+    "regions": [
+      "mangalore",
+      "udupi"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["all"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 65,
     "protein_g": 3.1,
     "calcium_mg": 56,
@@ -597,16 +1035,31 @@
     "cost_inr": 15,
     "prep_time_min": 35,
     "image_emoji": "🌸",
-    "highlights": ["high-iron", "high-fiber", "coastal", "plant-based", "anti-anaemia"]
+    "highlights": [
+      "high-iron",
+      "high-fiber",
+      "coastal",
+      "plant-based",
+      "anti-anaemia"
+    ]
   },
   {
     "name_en": "Groundnut Laddu",
     "name_kn": "ಕಡಲೆಕಾಯಿ ಉಂಡೆ",
     "description_en": "Roasted peanut sweet ball with jaggery — high protein energy snack.",
-    "regions": ["bengaluru_rural", "mysuru", "hubli_dharwad", "shivamogga"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru",
+      "hubli_dharwad",
+      "shivamogga"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["breakfast"],
-    "season_months": ["all"],
+    "meal_type": [
+      "breakfast"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 468,
     "protein_g": 18.5,
     "calcium_mg": 58,
@@ -617,16 +1070,33 @@
     "cost_inr": 12,
     "prep_time_min": 20,
     "image_emoji": "🟤",
-    "highlights": ["high-protein", "energy-dense", "jaggery", "snack"]
+    "highlights": [
+      "high-protein",
+      "energy-dense",
+      "jaggery",
+      "snack"
+    ]
   },
   {
     "name_en": "Methi Paratha",
     "name_kn": "ಮೆಂತ್ಯ ಪರಾಠ",
     "description_en": "Fenugreek-stuffed whole wheat flatbread — iron-rich winter breakfast.",
-    "regions": ["bengaluru_rural", "hubli_dharwad", "mysuru"],
+    "regions": [
+      "bengaluru_rural",
+      "hubli_dharwad",
+      "mysuru"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["breakfast"],
-    "season_months": ["october", "november", "december", "january", "february"],
+    "meal_type": [
+      "breakfast"
+    ],
+    "season_months": [
+      "october",
+      "november",
+      "december",
+      "january",
+      "february"
+    ],
     "calories_per_100g": 235,
     "protein_g": 7.2,
     "calcium_mg": 42,
@@ -637,16 +1107,29 @@
     "cost_inr": 18,
     "prep_time_min": 25,
     "image_emoji": "🫓",
-    "highlights": ["high-iron", "fenugreek", "winter-special", "anti-anaemia"]
+    "highlights": [
+      "high-iron",
+      "fenugreek",
+      "winter-special",
+      "anti-anaemia"
+    ]
   },
   {
     "name_en": "Tomato Gojju with Rice",
     "name_kn": "ಟೊಮೆಟೊ ಗೊಜ್ಜು ಅನ್ನ",
     "description_en": "Tangy tomato relish with rice — quick vitamin C rich meal, affordable.",
-    "regions": ["bengaluru_rural", "mysuru", "shivamogga"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru",
+      "shivamogga"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch"],
-    "season_months": ["all"],
+    "meal_type": [
+      "lunch"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 125,
     "protein_g": 3.2,
     "calcium_mg": 18,
@@ -657,16 +1140,32 @@
     "cost_inr": 14,
     "prep_time_min": 15,
     "image_emoji": "🍅",
-    "highlights": ["vitamin-c", "affordable", "quick"]
+    "highlights": [
+      "vitamin-c",
+      "affordable",
+      "quick"
+    ]
   },
   {
     "name_en": "Colocasia Fry",
-    "name_kn": "ಕೇಸಿನ ಕಾಳು ಪಲ್ಯ",
+    "name_kn": "ಕೆಸವಿನ ಗಡ್ಡೆ ಪಲ್ಯ",
     "description_en": "Taro root dry fry — underused calcium-rich vegetable widely grown in Malnad.",
-    "regions": ["shivamogga", "udupi", "mangalore"],
+    "regions": [
+      "shivamogga",
+      "udupi",
+      "mangalore"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["july", "august", "september", "october"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "july",
+      "august",
+      "september",
+      "october"
+    ],
     "calories_per_100g": 112,
     "protein_g": 1.5,
     "calcium_mg": 43,
@@ -677,16 +1176,30 @@
     "cost_inr": 14,
     "prep_time_min": 25,
     "image_emoji": "🥔",
-    "highlights": ["calcium-rich", "malnad", "seasonal"]
+    "highlights": [
+      "calcium-rich",
+      "malnad",
+      "seasonal"
+    ]
   },
   {
     "name_en": "Mixed Veg Khichdi",
     "name_kn": "ತರಕಾರಿ ಖಿಚಡಿ",
     "description_en": "Rice and lentil porridge with mixed vegetables — complete nutrition in one bowl.",
-    "regions": ["bengaluru_rural", "mysuru", "hubli_dharwad", "shivamogga"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru",
+      "hubli_dharwad",
+      "shivamogga"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["all"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 140,
     "protein_g": 6.0,
     "calcium_mg": 38,
@@ -697,16 +1210,27 @@
     "cost_inr": 18,
     "prep_time_min": 30,
     "image_emoji": "🥘",
-    "highlights": ["one-pot", "balanced", "protein-lentil", "kid-friendly"]
+    "highlights": [
+      "one-pot",
+      "balanced",
+      "protein-lentil",
+      "kid-friendly"
+    ]
   },
   {
     "name_en": "Girmit",
     "name_kn": "ಗಿರ್ಮಿಟ್",
     "description_en": "Puffed rice chaat with vegetables — North Karnataka street snack adapted for nutrition.",
-    "regions": ["hubli_dharwad"],
+    "regions": [
+      "hubli_dharwad"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["breakfast"],
-    "season_months": ["all"],
+    "meal_type": [
+      "breakfast"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 130,
     "protein_g": 3.5,
     "calcium_mg": 12,
@@ -717,16 +1241,33 @@
     "cost_inr": 10,
     "prep_time_min": 10,
     "image_emoji": "🍿",
-    "highlights": ["affordable", "north-karnataka", "quick", "iron-fortified"]
+    "highlights": [
+      "affordable",
+      "north-karnataka",
+      "quick",
+      "iron-fortified"
+    ]
   },
   {
     "name_en": "Sweet Potato Curry",
     "name_kn": "ಸಿಹಿ ಗೆಣಸಿನ ಪಲ್ಯ",
     "description_en": "Sweet potato dry curry — beta-carotene and Vitamin A source for eye health.",
-    "regions": ["shivamogga", "bengaluru_rural", "mysuru"],
+    "regions": [
+      "shivamogga",
+      "bengaluru_rural",
+      "mysuru"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["october", "november", "december", "january"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "october",
+      "november",
+      "december",
+      "january"
+    ],
     "calories_per_100g": 105,
     "protein_g": 1.6,
     "calcium_mg": 32,
@@ -737,16 +1278,31 @@
     "cost_inr": 12,
     "prep_time_min": 20,
     "image_emoji": "🍠",
-    "highlights": ["vitamin-a", "beta-carotene", "eye-health", "winter"]
+    "highlights": [
+      "vitamin-a",
+      "beta-carotene",
+      "eye-health",
+      "winter"
+    ]
   },
   {
     "name_en": "Green Gram Sprouted Salad",
     "name_kn": "ಮೊಳಕೆ ಹೆಸರುಕಾಳು",
     "description_en": "Sprouted moong bean salad — live enzymes, highest bioavailability protein.",
-    "regions": ["bengaluru_rural", "mysuru", "hubli_dharwad", "mangalore"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru",
+      "hubli_dharwad",
+      "mangalore"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["breakfast", "lunch"],
-    "season_months": ["all"],
+    "meal_type": [
+      "breakfast",
+      "lunch"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 105,
     "protein_g": 8.8,
     "calcium_mg": 30,
@@ -757,16 +1313,28 @@
     "cost_inr": 10,
     "prep_time_min": 5,
     "image_emoji": "🌱",
-    "highlights": ["sprouted", "high-protein", "live-enzymes", "no-cook"]
+    "highlights": [
+      "sprouted",
+      "high-protein",
+      "live-enzymes",
+      "no-cook"
+    ]
   },
   {
     "name_en": "Pongal",
     "name_kn": "ಪೊಂಗಲ್",
     "description_en": "Soft rice-lentil porridge with ghee and pepper — easily digestible, comforting.",
-    "regions": ["bengaluru_rural", "mysuru"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["breakfast"],
-    "season_months": ["all"],
+    "meal_type": [
+      "breakfast"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 145,
     "protein_g": 5.2,
     "calcium_mg": 20,
@@ -777,16 +1345,29 @@
     "cost_inr": 16,
     "prep_time_min": 25,
     "image_emoji": "🍚",
-    "highlights": ["easy-digest", "ghee", "probiotic", "kid-friendly"]
+    "highlights": [
+      "easy-digest",
+      "ghee",
+      "probiotic",
+      "kid-friendly"
+    ]
   },
   {
     "name_en": "Ambat (Goan-Mangalorean Curry)",
     "name_kn": "ಅಂಬಟ್",
     "description_en": "Coconut-tamarind lentil curry — coastal Karnataka, served with rice.",
-    "regions": ["mangalore", "udupi"],
+    "regions": [
+      "mangalore",
+      "udupi"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["all"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 130,
     "protein_g": 6.5,
     "calcium_mg": 48,
@@ -797,16 +1378,30 @@
     "cost_inr": 18,
     "prep_time_min": 30,
     "image_emoji": "🥥",
-    "highlights": ["coastal", "protein-lentil", "tamarind"]
+    "highlights": [
+      "coastal",
+      "protein-lentil",
+      "tamarind"
+    ]
   },
   {
     "name_en": "Ragi Malt",
     "name_kn": "ರಾಗಿ ಮಾಲ್ಟ್",
     "description_en": "Finger millet health drink with milk/water — ideal morning drink for school children.",
-    "regions": ["mangalore", "udupi", "shivamogga", "bengaluru_rural", "mysuru"],
+    "regions": [
+      "mangalore",
+      "udupi",
+      "shivamogga",
+      "bengaluru_rural",
+      "mysuru"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["breakfast"],
-    "season_months": ["all"],
+    "meal_type": [
+      "breakfast"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 85,
     "protein_g": 3.5,
     "calcium_mg": 180,
@@ -817,16 +1412,30 @@
     "cost_inr": 10,
     "prep_time_min": 5,
     "image_emoji": "🥛",
-    "highlights": ["high-calcium", "drink", "quick", "school-friendly", "anti-anaemia"]
+    "highlights": [
+      "high-calcium",
+      "drink",
+      "quick",
+      "school-friendly",
+      "anti-anaemia"
+    ]
   },
   {
     "name_en": "Shavige Bath",
     "name_kn": "ಶಾವಿಗೆ ಬಾತ್",
     "description_en": "Vermicelli vegetable stir-fry — light, quick breakfast popular in Karnataka homes.",
-    "regions": ["bengaluru_rural", "mysuru", "shivamogga"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru",
+      "shivamogga"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["breakfast"],
-    "season_months": ["all"],
+    "meal_type": [
+      "breakfast"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 165,
     "protein_g": 4.5,
     "calcium_mg": 15,
@@ -837,16 +1446,32 @@
     "cost_inr": 14,
     "prep_time_min": 15,
     "image_emoji": "🍜",
-    "highlights": ["quick", "vegetable-rich", "kid-friendly"]
+    "highlights": [
+      "quick",
+      "vegetable-rich",
+      "kid-friendly"
+    ]
   },
   {
     "name_en": "Beans Curry with Chapati",
     "name_kn": "ಅವರೆ ಕಾಯಿ ಪಲ್ಯ ಚಪಾತಿ",
     "description_en": "French beans dry curry with whole wheat chapati — high fiber balanced lunch.",
-    "regions": ["bengaluru_rural", "mysuru", "hubli_dharwad"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru",
+      "hubli_dharwad"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch"],
-    "season_months": ["october", "november", "december", "january", "february"],
+    "meal_type": [
+      "lunch"
+    ],
+    "season_months": [
+      "october",
+      "november",
+      "december",
+      "january",
+      "february"
+    ],
     "calories_per_100g": 195,
     "protein_g": 7.5,
     "calcium_mg": 55,
@@ -857,16 +1482,28 @@
     "cost_inr": 18,
     "prep_time_min": 25,
     "image_emoji": "🫛",
-    "highlights": ["high-fiber", "winter-special", "seasonal"]
+    "highlights": [
+      "high-fiber",
+      "winter-special",
+      "seasonal"
+    ]
   },
   {
     "name_en": "Mudde Saaru (Finger Millet with Rasam)",
     "name_kn": "ಮುದ್ದೆ ಸಾರು",
     "description_en": "Ragi balls with thin tomato-tamarind broth — Karnataka's most traditional dinner.",
-    "regions": ["bengaluru_rural", "mysuru", "shivamogga"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru",
+      "shivamogga"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["dinner"],
-    "season_months": ["all"],
+    "meal_type": [
+      "dinner"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 178,
     "protein_g": 5.8,
     "calcium_mg": 250,
@@ -877,16 +1514,33 @@
     "cost_inr": 14,
     "prep_time_min": 25,
     "image_emoji": "🍲",
-    "highlights": ["high-calcium", "traditional", "affordable", "anti-anaemia"]
+    "highlights": [
+      "high-calcium",
+      "traditional",
+      "affordable",
+      "anti-anaemia"
+    ]
   },
   {
     "name_en": "Carrot Halwa",
     "name_kn": "ಗಾಜರ್ ಹಲ್ವಾ",
     "description_en": "Carrot milk pudding — Vitamin A and calcium rich festive sweet.",
-    "regions": ["bengaluru_rural", "mysuru", "hubli_dharwad"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru",
+      "hubli_dharwad"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["breakfast"],
-    "season_months": ["november", "december", "january", "february", "march"],
+    "meal_type": [
+      "breakfast"
+    ],
+    "season_months": [
+      "november",
+      "december",
+      "january",
+      "february",
+      "march"
+    ],
     "calories_per_100g": 205,
     "protein_g": 4.2,
     "calcium_mg": 110,
@@ -897,16 +1551,31 @@
     "cost_inr": 20,
     "prep_time_min": 30,
     "image_emoji": "🥕",
-    "highlights": ["vitamin-a", "calcium-rich", "winter-special", "dairy"]
+    "highlights": [
+      "vitamin-a",
+      "calcium-rich",
+      "winter-special",
+      "dairy"
+    ]
   },
   {
     "name_en": "Koli Saaru (Chicken Soup)",
     "name_kn": "ಕೋಳಿ ಸಾರು",
     "description_en": "Spiced Karnataka chicken broth — warming, easy to digest, high protein.",
-    "regions": ["mangalore", "udupi", "shivamogga", "bengaluru_rural"],
+    "regions": [
+      "mangalore",
+      "udupi",
+      "shivamogga",
+      "bengaluru_rural"
+    ],
     "diet_type": "non-vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["all"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 165,
     "protein_g": 18.5,
     "calcium_mg": 25,
@@ -917,16 +1586,31 @@
     "cost_inr": 40,
     "prep_time_min": 35,
     "image_emoji": "🍗",
-    "highlights": ["very-high-protein", "warming", "non-vegetarian"]
+    "highlights": [
+      "very-high-protein",
+      "warming",
+      "non-vegetarian"
+    ]
   },
   {
     "name_en": "Dill Leaves Dal",
     "name_kn": "ಸಬ್ಬಸಿಗೆ ಸೊಪ್ಪು ಬೇಳೆ",
     "description_en": "Lentil curry with dill — calcium and iron powerhouse from Malnad region.",
-    "regions": ["shivamogga", "udupi"],
+    "regions": [
+      "shivamogga",
+      "udupi"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["june", "july", "august", "september"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "june",
+      "july",
+      "august",
+      "september"
+    ],
     "calories_per_100g": 118,
     "protein_g": 7.8,
     "calcium_mg": 135,
@@ -937,16 +1621,34 @@
     "cost_inr": 16,
     "prep_time_min": 25,
     "image_emoji": "🌿",
-    "highlights": ["high-calcium", "high-iron", "malnad", "monsoon", "anti-anaemia"]
+    "highlights": [
+      "high-calcium",
+      "high-iron",
+      "malnad",
+      "monsoon",
+      "anti-anaemia"
+    ]
   },
   {
     "name_en": "Pathrode",
     "name_kn": "ಪತ್ರೊಡೆ",
     "description_en": "Colocasia leaf rolls steamed with spiced rice batter — unique Malnad delicacy.",
-    "regions": ["shivamogga", "udupi", "mangalore"],
+    "regions": [
+      "shivamogga",
+      "udupi",
+      "mangalore"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["breakfast", "lunch"],
-    "season_months": ["june", "july", "august", "september"],
+    "meal_type": [
+      "breakfast",
+      "lunch"
+    ],
+    "season_months": [
+      "june",
+      "july",
+      "august",
+      "september"
+    ],
     "calories_per_100g": 175,
     "protein_g": 4.5,
     "calcium_mg": 95,
@@ -957,16 +1659,30 @@
     "cost_inr": 18,
     "prep_time_min": 45,
     "image_emoji": "🌿",
-    "highlights": ["malnad-special", "monsoon", "high-iron", "traditional"]
+    "highlights": [
+      "malnad-special",
+      "monsoon",
+      "high-iron",
+      "traditional"
+    ]
   },
   {
     "name_en": "Chapati with Chana Masala",
-    "name_kn": "ಚಪಾತಿ ಚಣಕ ಮಸಾಲ",
+    "name_kn": "ಚಪಾತಿ ಕಡಲೆ ಮಸಾಲ",
     "description_en": "Whole wheat flatbread with spiced chickpea curry — complete protein balanced meal.",
-    "regions": ["bengaluru_rural", "mysuru", "hubli_dharwad"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru",
+      "hubli_dharwad"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["all"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 210,
     "protein_g": 9.5,
     "calcium_mg": 62,
@@ -977,16 +1693,28 @@
     "cost_inr": 22,
     "prep_time_min": 30,
     "image_emoji": "🫓",
-    "highlights": ["complete-protein", "high-fiber", "iron-rich"]
+    "highlights": [
+      "complete-protein",
+      "high-fiber",
+      "iron-rich"
+    ]
   },
   {
     "name_en": "Vangi Bath",
     "name_kn": "ವಾಂಗಿ ಬಾತ್",
     "description_en": "Brinjal rice with aromatic spice powder — Karnataka temple-style rice dish.",
-    "regions": ["bengaluru_rural", "mysuru", "hubli_dharwad"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru",
+      "hubli_dharwad"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch"],
-    "season_months": ["all"],
+    "meal_type": [
+      "lunch"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 165,
     "protein_g": 4.2,
     "calcium_mg": 25,
@@ -997,16 +1725,27 @@
     "cost_inr": 18,
     "prep_time_min": 30,
     "image_emoji": "🍆",
-    "highlights": ["traditional", "aromatic", "kid-friendly"]
+    "highlights": [
+      "traditional",
+      "aromatic",
+      "kid-friendly"
+    ]
   },
   {
     "name_en": "Rava Idli",
     "name_kn": "ರವಾ ಇಡ್ಲಿ",
     "description_en": "Semolina steamed cake with cashews — quick no-fermentation breakfast, Karnataka invention.",
-    "regions": ["bengaluru_rural", "mysuru"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["breakfast"],
-    "season_months": ["all"],
+    "meal_type": [
+      "breakfast"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 168,
     "protein_g": 4.8,
     "calcium_mg": 20,
@@ -1017,16 +1756,28 @@
     "cost_inr": 18,
     "prep_time_min": 20,
     "image_emoji": "🫓",
-    "highlights": ["quick", "no-fermentation", "kid-friendly"]
+    "highlights": [
+      "quick",
+      "no-fermentation",
+      "kid-friendly"
+    ]
   },
   {
     "name_en": "Lemon Rice",
-    "name_kn": "ಮೆಣಸಿನ ಅನ್ನ",
+    "name_kn": "ನಿಂಬೆ ಅನ್ನ",
     "description_en": "Turmeric-lemon rice with peanuts — Vitamin C + iron absorption booster combination.",
-    "regions": ["bengaluru_rural", "mysuru", "mangalore"],
+    "regions": [
+      "bengaluru_rural",
+      "mysuru",
+      "mangalore"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch"],
-    "season_months": ["all"],
+    "meal_type": [
+      "lunch"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 175,
     "protein_g": 5.2,
     "calcium_mg": 18,
@@ -1037,16 +1788,32 @@
     "cost_inr": 16,
     "prep_time_min": 15,
     "image_emoji": "🍋",
-    "highlights": ["vitamin-c", "iron-absorption", "peanut-protein", "affordable"]
+    "highlights": [
+      "vitamin-c",
+      "iron-absorption",
+      "peanut-protein",
+      "affordable"
+    ]
   },
   {
     "name_en": "Toor Dal with Ghee Rice",
     "name_kn": "ತೊಗರಿ ಬೇಳೆ ತುಪ್ಪದ ಅನ್ನ",
     "description_en": "Pigeon pea dal with clarified butter rice — rich, wholesome school lunch.",
-    "regions": ["mangalore", "udupi", "bengaluru_rural", "mysuru", "shivamogga"],
+    "regions": [
+      "mangalore",
+      "udupi",
+      "bengaluru_rural",
+      "mysuru",
+      "shivamogga"
+    ],
     "diet_type": "vegetarian",
-    "meal_type": ["lunch", "dinner"],
-    "season_months": ["all"],
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "season_months": [
+      "all"
+    ],
     "calories_per_100g": 188,
     "protein_g": 8.5,
     "calcium_mg": 48,
@@ -1057,6 +1824,11 @@
     "cost_inr": 20,
     "prep_time_min": 30,
     "image_emoji": "🍚",
-    "highlights": ["protein-rich", "ghee", "balanced", "comforting"]
+    "highlights": [
+      "protein-rich",
+      "ghee",
+      "balanced",
+      "comforting"
+    ]
   }
 ]
