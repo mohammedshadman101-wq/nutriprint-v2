@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Curd Rice — white creamy rice in a bowl with tempering -->
+  <!-- Bowl -->
+  <path d="M10 36 Q10 54 32 56 Q54 54 54 36 Z" fill="#78909C" stroke="#546E7A" stroke-width="1.5"/>
+  <path d="M12 36 Q12 52 32 54 Q52 52 52 36 Z" fill="#90A4AE"/>
+  <!-- Curd rice filling — white/off-white -->
+  <ellipse cx="32" cy="36" rx="20" ry="8" fill="#FAFAFA" stroke="#E0E0E0" stroke-width="1"/>
+  <ellipse cx="32" cy="33" rx="15" ry="5" fill="white"/>
+  <!-- Tempering pool (tadka) -->
+  <ellipse cx="32" cy="33" rx="6" ry="2.5" fill="#FF8F00" opacity="0.5"/>
+  <!-- Mustard seeds -->
+  <circle cx="28" cy="33" r="1" fill="#4A148C"/>
+  <circle cx="32" cy="32" r="1" fill="#4A148C"/>
+  <circle cx="36" cy="33" r="1" fill="#4A148C"/>
+  <!-- Curry leaf -->
+  <path d="M22 34 Q24 30 28 32" stroke="#388E3C" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Pomegranate seeds / red chilli -->
+  <circle cx="38" cy="30" r="1.5" fill="#E53935" opacity="0.8"/>
+  <circle cx="42" cy="33" r="1.2" fill="#E53935" opacity="0.7"/>
+</svg>

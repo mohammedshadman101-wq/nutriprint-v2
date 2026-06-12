@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Ragi Mudde — dark millet ball with grain stalk -->
+  <circle cx="32" cy="42" r="16" fill="#6D4C41" stroke="#4E342E" stroke-width="1.5"/>
+  <ellipse cx="27" cy="37" rx="4" ry="2.5" fill="rgba(255,255,255,0.14)" transform="rotate(-15,27,37)"/>
+  <!-- Stalk -->
+  <line x1="32" y1="26" x2="32" y2="16" stroke="#558B2F" stroke-width="2" stroke-linecap="round"/>
+  <!-- Grain ear -->
+  <ellipse cx="32" cy="12" rx="4" ry="7" fill="#8BC34A" stroke="#558B2F" stroke-width="1"/>
+  <circle cx="30" cy="19" r="1.5" fill="#558B2F"/>
+  <circle cx="34" cy="22" r="1.5" fill="#558B2F"/>
+  <circle cx="30" cy="25" r="1.5" fill="#558B2F"/>
+</svg>

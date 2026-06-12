@@ -4,49 +4,215 @@
 
 let currentPlan = null;
 
-// ── Food icon helpers ──────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+//  FOOD IMAGE SYSTEM
+//  Resolution order:
+//    1. Per-food slug  (e.g. ragi_mudde.webp / .jpg / .png / .svg)
+//    2. Category slug  (e.g. dal.svg)
+//    3. Emoji text fallback
+// ─────────────────────────────────────────────────────────────────────────────
 
-const FOOD_ICONS = {
-  egg: '🥚', chicken: '🍗', fish: '🐟', rice: '🍚', fruits: '🍎',
-  vegetables: '🥦', dal: '🫘', paneer: '🧀', milk: '🥛', nuts: '🥜', default: '🥗',
+/** Master exact-name → slug table.  Must match food_images.py exactly. */
+const FOOD_SLUG_TABLE = {
+  // Ragi / millet
+  "Ragi Mudde"                             : "ragi_mudde",
+  "Ragi Dosa"                              : "ragi_dosa",
+  "Mudde Saaru (Finger Millet with Rasam)" : "mudde_saaru",
+  "Ragi Malt"                              : "ragi_malt",
+  // Dosa / idli
+  "Neer Dosa"                              : "neer_dosa",
+  "Wheat Dosa"                             : "wheat_dosa",
+  "Idli with Sambar"                       : "idli_with_sambar",
+  "Rava Idli"                              : "rava_idli",
+  "Akki Roti"                              : "akki_roti",
+  // Roti
+  "Jowar Roti"                             : "jowar_roti",
+  "Jolada Rotti with Ennegayi"             : "jolada_rotti_with_ennegayi",
+  "Methi Paratha"                          : "methi_paratha",
+  "Chapati with Chana Masala"              : "chapati_with_chana_masala",
+  "Beans Curry with Chapati"               : "beans_curry_with_chapati",
+  // Rice
+  "Coconut Rice"                           : "coconut_rice",
+  "Groundnut Chutney Rice"                 : "groundnut_chutney_rice",
+  "Sambar Rice"                            : "sambar_rice",
+  "Curd Rice"                              : "curd_rice",
+  "Tomato Gojju with Rice"                 : "tomato_gojju_with_rice",
+  "Lemon Rice"                             : "lemon_rice",
+  "Vangi Bath"                             : "vangi_bath",
+  "Toor Dal with Ghee Rice"               : "toor_dal_with_ghee_rice",
+  "Poha"                                   : "poha",
+  // Khichdi / bowls
+  "Upma"                                   : "upma",
+  "Bisibelebath"                           : "bisibelebath",
+  "Sabudana Khichdi"                       : "sabudana_khichdi",
+  "Mixed Veg Khichdi"                      : "mixed_veg_khichdi",
+  "Pongal"                                 : "pongal",
+  "Shavige Bath"                           : "shavige_bath",
+  // Dal
+  "Palak Dal"                              : "palak_dal",
+  "Horsegram Saaru"                        : "horsegram_saaru",
+  "Avarekalu Saaru"                        : "avarekalu_saaru",
+  "Dill Leaves Dal"                        : "dill_leaves_dal",
+  "Ambat (Goan-Mangalorean Curry)"         : "ambat",
+  "Moong Dal Payasam"                      : "moong_dal_payasam",
+  // Vegetables
+  "Drumstick Leaves Curry"                 : "drumstick_leaves_curry",
+  "Jackfruit Curry"                        : "jackfruit_curry",
+  "Colocasia Fry"                          : "colocasia_fry",
+  "Sweet Potato Curry"                     : "sweet_potato_curry",
+  "Pathrode"                               : "pathrode",
+  "Kelyache Shiite (Banana Flower Curry)"  : "kelyache_shiite",
+  // Sprouts
+  "Green Gram Sprouted Salad"              : "green_gram_sprouted_salad",
+  "Girmit"                                 : "girmit",
+  // Egg
+  "Egg Curry with Rice"                    : "egg_curry_with_rice",
+  "Boiled Egg with Ragi Mudde"             : "boiled_egg_with_ragi_mudde",
+  "Omelette with Bread"                    : "omelette_with_bread",
+  // Non-veg
+  "Fish Curry with Rice"                   : "fish_curry_with_rice",
+  "Chicken Saaru with Jolada Rotti"        : "chicken_saaru_with_jolada_rotti",
+  "Koli Saaru (Chicken Soup)"              : "koli_saaru",
+  "Prawn Ghee Roast with Neer Dosa"        : "prawn_ghee_roast_with_neer_dosa",
+  // Sweets / dairy
+  "Banana Sheera"                          : "banana_sheera",
+  "Carrot Halwa"                           : "carrot_halwa",
+  "Groundnut Laddu"                        : "groundnut_laddu",
 };
 
-const FOOD_SLUG_MAP = [
-  [['egg','mutte','omelette'],          'egg'],
-  [['chicken','koli'],                  'chicken'],
-  [['fish','meen','prawn'],             'fish'],
-  [['rice','anna','chapati','dosa','mudde','ragi','idli','upma','pongal','poha','shavige','akki','jowar','rotti','paratha','sheera','khichdi'], 'rice'],
-  [['banana','fruit','apple','mango'],  'fruits'],
-  [['palak','spinach','vegetable','soppu','drumstick','methi','dill','colocasia','jackfruit','beans','brinjal','tomato','sweet potato'], 'vegetables'],
-  [['dal','saaru','bele','horsegram','moong','rajma','sambar','ambat','bisibele','avarekalu'], 'dal'],
-  [['paneer'],                          'paneer'],
-  [['milk','curd','mosaru','payasam'],  'milk'],
-  [['nut','groundnut','kadlekai','coconut'],'nuts'],
-];
+/** Category fallback: if per-food file missing, try this slug instead */
+const CATEGORY_FALLBACK = {
+  ragi_mudde                       : "ragi_mudde",
+  ragi_dosa                        : "dosa",
+  mudde_saaru                      : "ragi_mudde",
+  ragi_malt                        : "milk",
+  neer_dosa                        : "dosa",
+  wheat_dosa                       : "dosa",
+  idli_with_sambar                 : "idli",
+  rava_idli                        : "idli",
+  akki_roti                        : "roti",
+  jowar_roti                       : "roti",
+  jolada_rotti_with_ennegayi       : "roti",
+  methi_paratha                    : "roti",
+  chapati_with_chana_masala        : "roti",
+  beans_curry_with_chapati         : "roti",
+  coconut_rice                     : "rice",
+  groundnut_chutney_rice           : "rice",
+  sambar_rice                      : "rice",
+  curd_rice                        : "curd_rice",
+  tomato_gojju_with_rice           : "rice",
+  lemon_rice                       : "rice",
+  vangi_bath                       : "rice",
+  toor_dal_with_ghee_rice          : "rice",
+  poha                             : "rice",
+  upma                             : "upma",
+  bisibelebath                     : "khichdi",
+  sabudana_khichdi                 : "khichdi",
+  mixed_veg_khichdi                : "khichdi",
+  pongal                           : "khichdi",
+  shavige_bath                     : "upma",
+  palak_dal                        : "dal",
+  horsegram_saaru                  : "dal",
+  avarekalu_saaru                  : "dal",
+  dill_leaves_dal                  : "dal",
+  ambat                            : "dal",
+  moong_dal_payasam                : "milk",
+  drumstick_leaves_curry           : "vegetables",
+  jackfruit_curry                  : "vegetables",
+  colocasia_fry                    : "vegetables",
+  sweet_potato_curry               : "vegetables",
+  pathrode                         : "vegetables",
+  kelyache_shiite                  : "vegetables",
+  green_gram_sprouted_salad        : "sprouts",
+  girmit                           : "sprouts",
+  egg_curry_with_rice              : "egg",
+  boiled_egg_with_ragi_mudde       : "egg",
+  omelette_with_bread              : "egg",
+  fish_curry_with_rice             : "fish",
+  chicken_saaru_with_jolada_rotti  : "chicken",
+  koli_saaru                       : "chicken",
+  prawn_ghee_roast_with_neer_dosa  : "prawn",
+  banana_sheera                    : "fruits",
+  carrot_halwa                     : "milk",
+  groundnut_laddu                  : "nuts",
+};
 
-function foodSlug(name) {
-  const lower = (name || '').toLowerCase();
-  for (const [keywords, slug] of FOOD_SLUG_MAP) {
-    if (keywords.some(k => lower.includes(k))) return slug;
-  }
-  return 'default';
+const FOOD_EMOJI = {
+  egg: '🥚', chicken: '🍗', fish: '🐟', prawn: '🦐',
+  rice: '🍚', dosa: '🫓', idli: '🫓', roti: '🫓',
+  ragi_mudde: '🟤', upma: '🍚', khichdi: '🍲',
+  dal: '🫘', curd_rice: '🍚', vegetables: '🥦',
+  sprouts: '🌱', fruits: '🍎', milk: '🥛', nuts: '🥜',
+  paneer: '🧀', default: '🥗',
+};
+
+/** In-browser cache: slug → URL string or null (null = file not found) */
+const _imgCache = new Map();
+
+/**
+ * Build the <img> src path.  Tries webp → jpg → png → svg for each slug.
+ * Because we can't do a synchronous filesystem check in the browser,
+ * we emit an <img> with onerror chaining through the priority list.
+ */
+function _buildImgSrc(slug) {
+  return `/static/images/foods/${slug}.webp`;   // browser will onerror → fallback chain
 }
 
-function foodIconHtml(name, sizeClass = 'w-9 h-9') {
-  const slug  = foodSlug(name);
-  const emoji = FOOD_ICONS[slug] || FOOD_ICONS.default;
-  const url   = slug !== 'default' ? `/static/images/foods/${slug}.svg` : null;
+function _nameToSlug(name) {
+  const exact = FOOD_SLUG_TABLE[name];
+  if (exact) return exact;
+  // Normalise: strip parens, lowercase, underscores
+  return name.replace(/\(.*?\)/g,'').trim()
+             .toLowerCase().replace(/[^a-z0-9 ]/g,'')
+             .trim().replace(/\s+/g,'_');
+}
 
-  if (url) {
-    return `<div class="food-icon-wrap ${sizeClass} flex-shrink-0" aria-hidden="true">
-      <img src="${url}" alt="${escStr(name)}" class="w-full h-full object-contain p-1"
-        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
-      <span class="emoji-fallback text-xl hidden items-center justify-center w-full h-full">${emoji}</span>
-    </div>`;
-  }
-  return `<div class="food-icon-wrap ${sizeClass} flex-shrink-0 items-center justify-center" aria-hidden="true">
-    <span class="emoji-fallback text-xl">${emoji}</span>
-  </div>`;
+/**
+ * Returns an <img> element string that:
+ *  - Tries the per-food webp first
+ *  - Falls back through jpg / png / svg extensions
+ *  - Falls back to the category SVG
+ *  - Final fallback: emoji span
+ */
+function foodImgHtml(name, sizeClass = 'w-10 h-10', objectFit = 'cover') {
+  const slug     = _nameToSlug(name);
+  const fallback = CATEGORY_FALLBACK[slug] || 'rice';
+  const emoji    = FOOD_EMOJI[fallback] || FOOD_EMOJI.default;
+  const alt      = escStr(name);
+
+  // Build onerror chain:  webp → jpg → png → svg → category_svg → emoji
+  // Each onerror replaces src with the next candidate, and the last one
+  // switches to the emoji span.
+  const emojiHtml = `<span class="food-emoji-fallback text-2xl flex items-center justify-center w-full h-full" aria-hidden="true">${emoji}</span>`;
+
+  return `<div class="food-img-wrap ${sizeClass} flex-shrink-0 overflow-hidden rounded-lg bg-slate-50" aria-hidden="true">
+  <img
+    src="/static/images/foods/${slug}.webp"
+    alt="${alt}"
+    class="w-full h-full object-${objectFit}"
+    loading="lazy"
+    decoding="async"
+    onerror="
+      const s=this,slug='${slug}',fb='${fallback}';
+      const chain=[
+        '/static/images/foods/'+slug+'.jpg',
+        '/static/images/foods/'+slug+'.png',
+        '/static/images/foods/'+slug+'.svg',
+        '/static/images/foods/'+fb+'.webp',
+        '/static/images/foods/'+fb+'.jpg',
+        '/static/images/foods/'+fb+'.svg',
+      ];
+      s._tries=s._tries||0;
+      if(s._tries<chain.length){s.src=chain[s._tries++];}
+      else{s.style.display='none';s.insertAdjacentHTML('afterend','${emojiHtml.replace(/'/g,"\\'")}');}
+    "
+  />
+</div>`;
+}
+
+// Legacy alias used in food-equivalents section (small icons)
+function foodIconHtml(name, sizeClass = 'w-9 h-9') {
+  return foodImgHtml(name, sizeClass, 'contain');
 }
 
 // ── Macro helpers ──────────────────────────────────────────────────────────────
@@ -125,19 +291,27 @@ function validateForm() {
 
 function portionBlock(meal, label) {
   const ingredients = Array.isArray(meal.ingredients) && meal.ingredients.length
-    ? meal.ingredients.join(' · ')
-    : meal.name_en;
-  const nameKn = meal.name_kn ? `<p class="text-xs font-medium text-orange-500 kn mt-0.5">${escStr(meal.name_kn)}</p>` : '';
+    ? meal.ingredients.slice(0, 3).join(' · ')
+    : '';
+  const nameKn = meal.name_kn
+    ? `<p class="text-xs font-semibold text-orange-500 kn leading-tight mt-0.5">${escStr(meal.name_kn)}</p>`
+    : '';
+  const m = estimateMacros(meal.calories, meal.protein_g);
 
   return `<div class="meal-portion-card">
     <div class="meal-portion-header">${label}</div>
-    <div class="portion-item">
-      ${foodIconHtml(meal.name_en, 'w-10 h-10')}
+    <div class="portion-item gap-3">
+      ${foodImgHtml(meal.name_en, 'w-14 h-14', 'cover')}
       <div class="flex-1 min-w-0">
-        <p class="font-semibold text-gray-800 text-sm leading-tight">${escStr(meal.name_en)}</p>
+        <p class="font-bold text-gray-900 text-sm leading-tight">${escStr(meal.name_en)}</p>
         ${nameKn}
-        <p class="text-xs text-gray-400 mt-1 leading-relaxed truncate">${escStr(ingredients)}</p>
-        <div class="portion-macros mt-1.5">${macroChips(meal)}</div>
+        ${ingredients ? `<p class="text-xs text-gray-400 mt-0.5 truncate">${escStr(ingredients)}</p>` : ''}
+        <div class="portion-macros mt-1.5">
+          <span class="macro-chip macro-cal">🔥${Math.round(meal.calories)}cal</span>
+          <span class="macro-chip macro-pro">💪${meal.protein_g}g</span>
+          <span class="macro-chip macro-carb">🍚${m.carbs_g}g</span>
+          <span class="macro-chip macro-fat">🥑${m.fat_g}g</span>
+        </div>
       </div>
     </div>
   </div>`;

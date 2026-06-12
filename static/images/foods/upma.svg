@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Upma — mounded semolina in a bowl with mustard seeds -->
+  <!-- Bowl -->
+  <path d="M10 36 Q10 54 32 56 Q54 54 54 36 Z" fill="#8D6E63" stroke="#6D4C41" stroke-width="1.5"/>
+  <path d="M12 36 Q12 52 32 54 Q52 52 52 36 Z" fill="#A1887F"/>
+  <!-- Upma mound -->
+  <ellipse cx="32" cy="34" rx="20" ry="10" fill="#F5DEB3" stroke="#DEB887" stroke-width="1"/>
+  <!-- Peak of mound -->
+  <ellipse cx="32" cy="28" rx="12" ry="7" fill="#FAE5C0"/>
+  <!-- Mustard seeds -->
+  <circle cx="26" cy="32" r="1.2" fill="#4A148C"/>
+  <circle cx="30" cy="29" r="1.2" fill="#4A148C"/>
+  <circle cx="35" cy="31" r="1.2" fill="#4A148C"/>
+  <circle cx="39" cy="34" r="1" fill="#4A148C"/>
+  <!-- Green curry leaf -->
+  <path d="M22 30 Q24 26 28 28" stroke="#2E7D32" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Vegetable bits -->
+  <circle cx="40" cy="29" r="1.5" fill="#F44336" opacity="0.7"/>
+  <circle cx="36" cy="26" r="1.5" fill="#66BB6A" opacity="0.8"/>
+  <!-- Steam -->
+  <path d="M28 22 Q26 17 28 12" stroke="#CFD8DC" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+  <path d="M36 20 Q38 15 36 10" stroke="#CFD8DC" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+</svg>
