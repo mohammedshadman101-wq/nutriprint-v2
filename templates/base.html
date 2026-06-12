@@ -790,6 +790,9 @@
 <!-- Splash script runs immediately (before rest of page) -->
 <script src="/static/js/splash.js"></script>
 
+<!-- Auth — loaded early so every page can guard itself -->
+<script src="/static/js/auth.js"></script>
+
 <header class="sticky top-0 z-50 border-b border-white/70 bg-white/85 backdrop-blur-xl shadow-[0_1px_0_rgba(15,23,42,0.04)]">
   <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
     <a href="/" class="flex items-center gap-3">
@@ -814,7 +817,16 @@
         <span class="lang-en">ಕನ್ನಡ</span>
         <span class="lang-kn">English</span>
       </button>
-      <button onclick="openLogin()" id="loginBtn" class="btn-primary px-4 py-2 text-sm">Login</button>
+      <!-- Login / Logout buttons (auth.js toggles visibility) -->
+      <a href="/login" id="loginBtn"
+         class="btn-primary px-4 py-2 text-sm"
+         style="display:none">Login</a>
+      <button onclick="NutriAuth.logout(); window.location.replace('/login');"
+              id="logoutBtn"
+              class="rounded-full border border-red-200 bg-red-50 px-4 py-2 text-xs font-semibold text-red-600 shadow-sm transition hover:bg-red-100"
+              style="display:none">
+        🚪 Logout
+      </button>
       <button onclick="toggleMobileNav()" class="inline-flex rounded-full border border-slate-200 bg-white p-2 text-slate-700 shadow-sm lg:hidden" aria-label="Open menu">
         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -843,41 +855,637 @@
   {% block content %}{% endblock %}
 </main>
 
-<footer class="border-t border-slate-200/70 bg-white/80 px-4 py-8 backdrop-blur-xl">
-  <div class="mx-auto max-w-7xl text-center text-sm text-slate-500">
-    <div class="heading text-lg font-bold text-primaryDark">NutriPrint V2</div>
-    <p class="mt-1">Yenepoya Institute of Technology, Moodbidri</p>
-    <p class="kn mt-1">ಯೆನೆಪೋಯ ಇನ್ಸ್ಟಿಟ್ಯೂಟ್ ಆಫ್ ಟೆಕ್ನಾಲಜಿ, ಮೂಡುಬಿದ್ರಿ</p>
-    <p class="mt-3 text-xs uppercase tracking-[0.18em] text-slate-400">Free for Karnataka schools</p>
+<footer class="ft-root" aria-label="Site footer">
+
+  <!-- ══ Top border accent ════════════════════════════════════════════════ -->
+  <div class="ft-top-accent" aria-hidden="true"></div>
+
+  <!-- ══ Main 4-column grid ══════════════════════════════════════════════ -->
+  <div class="ft-inner">
+    <div class="ft-grid">
+
+      <!-- ── Col 1 · Brand ─────────────────────────────────────────────── -->
+      <div class="ft-col ft-col--brand">
+        <a href="/" class="ft-brand-logo-link" aria-label="NutriPrint home">
+          <img src="/static/images/logo.svg" alt="NutriPrint logo" class="ft-logo-img"/>
+          <div>
+            <div class="ft-brand-name">NutriPrint</div>
+            <div class="ft-brand-tagline">AI Nutrition Platform for Karnataka Schools</div>
+          </div>
+        </a>
+
+        <p class="ft-brand-desc">
+          NutriPrint helps schools improve nutrition awareness through BMI assessments,
+          AI-powered meal planning, recipe guidance, and nutrition education.
+        </p>
+
+        <!-- SDG badges -->
+        <div class="ft-sdg-row" role="list" aria-label="Sustainable Development Goals">
+          <span class="ft-sdg-badge ft-sdg--2" role="listitem" title="SDG 2 — Zero Hunger">
+            <span class="ft-sdg-num">2</span>
+            <span class="ft-sdg-text">Zero Hunger</span>
+          </span>
+          <span class="ft-sdg-badge ft-sdg--3" role="listitem" title="SDG 3 — Good Health &amp; Well-being">
+            <span class="ft-sdg-num">3</span>
+            <span class="ft-sdg-text">Good Health</span>
+          </span>
+          <span class="ft-sdg-badge ft-sdg--4" role="listitem" title="SDG 4 — Quality Education">
+            <span class="ft-sdg-num">4</span>
+            <span class="ft-sdg-text">Quality Education</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- ── Col 2 · Quick Links ───────────────────────────────────────── -->
+      <div class="ft-col">
+        <h3 class="ft-col-heading">Quick Links</h3>
+        <nav aria-label="Footer navigation">
+          <ul class="ft-link-list">
+            <li><a href="/"             class="ft-link"><span class="ft-link-icon" aria-hidden="true">🏠</span>Home</a></li>
+            <li><a href="/bmi"          class="ft-link"><span class="ft-link-icon" aria-hidden="true">⚖️</span>BMI Assessment</a></li>
+            <li><a href="/meal-planner" class="ft-link"><span class="ft-link-icon" aria-hidden="true">🗓️</span>Meal Planner</a></li>
+            <li><a href="/food-catalog" class="ft-link"><span class="ft-link-icon" aria-hidden="true">🥗</span>Food Catalog</a></li>
+            <li><a href="/dashboard"    class="ft-link"><span class="ft-link-icon" aria-hidden="true">📊</span>Dashboard</a></li>
+            <li><a href="/about"        class="ft-link"><span class="ft-link-icon" aria-hidden="true">ℹ️</span>About</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <!-- ── Col 3 · Features ──────────────────────────────────────────── -->
+      <div class="ft-col">
+        <h3 class="ft-col-heading">Features</h3>
+        <ul class="ft-feature-list" role="list">
+          <li class="ft-feature-item">
+            <span class="ft-feature-dot" aria-hidden="true"></span>
+            <span class="ft-feature-icon" aria-hidden="true">📐</span>
+            BMI Analysis
+          </li>
+          <li class="ft-feature-item">
+            <span class="ft-feature-dot" aria-hidden="true"></span>
+            <span class="ft-feature-icon" aria-hidden="true">🤖</span>
+            AI Nutrition Advisor
+          </li>
+          <li class="ft-feature-item">
+            <span class="ft-feature-dot" aria-hidden="true"></span>
+            <span class="ft-feature-icon" aria-hidden="true">📅</span>
+            Weekly Meal Planning
+          </li>
+          <li class="ft-feature-item">
+            <span class="ft-feature-dot" aria-hidden="true"></span>
+            <span class="ft-feature-icon" aria-hidden="true">🍽️</span>
+            Recipe Guide
+          </li>
+          <li class="ft-feature-item">
+            <span class="ft-feature-dot" aria-hidden="true"></span>
+            <span class="ft-feature-icon" aria-hidden="true">⬜</span>
+            QR Nutrition System
+          </li>
+          <li class="ft-feature-item">
+            <span class="ft-feature-dot" aria-hidden="true"></span>
+            <span class="ft-feature-icon" aria-hidden="true">🖨️</span>
+            Printable Posters
+          </li>
+        </ul>
+      </div>
+
+      <!-- ── Col 4 · Project Impact ────────────────────────────────────── -->
+      <div class="ft-col">
+        <h3 class="ft-col-heading">Project Impact</h3>
+        <div class="ft-impact-grid" role="list">
+          <div class="ft-impact-card" role="listitem">
+            <span class="ft-impact-icon" aria-hidden="true">🥘</span>
+            <div>
+              <div class="ft-impact-value">53+</div>
+              <div class="ft-impact-label">Karnataka Foods Supported</div>
+            </div>
+          </div>
+          <div class="ft-impact-card" role="listitem">
+            <span class="ft-impact-icon" aria-hidden="true">🗣️</span>
+            <div>
+              <div class="ft-impact-value">EN · ಕನ್ನಡ</div>
+              <div class="ft-impact-label">Bilingual Support</div>
+            </div>
+          </div>
+          <div class="ft-impact-card" role="listitem">
+            <span class="ft-impact-icon" aria-hidden="true">👨‍👩‍👧</span>
+            <div>
+              <div class="ft-impact-value">Active</div>
+              <div class="ft-impact-label">Parent Nutrition Awareness</div>
+            </div>
+          </div>
+          <div class="ft-impact-card" role="listitem">
+            <span class="ft-impact-icon" aria-hidden="true">🏫</span>
+            <div>
+              <div class="ft-impact-value">Pilot</div>
+              <div class="ft-impact-label">School Nutrition Outreach</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /.ft-grid -->
+  </div><!-- /.ft-inner -->
+
+  <!-- ══ Statistics bar ══════════════════════════════════════════════════ -->
+  <div class="ft-stats-bar" role="region" aria-label="Platform statistics">
+    <div class="ft-inner">
+      <div class="ft-stats-grid">
+
+        <div class="ft-stat-card">
+          <span class="ft-stat-icon" aria-hidden="true">👨‍🎓</span>
+          <div>
+            <div class="ft-stat-value" id="ftStatStudents">500+</div>
+            <div class="ft-stat-label">Students Assessed</div>
+          </div>
+        </div>
+
+        <div class="ft-stat-card">
+          <span class="ft-stat-icon" aria-hidden="true">📄</span>
+          <div>
+            <div class="ft-stat-value" id="ftStatPlans">1,000+</div>
+            <div class="ft-stat-label">Meal Plans Generated</div>
+          </div>
+        </div>
+
+        <div class="ft-stat-card">
+          <span class="ft-stat-icon" aria-hidden="true">🥗</span>
+          <div>
+            <div class="ft-stat-value" id="ftStatFoods">53+</div>
+            <div class="ft-stat-label">Nutrition Foods Available</div>
+          </div>
+        </div>
+
+        <div class="ft-stat-card">
+          <span class="ft-stat-icon" aria-hidden="true">🏫</span>
+          <div>
+            <div class="ft-stat-value">Pilot</div>
+            <div class="ft-stat-label">Schools Supported</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- /.ft-stats-bar -->
+
+  <!-- ══ Bottom bar ══════════════════════════════════════════════════════ -->
+  <div class="ft-bottom-bar" role="contentinfo">
+    <div class="ft-inner ft-bottom-inner">
+      <div class="ft-bottom-left">
+        <span class="ft-copyright">© 2026 NutriPrint</span>
+        <span class="ft-bottom-sep" aria-hidden="true">·</span>
+        <span class="ft-bottom-institution">Yenepoya Institute of Technology, Moodbidri</span>
+      </div>
+      <div class="ft-bottom-right">
+        <span class="ft-bottom-project">Interdisciplinary Project Work</span>
+        <span class="ft-version-badge" aria-label="Version 2.0">v2.0</span>
+      </div>
+    </div>
   </div>
+
 </footer>
 
-<div id="loginModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/45 p-4 backdrop-blur-sm">
-  <div class="w-full max-w-md shell-card p-6 sm:p-8">
-    <div class="mb-6 flex items-start justify-between gap-4">
-      <div>
-        <p class="sublabel">Secure access</p>
-        <h2 class="heading mt-2 text-2xl font-extrabold text-slate-900">Teacher Login</h2>
-        <p class="mt-1 text-sm text-slate-500">Enter your email to receive an OTP.</p>
-      </div>
-      <button onclick="closeLogin()" class="rounded-full bg-slate-100 p-2 text-slate-500 hover:bg-slate-200" aria-label="Close">
-        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-      </button>
-    </div>
+<style>
+/* ═══════════════════════════════════════════════════════════════════════════
+   NutriPrint — SaaS Footer Styles  (ft- prefix, self-contained)
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-    <div id="loginStep1">
-      <label class="mb-2 block text-sm font-semibold text-slate-700">Email Address</label>
-      <input id="loginEmail" type="email" placeholder="you@school.edu.in" class="input-field mb-4"/>
-      <button onclick="sendOTP()" class="btn-primary w-full py-3">Send OTP</button>
-    </div>
+/* ── Root ──────────────────────────────────────────────────────────────────── */
+.ft-root {
+  background: #0F172A;
+  color: #CBD5E1;
+  position: relative;
+  overflow: hidden;
+}
 
-    <div id="loginStep2" class="hidden">
-      <p class="mb-4 text-sm text-slate-500">OTP sent. Check your email.</p>
-      <input id="loginOTP" type="text" maxlength="6" placeholder="Enter 6-digit OTP" class="input-field mb-4"/>
-      <button onclick="verifyOTP()" class="btn-primary w-full py-3">Verify & Login</button>
-    </div>
-  </div>
-</div>
+/* Subtle radial glow behind footer content */
+.ft-root::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 70%; height: 280px;
+  background: radial-gradient(ellipse at top,
+    rgba(29, 158, 117, 0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+/* ── Top accent gradient line ──────────────────────────────────────────────── */
+.ft-top-accent {
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    #1D9E75 20%,
+    #34D399 50%,
+    #1D9E75 80%,
+    transparent 100%);
+}
+
+/* ── Layout wrapper ────────────────────────────────────────────────────────── */
+.ft-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+@media (min-width: 640px)  { .ft-inner { padding-left: 1.5rem;  padding-right: 1.5rem; } }
+@media (min-width: 1024px) { .ft-inner { padding-left: 2rem;    padding-right: 2rem; } }
+
+/* ── 4-column grid ─────────────────────────────────────────────────────────── */
+.ft-grid {
+  display: grid;
+  gap: 2.5rem 2rem;
+  padding: 3rem 0 2.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px)  { .ft-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .ft-grid { grid-template-columns: 1.5fr 1fr 1fr 1fr; } }
+
+/* ── Column heading ────────────────────────────────────────────────────────── */
+.ft-col-heading {
+  font-family: Poppins, sans-serif;
+  font-weight: 800;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #1D9E75;
+  margin-bottom: 1.1rem;
+}
+
+/* ── Col 1 · Brand ─────────────────────────────────────────────────────────── */
+.ft-brand-logo-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  margin-bottom: 1rem;
+}
+
+.ft-brand-logo-link:hover .ft-brand-name {
+  color: #34D399;
+}
+
+.ft-logo-img {
+  width: 2.75rem;
+  height: 2.75rem;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(29,158,117,0.35));
+  flex-shrink: 0;
+}
+
+.ft-brand-name {
+  font-family: Poppins, sans-serif;
+  font-weight: 900;
+  font-size: 1.25rem;
+  color: #F8FAFC;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  transition: color 160ms ease;
+}
+
+.ft-brand-tagline {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #94A3B8;
+  margin-top: 0.15rem;
+  line-height: 1.3;
+}
+
+.ft-brand-desc {
+  font-size: 0.84rem;
+  line-height: 1.75;
+  color: #94A3B8;
+  margin-bottom: 1.25rem;
+  max-width: 34ch;
+}
+
+/* SDG badges */
+.ft-sdg-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ft-sdg-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border: 1px solid;
+  transition: transform 140ms ease, box-shadow 140ms ease;
+  cursor: default;
+}
+
+.ft-sdg-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.ft-sdg-num {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.ft-sdg--2 {
+  background: rgba(234, 179, 8, 0.12);
+  border-color: rgba(234, 179, 8, 0.3);
+  color: #FCD34D;
+}
+.ft-sdg--2 .ft-sdg-num { background: rgba(234,179,8,0.25); }
+
+.ft-sdg--3 {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.28);
+  color: #4ADE80;
+}
+.ft-sdg--3 .ft-sdg-num { background: rgba(34,197,94,0.2); }
+
+.ft-sdg--4 {
+  background: rgba(249, 115, 22, 0.1);
+  border-color: rgba(249, 115, 22, 0.28);
+  color: #FB923C;
+}
+.ft-sdg--4 .ft-sdg-num { background: rgba(249,115,22,0.2); }
+
+/* ── Col 2 · Quick links ───────────────────────────────────────────────────── */
+.ft-link-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.ft-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.42rem 0.5rem;
+  border-radius: 0.6rem;
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: #94A3B8;
+  text-decoration: none;
+  transition: color 140ms ease, background 140ms ease, padding-left 140ms ease;
+}
+
+.ft-link:hover {
+  color: #34D399;
+  background: rgba(29,158,117,0.08);
+  padding-left: 0.85rem;
+}
+
+.ft-link-icon {
+  font-size: 0.9rem;
+  line-height: 1;
+  flex-shrink: 0;
+  opacity: 0.75;
+  transition: opacity 140ms ease;
+}
+
+.ft-link:hover .ft-link-icon { opacity: 1; }
+
+/* ── Col 3 · Features ──────────────────────────────────────────────────────── */
+.ft-feature-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.ft-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: #94A3B8;
+  padding: 0.3rem 0;
+  transition: color 140ms ease;
+}
+
+.ft-feature-item:hover { color: #CBD5E1; }
+
+.ft-feature-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #1D9E75;
+  flex-shrink: 0;
+}
+
+.ft-feature-icon {
+  font-size: 0.9rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* ── Col 4 · Impact cards ──────────────────────────────────────────────────── */
+.ft-impact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.ft-impact-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  padding: 0.7rem 0.75rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 0.85rem;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+
+.ft-impact-card:hover {
+  background: rgba(29,158,117,0.08);
+  border-color: rgba(29,158,117,0.2);
+}
+
+.ft-impact-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.ft-impact-value {
+  font-family: Poppins, sans-serif;
+  font-weight: 800;
+  font-size: 0.88rem;
+  color: #34D399;
+  line-height: 1.1;
+}
+
+.ft-impact-label {
+  font-size: 0.68rem;
+  color: #64748B;
+  margin-top: 0.15rem;
+  line-height: 1.3;
+}
+
+/* ── Statistics bar ────────────────────────────────────────────────────────── */
+.ft-stats-bar {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.025);
+  padding: 1.5rem 0;
+}
+
+.ft-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px)  { .ft-stats-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.ft-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.9rem 1.1rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 1rem;
+  transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+
+.ft-stat-card:hover {
+  background: rgba(29,158,117,0.1);
+  border-color: rgba(29,158,117,0.22);
+  transform: translateY(-2px);
+}
+
+.ft-stat-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.ft-stat-value {
+  font-family: Poppins, sans-serif;
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: #F8FAFC;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.ft-stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #64748B;
+  margin-top: 0.2rem;
+  line-height: 1.3;
+}
+
+/* ── Bottom bar ────────────────────────────────────────────────────────────── */
+.ft-bottom-bar {
+  padding: 1.1rem 0;
+}
+
+.ft-bottom-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.ft-bottom-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: #475569;
+}
+
+.ft-copyright { font-weight: 600; color: #64748B; }
+.ft-bottom-sep { color: #334155; }
+.ft-bottom-institution { color: #475569; }
+
+.ft-bottom-right {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.78rem;
+  color: #475569;
+}
+
+.ft-bottom-project { font-weight: 500; }
+
+.ft-version-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  background: rgba(29,158,117,0.12);
+  border: 1px solid rgba(29,158,117,0.25);
+  color: #34D399;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+/* ── Mobile ────────────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .ft-grid { padding: 2rem 0 1.75rem; gap: 2rem; }
+  .ft-brand-desc { max-width: 100%; }
+  .ft-impact-grid { grid-template-columns: 1fr 1fr; }
+  .ft-stats-grid  { grid-template-columns: 1fr 1fr; }
+  .ft-bottom-inner { flex-direction: column; align-items: flex-start; }
+  .ft-stat-value { font-size: 1rem; }
+}
+
+/* ── Reduced motion ────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .ft-link, .ft-sdg-badge, .ft-impact-card, .ft-stat-card {
+    transition: none !important;
+  }
+}
+</style>
+
+<script>
+/* Load live stats from /api/impact and update footer counters */
+(function () {
+  fetch('/api/impact')
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (!d) return;
+      var fmt = function (n, fallback) {
+        if (!n || n === 0) return fallback;
+        return n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k+' : n + '+';
+      };
+      var s = document.getElementById('ftStatStudents');
+      var p = document.getElementById('ftStatPlans');
+      var f = document.getElementById('ftStatFoods');
+      if (s) s.textContent = fmt(d.total_students, '500+');
+      if (p) p.textContent = fmt(d.total_plans,    '1,000+');
+      if (f) f.textContent = (d.total_foods || 53) + '+';
+    })
+    .catch(function () { /* keep fallback values */ });
+}());
+</script>
+
+<!-- Teacher login is handled at /login page — no inline modal needed -->
 
 <script>
   function toggleMobileNav() {
@@ -895,51 +1503,9 @@
     document.body.classList.add('kannada');
   }
 
+  // openLogin kept for backward compatibility with any existing page that calls it
   function openLogin() {
-    const modal = document.getElementById('loginModal');
-    if (modal) modal.classList.remove('hidden');
-  }
-
-  function closeLogin() {
-    const modal = document.getElementById('loginModal');
-    if (modal) modal.classList.add('hidden');
-  }
-
-  async function sendOTP() {
-    const email = document.getElementById('loginEmail')?.value?.trim();
-    if (!email) return alert('Enter your email');
-    const res = await fetch('/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    });
-    if (res.ok) {
-      document.getElementById('loginStep1')?.classList.add('hidden');
-      document.getElementById('loginStep2')?.classList.remove('hidden');
-    } else {
-      alert('Unable to send OTP');
-    }
-  }
-
-  async function verifyOTP() {
-    const email = document.getElementById('loginEmail')?.value?.trim();
-    const token = document.getElementById('loginOTP')?.value?.trim();
-    const res = await fetch('/auth/verify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, token }),
-    });
-    if (res.ok) {
-      const data = await res.json();
-      localStorage.setItem('auth_user_id', data.user_id || '');
-      if (data.teacher_id) localStorage.setItem('teacher_id', data.teacher_id);
-      closeLogin();
-      const loginBtn = document.getElementById('loginBtn');
-      if (loginBtn) loginBtn.textContent = 'Logged In';
-      window.location.reload();
-    } else {
-      alert('Invalid OTP. Try again.');
-    }
+    window.location.href = '/login';
   }
 
   document.addEventListener('DOMContentLoaded', () => {
