@@ -25,6 +25,7 @@ def _filter_foods(region, diet, meal_type, month):
             continue
         if diet == "eggetarian" and f["diet_type"] == "non-vegetarian":
             continue
+        # non-vegetarian gets all types — no filter needed
         if meal_type not in f["meal_type"]:
             continue
         if "all" not in f["season_months"] and month.lower() not in f["season_months"]:
