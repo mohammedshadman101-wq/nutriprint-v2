@@ -320,16 +320,14 @@
 
     <!-- Logo -->
     <a href="/" class="flex items-center gap-2">
-      <div class="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
-        <span class="text-white font-bold text-lg heading">N</span>
-      </div>
+      <img src="/static/images/logo.svg" alt="NutriPrint Logo" class="w-9 h-9 object-contain">
       <span class="text-primary font-bold text-xl heading">
         NutriPrint
       </span>
     </a>
 
     <!-- Desktop Nav -->
-    <div class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
+    <div id="desktopNav" class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
       <a href="/#bmi"     class="hover:text-primary transition">
         <span class="lang-en">BMI Tracker</span>
         <span class="lang-kn kn">BMI ಟ್ರ್ಯಾಕರ್</span>
@@ -350,6 +348,13 @@
 
     <!-- Right buttons -->
     <div class="flex items-center gap-3">
+      <!-- Mobile menu toggle -->
+      <button onclick="toggleMobileNav()" id="mobileNavBtn"
+        class="md:hidden text-gray-600 p-1.5 rounded-lg hover:bg-gray-100" aria-label="Menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
       <!-- Language Toggle -->
       <button onclick="toggleLang()"
         class="text-xs border border-primary text-primary px-3 py-1.5 rounded-full font-semibold hover:bg-primary hover:text-white transition">
@@ -364,6 +369,14 @@
         <span class="lang-kn kn">ಲಾಗಿನ್</span>
       </button>
     </div>
+  </div>
+
+  <!-- Mobile Nav -->
+  <div id="mobileNav" class="hidden md:hidden border-t bg-white px-4 py-3 space-y-2">
+    <a href="/#bmi" class="block py-2 text-sm text-gray-600 hover:text-primary">BMI Tracker</a>
+    <a href="/#meal" class="block py-2 text-sm text-gray-600 hover:text-primary">Meal Planner</a>
+    <a href="/#foods" class="block py-2 text-sm text-gray-600 hover:text-primary">Food Catalog</a>
+    <a href="/dashboard" class="block py-2 text-sm text-gray-600 hover:text-primary">Dashboard</a>
   </div>
 </nav>
 
@@ -415,6 +428,10 @@
 <!-- ── GLOBAL JS ──────────────────────────────────────── -->
 <script>
   // Language toggle
+  function toggleMobileNav() {
+    document.getElementById('mobileNav').classList.toggle('hidden');
+  }
+
   function toggleLang() {
     document.body.classList.toggle('kannada');
     localStorage.setItem('lang', document.body.classList.contains('kannada') ? 'kn' : 'en');
