@@ -117,8 +117,15 @@
     const loader = state.loading
       ? `<div class="advisor-message assistant">
            <span class="advisor-msg-icon">🤖</span>
-           <div class="advisor-msg-content">
-             <span class="advisor-dot"></span><span class="advisor-dot"></span><span class="advisor-dot"></span>
+           <div class="advisor-msg-content" style="padding:0;background:transparent;border:none;">
+             <div class="ld-advisor-typing">
+               <div class="ld-dot-row" aria-hidden="true">
+                 <span class="ld-dot"></span>
+                 <span class="ld-dot"></span>
+                 <span class="ld-dot"></span>
+               </div>
+               <span class="ld-advisor-typing-label">Preparing nutrition guidance…</span>
+             </div>
            </div>
          </div>`
       : '';

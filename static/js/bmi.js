@@ -12,34 +12,89 @@ async function calculateBMI() {
     return;
   }
 
-  const res = await fetch('/api/bmi/calculate', {
-    method  : 'POST',
-    headers : {'Content-Type':'application/json'},
-    body    : JSON.stringify({
-      student_name : name,
-      age          : parseInt(age),
-      gender,
-      height_cm    : parseFloat(height),
-      weight_kg    : parseFloat(weight),
-      teacher_id   : localStorage.getItem('teacher_id') || null,
-    })
-  });
+  // Show loading state
+  const btn        = document.querySelector('button[onclick="calculateBMI()"]');
+  const resultEl   = document.getElementById('bmiResult');
+  const advisorEl  = document.getElementById('advisorPanel');
 
-  if (!res.ok) {
-    alert('Error calculating BMI. Please try again.');
-    return;
+  if (btn) { btn.disabled = true; btn.textContent = 'Analyzing…'; }
+
+  // Show a loading card where the result will appear
+  if (resultEl) {
+    resultEl.classList.remove('hidden');
+    resultEl.innerHTML = `
+      <div class="ld-bmi-card">
+        <div class="ld-bmi-spinner" role="status" aria-label="Calculating BMI"></div>
+        <div>
+          <p class="ld-bmi-label">Analyzing student measurements…</p>
+          <p class="ld-bmi-sub">Calculating BMI, percentile, and Z-score</p>
+        </div>
+        <div class="ld-bmi-skeleton w-full">
+          <div class="ld-shimmer ld-sk-line ld-sk-line--short"></div>
+          <div class="ld-shimmer ld-sk-line ld-sk-line--thick" style="margin-top:0.25rem;"></div>
+          <div class="ld-shimmer ld-sk-line ld-sk-line--full" style="height:10px;margin-top:0.75rem;border-radius:9999px;"></div>
+          <div class="ld-shimmer ld-sk-line ld-sk-line--med" style="margin-top:0.5rem;"></div>
+        </div>
+      </div>`;
+    resultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
-  const data = await res.json();
-  
-  lastBMIResult = data;
-  window.lastBMIResult = data;
   try {
-    localStorage.setItem('nutriprint_last_bmi', JSON.stringify(data));
-  } catch (_) {}
-  
-  showBMIResult(data);
-  showGrowthChart(data.student_name);
+    const res = await fetch('/api/bmi/calculate', {
+      method  : 'POST',
+      headers : {'Content-Type':'application/json'},
+      body    : JSON.stringify({
+        student_name : name,
+        age          : parseInt(age),
+        gender,
+        height_cm    : parseFloat(height),
+        weight_kg    : parseFloat(weight),
+        teacher_id   : localStorage.getItem('teacher_id') || null,
+      })
+    });
+
+    if (!res.ok) {
+      if (resultEl) resultEl.classList.add('hidden');
+      alert('Error calculating BMI. Please try again.');
+      return;
+    }
+
+    const data = await res.json();
+
+    lastBMIResult = data;
+    window.lastBMIResult = data;
+    try {
+      localStorage.setItem('nutriprint_last_bmi', JSON.stringify(data));
+    } catch (_) {}
+
+    // Restore result el HTML structure before populating
+    resultEl.innerHTML = `
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h3 id="resultName" class="heading text-2xl font-bold text-slate-900"></h3>
+          <p id="resultBMI" class="mt-1 text-sm text-slate-500"></p>
+        </div>
+        <span id="resultBadge" class="rounded-full px-4 py-2 text-sm font-bold"></span>
+      </div>
+      <div class="mt-5">
+        <div class="mb-1 flex justify-between text-xs text-slate-400"><span>Underweight</span><span>Normal</span><span>Overweight</span><span>Obese</span></div>
+        <div class="h-3 w-full rounded-full bg-slate-100"><div id="gaugeBar" class="h-3 rounded-full transition-all duration-700" style="width:0%"></div></div>
+        <p id="resultPercentile" class="mt-2 text-right text-xs text-slate-500"></p>
+      </div>
+      <div id="resultAdviceEN" class="mt-5 rounded-2xl bg-emerald-50 p-4 text-sm text-slate-700"></div>
+      <div id="resultAdviceKN" class="kn mt-3 rounded-2xl bg-amber-50 p-4 text-sm text-slate-700"></div>
+      <button onclick="prefillMealForm()" class="btn-secondary mt-6 w-full py-3">Generate Meal Plan for this Student</button>`;
+
+    showBMIResult(data);
+    showGrowthChart(data.student_name);
+
+  } catch (err) {
+    console.error('BMI error:', err);
+    if (resultEl) resultEl.classList.add('hidden');
+    alert('Error calculating BMI. Please try again.');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Calculate BMI'; }
+  }
 }
 
 function showBMIResult(data) {

@@ -194,10 +194,56 @@
     </div>
 
     <!-- Loading -->
-    <div id="mealLoading" class="hidden soft-card p-8 text-center">
-      <div class="spinner mx-auto"></div>
-      <p class="mt-4 text-sm font-medium text-slate-600">Generating nutrient-balanced meal plan…</p>
-      <p class="mt-1 text-xs text-slate-400 kn">ಊಟದ ಯೋಜನೆ ತಯಾರಾಗುತ್ತಿದೆ…</p>
+    <div id="mealLoading" class="hidden">
+      <div class="ld-meal-card">
+
+        <!-- Spinner + headline -->
+        <div class="ld-meal-header">
+          <div class="ld-meal-spinner-wrap">
+            <div class="ld-meal-spinner-emoji" aria-hidden="true">🥗</div>
+          </div>
+          <div>
+            <p class="ld-meal-label">Generating balanced weekly meal plan…</p>
+            <p class="ld-meal-sublabel kn">ಊಟದ ಯೋಜನೆ ತಯಾರಾಗುತ್ತಿದೆ…</p>
+          </div>
+        </div>
+
+        <!-- Animated progress bar -->
+        <div class="ld-bar-track" role="progressbar" aria-label="Meal plan generation progress" aria-valuemin="0" aria-valuemax="100">
+          <div class="ld-bar-fill"></div>
+        </div>
+
+        <!-- Step list -->
+        <ul class="ld-steps" aria-label="Generation steps" id="mealLoadingSteps">
+
+          <li class="ld-step ld-step--done" id="ldStep1">
+            <span class="ld-step-icon" aria-hidden="true">✓</span>
+            <span>Student profile analyzed</span>
+          </li>
+
+          <li class="ld-step ld-step--done" id="ldStep2">
+            <span class="ld-step-icon" aria-hidden="true">✓</span>
+            <span>Nutrition targets calculated</span>
+          </li>
+
+          <li class="ld-step ld-step--active" id="ldStep3">
+            <span class="ld-step-icon" aria-label="In progress"></span>
+            <span>Building meal plan with regional Karnataka foods</span>
+          </li>
+
+          <li class="ld-step ld-step--pending" id="ldStep4">
+            <span class="ld-step-icon" aria-hidden="true">⏳</span>
+            <span>Creating AI recommendations</span>
+          </li>
+
+          <li class="ld-step ld-step--pending" id="ldStep5">
+            <span class="ld-step-icon" aria-hidden="true">⏳</span>
+            <span>Finalising nutrition score &amp; insights</span>
+          </li>
+
+        </ul>
+
+      </div>
     </div>
 
     <!-- Results (populated by JS) -->
@@ -262,6 +308,71 @@
     const fe = document.getElementById('formError');
     if (fe) fe.classList.add('hidden');
   }
+
+  /* ── Meal loading step animator ─────────────────────────────────────────── */
+  let _stepTimers = [];
+
+  function startLoadingSteps() {
+    // Reset all steps
+    [1,2,3,4,5].forEach(n => {
+      const el = document.getElementById('ldStep' + n);
+      if (!el) return;
+      if (n <= 2) {
+        el.className = 'ld-step ld-step--done';
+        el.querySelector('.ld-step-icon').textContent = '✓';
+      } else if (n === 3) {
+        el.className = 'ld-step ld-step--active';
+        el.querySelector('.ld-step-icon').textContent = '';
+      } else {
+        el.className = 'ld-step ld-step--pending';
+        el.querySelector('.ld-step-icon').textContent = '⏳';
+      }
+    });
+
+    const advance = (stepNum) => {
+      const prev = document.getElementById('ldStep' + (stepNum - 1));
+      const curr = document.getElementById('ldStep' + stepNum);
+      if (prev) {
+        prev.className = 'ld-step ld-step--done';
+        prev.querySelector('.ld-step-icon').textContent = '✓';
+      }
+      if (curr) {
+        curr.className = 'ld-step ld-step--active';
+        curr.querySelector('.ld-step-icon').textContent = '';
+      }
+    };
+
+    _stepTimers.forEach(clearTimeout);
+    _stepTimers = [
+      setTimeout(() => advance(4), 2800),
+      setTimeout(() => advance(5), 5200),
+    ];
+  }
+
+  function stopLoadingSteps() {
+    _stepTimers.forEach(clearTimeout);
+    _stepTimers = [];
+    // Mark all done
+    [1,2,3,4,5].forEach(n => {
+      const el = document.getElementById('ldStep' + n);
+      if (el) {
+        el.className = 'ld-step ld-step--done';
+        const icon = el.querySelector('.ld-step-icon');
+        if (icon) icon.textContent = '✓';
+      }
+    });
+  }
+
+  /* Patch generateMeal to call step animation */
+  const _origGenerate = window.generateMeal;
+  window.generateMeal = async function () {
+    startLoadingSteps();
+    try {
+      await _origGenerate.apply(this, arguments);
+    } finally {
+      stopLoadingSteps();
+    }
+  };
 </script>
 
 <!-- ══════════════════════════════════════════════════════════

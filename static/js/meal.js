@@ -665,10 +665,26 @@ async function loadNutritionGap(planId, ageGroup, dietPref) {
   const container = document.getElementById('gapContainer');
   if (!container) return;
 
-  container.innerHTML = `<div class="rounded-2xl border bg-white p-4 mb-5 animate-pulse">
-    <div class="h-4 w-48 bg-slate-100 rounded mb-4"></div>
-    <div class="space-y-3">${'<div class="h-8 bg-slate-100 rounded"></div>'.repeat(4)}</div>
-  </div>`;
+  // Premium labelled skeleton
+  container.innerHTML = `
+    <div class="ld-gap-card">
+      <div class="ld-gap-header">
+        <div class="ld-shimmer ld-gap-icon-skel"></div>
+        <div style="flex:1;">
+          <div class="ld-shimmer ld-gap-title-skel"></div>
+          <div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.5rem;">
+            <div class="ld-spinner ld-spinner--sm" role="status" aria-label="Loading nutrition gap"></div>
+            <span style="font-size:0.75rem;color:#64748B;font-style:italic;">Calculating nutrition deficiencies…</span>
+          </div>
+        </div>
+      </div>
+      ${[1,2,3,4].map(() => `
+        <div class="ld-gap-row">
+          <div class="ld-shimmer ld-gap-row-label"></div>
+          <div class="ld-shimmer ld-gap-row-bar"></div>
+          <div class="ld-shimmer ld-gap-row-hint"></div>
+        </div>`).join('')}
+    </div>`;
 
   const diet = dietPref || document.getElementById('mealDiet')?.value || 'vegetarian';
   try {
@@ -727,10 +743,27 @@ async function loadFoodEquivalents(ageGroup, dietPref) {
   const container = document.getElementById('equivContainer');
   if (!container) return;
 
-  container.innerHTML = `<div class="rounded-2xl border bg-white p-4 mb-5 animate-pulse">
-    <div class="h-4 w-48 bg-slate-100 rounded mb-4"></div>
-    <div class="grid md:grid-cols-2 gap-3">${'<div class="h-24 bg-slate-100 rounded-xl"></div>'.repeat(4)}</div>
-  </div>`;
+  // Premium labelled skeleton
+  container.innerHTML = `
+    <div class="ld-gap-card">
+      <div class="ld-gap-header">
+        <div class="ld-shimmer ld-gap-icon-skel"></div>
+        <div style="flex:1;">
+          <div class="ld-shimmer ld-gap-title-skel"></div>
+          <div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.5rem;">
+            <div class="ld-spinner ld-spinner--sm" role="status" aria-label="Loading food guide"></div>
+            <span style="font-size:0.75rem;color:#64748B;font-style:italic;">Preparing food quantity guide…</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+        ${[1,2,3,4].map(() => `
+          <div class="ld-gap-row" style="height:80px;">
+            <div class="ld-shimmer ld-gap-row-label"></div>
+            <div class="ld-shimmer ld-gap-row-bar"></div>
+          </div>`).join('')}
+      </div>
+    </div>`;
 
   const diet = dietPref || currentPlan?.diet_pref || document.getElementById('mealDiet')?.value || 'vegetarian';
   try {
