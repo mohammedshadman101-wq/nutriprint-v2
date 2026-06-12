@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}NutriPrint — Meal Planner{% endblock %}
+
+{% block content %}
+<section class="hero-banner page-section">
+  <div class="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+    <div>
+      <span class="sublabel text-white/90">Meal workflow</span>
+      <h1 class="heading mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">Meal Planner</h1>
+      <p class="mt-4 max-w-2xl text-white/88">
+        Generate a printable 7-day school meal plan using student details, regional preferences, and budget-aware nutrition rules.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="#mealForm" class="btn-secondary bg-white text-primaryDark hover:bg-slate-50">Start Planning</a>
+        <a href="/food-catalog" class="btn-ghost bg-white/15 text-white hover:bg-white/20">Browse Foods</a>
+      </div>
+    </div>
+    <div class="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+      <div class="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur"><p class="text-sm font-semibold text-white/70">1</p><h2 class="mt-1 text-lg font-bold text-white">Student details</h2><p class="mt-1 text-sm text-white/80">Enter school, student, age group, diet, region, and strategy.</p></div>
+      <div class="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur"><p class="text-sm font-semibold text-white/70">2</p><h2 class="mt-1 text-lg font-bold text-white">Generate poster</h2><p class="mt-1 text-sm text-white/80">Create a balanced weekly plan with nutrients and cost summaries.</p></div>
+      <div class="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur"><p class="text-sm font-semibold text-white/70">3</p><h2 class="mt-1 text-lg font-bold text-white">Print and share</h2><p class="mt-1 text-sm text-white/80">Download PDFs, print posters, or share meal plans with parents.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="mealForm" class="mt-6 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+  <div class="soft-card p-6">
+    <div class="sublabel">Student information</div>
+    <h2 class="section-title mt-2 text-3xl text-slate-900">Plan a weekly menu</h2>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2">
+      <div><label class="mb-2 block text-sm font-semibold text-slate-700">School Name</label><input id="mealSchool" type="text" placeholder="Govt HS Mangalore" class="input-field"/></div>
+      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Student Name</label><input id="mealStudent" type="text" placeholder="Priya" class="input-field"/></div>
+      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Age Group</label><select id="mealAge" class="select-field"><option value="5-8">5–8 years</option><option value="9-12" selected>9–12 years</option><option value="13-15">13–15 years</option></select></div>
+      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Diet Type</label><select id="mealDiet" class="select-field"><option value="vegetarian">Vegetarian</option><option value="eggetarian">Eggetarian</option><option value="non-vegetarian">Non-Veg</option></select></div>
+      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Region</label><select id="mealRegion" class="select-field"><option value="mangalore">Mangalore</option><option value="udupi">Udupi</option><option value="shivamogga">Shivamogga</option><option value="bengaluru_rural">Bengaluru Rural</option><option value="mysuru">Mysuru</option><option value="hubli_dharwad">Hubli-Dharwad</option></select></div>
+      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Month</label><select id="mealMonth" class="select-field"><option>january</option><option>february</option><option>march</option><option>april</option><option>may</option><option>june</option><option>july</option><option>august</option><option>september</option><option>october</option><option>november</option><option>december</option></select></div>
+      <div class="sm:col-span-2"><label class="mb-2 block text-sm font-semibold text-slate-700">Nutrition Strategy</label><select id="mealStrategy" class="select-field"><option value="standard">Standard Balanced</option><option value="high_protein">High Protein</option><option value="calcium_iron">Calcium + Iron Rich</option><option value="calorie_control">Calorie Control</option></select></div>
+    </div>
+    <button id="generateBtn" onclick="generateMeal()" class="btn-primary mt-6 w-full py-3">Generate Meal Plan</button>
+  </div>
+
+  <div class="space-y-6">
+    <div class="soft-card p-6">
+      <div class="sublabel">Workflow</div>
+      <div class="mt-4 grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+        <div class="rounded-2xl bg-slate-50 p-4"><h3 class="font-semibold text-slate-900">Input student data</h3><p class="mt-1 text-sm text-slate-600">Use age group, diet, and region to guide plan generation.</p></div>
+        <div class="rounded-2xl bg-slate-50 p-4"><h3 class="font-semibold text-slate-900">Generate poster</h3><p class="mt-1 text-sm text-slate-600">Create a 7-day plan with calories, nutrients, and day-by-day meals.</p></div>
+        <div class="rounded-2xl bg-slate-50 p-4"><h3 class="font-semibold text-slate-900">Print and download</h3><p class="mt-1 text-sm text-slate-600">Export a PDF poster or open the printable plan page for parents.</p></div>
+      </div>
+    </div>
+
+    <div id="mealLoading" class="hidden soft-card p-8 text-center"><div class="spinner mx-auto"></div><p class="mt-4 text-sm font-medium text-slate-600">Generating nutrient-balanced meal plan...</p></div>
+    <div id="mealResult" class="hidden"></div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/meal.js"></script>
+<script>
+  const monthSelect = document.getElementById('mealMonth');
+  if (monthSelect) {
+    const monthNames = ["january","february","march","april","may","june","july","august","september","october","november","december"];
+    monthSelect.value = monthNames[new Date().getMonth()];
+  }
+</script>
+{% endblock %}

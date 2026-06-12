@@ -4,10 +4,12 @@ from fastapi.templating import Jinja2Templates
 
 from models.db import supabase
 from models.schemas import MealPlan
+from services.poster_context import build_poster_context
 
 import io
 import json
 import re
+import qrcode
 
 router = APIRouter(tags=["Poster"])
 templates = Jinja2Templates(directory="templates")
@@ -59,15 +61,10 @@ async def plan_public(
         if not base.endswith("/"):
             base += "/"
 
-        return templates.TemplateResponse(
-            "plan_public.html",
-            {
-                "request": request,
-                "plan": plan,
-                "share_token": share_token,
-                "base_url": base,
-            }
-        )
+        ctx = build_poster_context(plan, share_token, base)
+        ctx["request"] = request
+
+        return templates.TemplateResponse("plan_public.html", ctx)
 
     except HTTPException:
         raise
@@ -86,14 +83,14 @@ async def health_report(
     try:
         row, plan = _get_plan_by_token(share_token)
 
-        return templates.TemplateResponse(
-            "health_report.html",
-            {
-                "request": request,
-                "plan": plan,
-                "share_token": share_token,
-            }
-        )
+        base = str(request.base_url)
+        if not base.endswith("/"):
+            base += "/"
+
+        ctx = build_poster_context(plan, share_token, base)
+        ctx["request"] = request
+
+        return templates.TemplateResponse("health_report.html", ctx)
 
     except HTTPException:
         raise
@@ -103,6 +100,47 @@ async def health_report(
             status_code=500,
             detail=str(e)
         )
+
+
+@router.get("/poster/{share_token}/print", response_class=HTMLResponse)
+async def poster_print(
+    request: Request,
+    share_token: str,
+):
+    """Print-optimized HTML poster view."""
+    try:
+        row, plan = _get_plan_by_token(share_token)
+
+        base = str(request.base_url)
+        if not base.endswith("/"):
+            base += "/"
+
+        ctx = build_poster_context(plan, share_token, base)
+        ctx["request"] = request
+
+        return templates.TemplateResponse("poster_print.html", ctx)
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/api/plans/qr/{qr_code_string}")
+async def plan_qr(qr_code_string: str):
+    try:
+        qr = qrcode.QRCode(version=1, box_size=10, border=4)
+        qr.add_data(qr_code_string)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+
+        buffer = io.BytesIO()
+        img.save(buffer, format="PNG")
+        buffer.seek(0)
+
+        return StreamingResponse(buffer, media_type="image/png")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/poster/{share_token}/pdf")
 async def download_pdf(

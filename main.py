@@ -7,7 +7,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from routers import bmi, meals, foods, auth, poster
-from routers.foods import chat, get_impact_stats
+from routers.foods import chat, impact
 from routers.foods import ChatMessage
 
 app = FastAPI(
@@ -30,8 +30,10 @@ templates = Jinja2Templates(directory="templates")
 
 app.include_router(bmi.router)
 app.include_router(meals.router)
+app.include_router(meals.legacy_router)
 app.include_router(foods.router)
 app.include_router(auth.router)
+app.include_router(auth.legacy_router)
 app.include_router(poster.router)
 
 
@@ -43,11 +45,43 @@ async def homepage(request: Request):
     )
 
 
+@app.get("/bmi", response_class=HTMLResponse)
+async def bmi_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="bmi.html",
+    )
+
+
+@app.get("/meal-planner", response_class=HTMLResponse)
+async def meal_planner_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="meal_planner.html",
+    )
+
+
+@app.get("/food-catalog", response_class=HTMLResponse)
+async def food_catalog_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="food_catalog.html",
+    )
+
+
 @app.get("/dashboard", response_class=HTMLResponse)
 async def dashboard(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="dashboard.html",
+    )
+
+
+@app.get("/about", response_class=HTMLResponse)
+async def about_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="about.html",
     )
 
 
@@ -70,4 +104,4 @@ async def chat_proxy(data: ChatMessage):
 
 @app.get("/api/impact")
 async def impact_proxy():
-    return get_impact_stats()
+    return await impact()

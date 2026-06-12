@@ -1,174 +1,136 @@
 {% extends "base.html" %}
+{% from "partials/poster_macros.html" import food_icon, nutrient_stat, meal_portion, food_equivalents_section, macro_chip %}
 {% block title %}NutriPrint — {{ plan.student_name }}'s Meal Plan{% endblock %}
 
 {% block head %}
-
+<link rel="stylesheet" href="/static/css/poster.css"/>
 <style>
 @media print {
-
-  .sticky,
-  button,
-  a {
-    display: none !important;
-  }
-
-  body * {
-    visibility: hidden;
-  }
-
-  #poster,
-  #poster * {
-    visibility: visible;
-  }
-
-  #poster {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-  }
+  .no-print, nav, footer, .sticky, button { display: none !important; }
+  body * { visibility: hidden; }
+  #poster, #poster * { visibility: visible; }
+  #poster { position: absolute; left: 0; top: 0; width: 100%; }
 }
 </style>
-
-<!-- Open Graph tags for WhatsApp preview -->
-<meta property="og:title"       content="Weekly Meal Plan for {{ plan.student_name }}"/>
+<meta property="og:title" content="Weekly Meal Plan for {{ plan.student_name }}"/>
 <meta property="og:description" content="{{ plan.school_name }} · {{ plan.diet_pref }} · {{ plan.region }} · Karnataka"/>
-<meta property="og:url"         content="{{ base_url }}plan/{{ share_token }}"/>
-<meta property="og:type"        content="website"/>
+<meta property="og:url" content="{{ base_url }}plan/{{ share_token }}"/>
+<meta property="og:type" content="website"/>
 {% endblock %}
 
 {% block content %}
-<div id="poster" class="max-w-4xl mx-auto px-4 py-10">
+<div id="poster" class="max-w-4xl mx-auto px-4 py-6 sm:py-10">
 
-  <!-- Header card -->
-  <div class="gradient-hero rounded-2xl p-8 text-white mb-8">
+  <!-- Header -->
+  <div class="infographic-header mb-6 sm:mb-8">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <p class="text-green-200 text-sm font-medium mb-1">📄 NutriPrint Weekly Meal Plan</p>
-        <h1 class="heading font-extrabold text-3xl">{{ plan.student_name }}</h1>
-        <p class="text-green-100 mt-1">{{ plan.school_name }}</p>
+        <p class="text-green-200 text-xs sm:text-sm font-medium mb-1">📄 NutriPrint Weekly Meal Plan</p>
+        <h1 class="heading font-extrabold text-2xl sm:text-3xl">{{ plan.student_name }}</h1>
+        <p class="text-green-100 mt-1 text-sm">{{ plan.school_name }}</p>
         {% if plan.teacher_name %}
-        <p class="text-green-200 text-sm">Teacher: {{ plan.teacher_name }}</p>
+        <p class="text-green-200 text-xs sm:text-sm">Teacher: {{ plan.teacher_name }}</p>
         {% endif %}
         <div class="flex flex-wrap gap-2 mt-3">
-          <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">
-            {{ plan.age_group }} years
-          </span>
-          <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">
-            {{ plan.diet_pref | title }}
-          </span>
-          <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">
-            {{ plan.region | replace('_',' ') | title }}
-          </span>
-          <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">
-            {{ plan.month | title }}
-          </span>
+          <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">{{ plan.age_group }} years</span>
+          <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">{{ plan.diet_pref | title }}</span>
+          <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">{{ plan.region | replace('_',' ') | title }}</span>
+          <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">{{ plan.month | title }}</span>
         </div>
       </div>
-      <!-- QR Code placeholder -->
       <div class="bg-white rounded-xl p-3 text-center self-start">
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ base_url }}plan/{{ share_token }}"
-          alt="QR Code" class="w-24 h-24"/>
+          alt="QR Code" class="w-20 h-20 sm:w-24 sm:h-24 mx-auto"/>
         <p class="text-gray-500 text-xs mt-1">Scan to open</p>
       </div>
     </div>
   </div>
 
-  <!-- Nutrition summary -->
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-    <div class="bg-white rounded-2xl border p-4 text-center card-hover">
-      <div class="text-2xl mb-1">🔥</div>
-      <div class="heading font-bold text-gray-800">{{ plan.avg_daily_cal }}</div>
-      <div class="text-xs text-gray-400">Avg kcal/day</div>
-    </div>
-    <div class="bg-white rounded-2xl border p-4 text-center card-hover">
-      <div class="text-2xl mb-1">💪</div>
-      <div class="heading font-bold text-gray-800">{{ plan.avg_protein_g }}g</div>
-      <div class="text-xs text-gray-400">Protein/day</div>
-    </div>
-    <div class="bg-white rounded-2xl border p-4 text-center card-hover">
-      <div class="text-2xl mb-1">🦴</div>
-      <div class="heading font-bold text-gray-800">{{ plan.avg_calcium_mg }}mg</div>
-      <div class="text-xs text-gray-400">Calcium/day</div>
-    </div>
-    <div class="bg-white rounded-2xl border p-4 text-center card-hover">
-      <div class="text-2xl mb-1">🩸</div>
-      <div class="heading font-bold text-gray-800">{{ plan.avg_iron_mg }}mg</div>
-      <div class="text-xs text-gray-400">Iron/day</div>
-    </div>
+  <!-- Nutrition summary rings -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+    {{ nutrient_stat('🔥', plan.avg_daily_cal|round(0)|int, 'Avg kcal/day') }}
+    {{ nutrient_stat('💪', plan.avg_protein_g|round(1), 'Protein/day', 'g') }}
+    {{ nutrient_stat('🦴', plan.avg_calcium_mg|round(0)|int, 'Calcium/day', 'mg') }}
+    {{ nutrient_stat('🩸', plan.avg_iron_mg|round(1), 'Iron/day', 'mg') }}
   </div>
 
   <!-- Cost badge -->
-  <div class="flex items-center justify-between mb-6">
-    <span class="bg-green-100 text-green-700 font-bold text-sm px-5 py-2 rounded-full">
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-6">
+    <span class="bg-green-100 text-green-700 font-bold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-full">
       ✅ Under ₹150/day · <span class="kn">ದಿನಕ್ಕೆ ₹150 ಒಳಗೆ</span>
     </span>
-    <span class="text-xs text-gray-400">
-      Total week: ₹{{ plan.total_cost_inr }}
-    </span>
+    <span class="text-xs text-gray-400">Total week: ₹{{ plan.total_cost_inr }}</span>
   </div>
 
-  <!-- 7-day meal cards -->
-  <div class="space-y-4 mb-10">
+  <!-- Nutrition gap (if available) -->
+  {% if nutrition_gaps %}
+  <div class="section-divider"><span>📊 Nutrition vs ICMR RDA</span></div>
+  <div class="grid sm:grid-cols-2 gap-3 mb-8">
+    {% for g in nutrition_gaps %}
+    <div class="bg-white rounded-xl border p-4">
+      <div class="flex justify-between text-sm mb-2">
+        <span class="font-semibold text-gray-700">{{ g.nutrient }} {{ g.status_label }}</span>
+        <span class="text-gray-500 text-xs">{{ g.getting }}/{{ g.needed }}{{ g.unit }}</span>
+      </div>
+      <div class="gap-bar-track">
+        <div class="gap-bar-fill" style="width:{{ [g.percent, 100]|min }}%;background:{% if g.percent < 60 %}#EF4444{% elif g.percent < 85 %}#F97316{% else %}#10B981{% endif %}"></div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Food equivalents -->
+  {% if food_equivalents %}
+  <div class="section-divider"><span>🍽️ Daily Nutrient Goals — Food Equivalents</span></div>
+  {{ food_equivalents_section(food_equivalents) }}
+  {% endif %}
+
+  <!-- 7-day meal plan with portions -->
+  <div class="section-divider"><span>📅 7-Day Meal Plan with Portions</span></div>
+  <div class="space-y-6 mb-10">
     {% for day in plan.week %}
-    <div class="bg-white rounded-2xl border overflow-hidden card-hover">
-      <div class="bg-primary/10 px-6 py-3 border-b flex items-center justify-between">
+    <div class="bg-white rounded-2xl border overflow-hidden">
+      <div class="bg-primary/10 px-4 sm:px-6 py-3 border-b flex items-center justify-between">
         <div>
-          <span class="heading font-bold text-primary text-lg">{{ day.day }}</span>
-          <span class="text-orange-400 text-sm kn ml-2">{{ day.day_kn }}</span>
+          <span class="heading font-bold text-primary text-base sm:text-lg">{{ day.day }}</span>
+          <span class="text-orange-400 text-xs sm:text-sm kn ml-2">{{ day.day_kn }}</span>
         </div>
         <span class="text-xs text-gray-400">
           ₹{{ (day.breakfast.cost_inr + day.lunch.cost_inr + day.dinner.cost_inr) | round(1) }}/day
         </span>
       </div>
-      <div class="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x">
-
-        {% for meal_type, meal in [('🌅 Breakfast', day.breakfast), ('☀️ Lunch', day.lunch), ('🌙 Dinner', day.dinner)] %}
-        <div class="p-5">
-          <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">
-            {{ meal_type }}
-          </p>
-          <p class="font-semibold text-gray-800">{{ meal.name_en }}</p>
-          <p class="text-orange-500 text-sm kn mt-0.5">{{ meal.name_kn }}</p>
-          <div class="flex flex-wrap gap-2 mt-3">
-            <span class="bg-red-50 text-red-600 text-xs px-2 py-0.5 rounded-full">
-              🔥 {{ meal.calories }}cal
-            </span>
-            <span class="bg-blue-50 text-blue-600 text-xs px-2 py-0.5 rounded-full">
-              💪 {{ meal.protein_g }}g
-            </span>
-            <span class="bg-green-50 text-green-600 text-xs px-2 py-0.5 rounded-full">
-              ₹{{ meal.cost_inr }}
-            </span>
-          </div>
-          {% if meal.ingredients %}
-          <p class="text-xs text-gray-400 mt-2">
-            {{ meal.ingredients | join(', ') }}
-          </p>
-          {% endif %}
-        </div>
-        {% endfor %}
-
+      <div class="grid md:grid-cols-3 gap-0 divide-y md:divide-y-0 md:divide-x">
+        {{ meal_portion(day.breakfast, '🌅 Breakfast') }}
+        {{ meal_portion(day.lunch, '☀️ Lunch') }}
+        {{ meal_portion(day.dinner, '🌙 Dinner') }}
       </div>
     </div>
     {% endfor %}
   </div>
 
-  <!-- Action buttons -->
-  <div class="flex flex-col sm:flex-row gap-4 sticky bottom-4">
-    <a href="/poster/{{ share_token }}/pdf"
-      class="flex-1 bg-primary text-white font-bold py-4 rounded-2xl text-center hover:bg-green-700 transition heading shadow-lg">
+  <!-- Actions -->
+  <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 no-print sticky bottom-4">
+    <a href="/poster/{{ share_token }}/pdf" target="_blank" rel="noopener noreferrer"
+      class="flex-1 bg-primary text-white font-bold py-3 sm:py-4 rounded-2xl text-center hover:bg-green-700 transition heading shadow-lg text-sm sm:text-base">
       📥 Download PDF Poster
     </a>
+    <a href="/poster/{{ share_token }}/print" target="_blank" rel="noopener noreferrer"
+      class="flex-1 border-2 border-primary text-primary font-bold py-3 sm:py-4 rounded-2xl text-center hover:bg-green-50 transition heading text-sm sm:text-base">
+      🖨️ Print View
+    </a>
+    <a href="/report/{{ share_token }}" target="_blank" rel="noopener noreferrer"
+      class="flex-1 bg-blue-500 text-white font-bold py-3 sm:py-4 rounded-2xl text-center hover:bg-blue-600 transition heading text-sm sm:text-base">
+      🏥 Health Report
+    </a>
     <button onclick="shareWA()"
-      class="flex-1 bg-green-500 text-white font-bold py-4 rounded-2xl hover:bg-green-600 transition heading shadow-lg">
+      class="flex-1 bg-green-500 text-white font-bold py-3 sm:py-4 rounded-2xl hover:bg-green-600 transition heading shadow-lg text-sm sm:text-base">
       📲 Share via WhatsApp
     </button>
   </div>
 
   <p class="text-center text-xs text-gray-400 mt-6">
-    Generated by NutriPrint · nutriprint.onrender.com ·
-    Free for all Karnataka schools
+    Generated by NutriPrint · Free for all Karnataka schools
   </p>
 </div>
 {% endblock %}
@@ -180,7 +142,7 @@ function shareWA() {
   const msg = encodeURIComponent(
     `NutriPrint meal plan for {{ plan.student_name }}:\n${url}\n\nFree school nutrition app 🥗`
   );
-  window.open(`https://wa.me/?text=${msg}`, '_blank');
+  window.open(`https://wa.me/?text=${msg}`, '_blank', 'noopener,noreferrer');
 }
 </script>
 {% endblock %}

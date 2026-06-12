@@ -1,560 +1,448 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-  <link rel="manifest" href="/static/manifest.json"/>
-<meta name="theme-color" content="#1D9E75"/>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
+  <meta name="theme-color" content="#1D9E75"/>
+  <link rel="manifest" href="/static/manifest.json"/>
+  <link rel="icon" type="image/svg+xml" href="/static/images/logo.svg"/>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
-  <title>{% block title %}NutriPrint{% endblock %}</title>
-<link rel="icon" type="image/svg+xml" href="/static/images/logo.svg">
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Kannada:wght@400;600;700&family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
-
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            primary  : "#1D9E75",
-            saffron  : "#F97316",
-            amber    : "#FBBF24",
-            bglight  : "#F8FAF9",
+            primary: '#1D9E75',
+            primaryDark: '#0F5E46',
+            saffron: '#F97316',
+            sand: '#F8FAF9',
           },
           fontFamily: {
-            kannada : ["Noto Sans Kannada", "sans-serif"],
-            heading : ["Poppins", "sans-serif"],
-            body    : ["Inter", "sans-serif"],
-          }
-        }
-      }
+            body: ['Inter', 'sans-serif'],
+            heading: ['Poppins', 'sans-serif'],
+            kannada: ['Noto Sans Kannada', 'sans-serif'],
+          },
+        },
+      },
     }
   </script>
-
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Kannada:wght@400;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+  <title>{% block title %}NutriPrint V2{% endblock %}</title>
   <style>
-    body { font-family: 'Inter', sans-serif; background: #F8FAF9; }
-    .kn  { font-family: 'Noto Sans Kannada', sans-serif; }
-    .heading { font-family: 'Poppins', sans-serif; }
-    .gradient-hero {
-      background: linear-gradient(135deg, #1D9E75 0%, #0f5e46 50%, #1a7a5a 100%);
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(29, 158, 117, 0.09), transparent 30%),
+        radial-gradient(circle at top right, rgba(249, 115, 22, 0.08), transparent 24%),
+        #F8FAF9;
+      color: #0F172A;
+      animation: pageFade 220ms ease-out;
     }
-    .card-hover { transition: transform 0.2s, box-shadow 0.2s; }
-    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+
+    @keyframes pageFade {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .heading { font-family: Poppins, sans-serif; }
+    .kn { font-family: 'Noto Sans Kannada', sans-serif; }
+
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.7rem 0.95rem;
+      border-radius: 9999px;
+      transition: all 160ms ease;
+      color: #475569;
+      font-size: 0.95rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      color: #0F5E46;
+      background: rgba(29, 158, 117, 0.08);
+    }
+
+    .nav-link-active {
+      color: #0F5E46;
+      background: rgba(29, 158, 117, 0.12);
+      box-shadow: inset 0 0 0 1px rgba(29, 158, 117, 0.08);
+    }
+
+    .shell-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.05);
+      border-radius: 1.5rem;
+    }
+
+    .page-section {
+      padding: 1.25rem;
+    }
+
+    @media (min-width: 768px) {
+      .page-section { padding: 2rem; }
+    }
+
+    .section-title {
+      font-family: Poppins, sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-banner {
+      background: linear-gradient(135deg, #0F5E46 0%, #1D9E75 50%, #136B4F 100%);
+      color: white;
+      border-radius: 2rem;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(15, 94, 70, 0.18);
+    }
+
+    .hero-banner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.12), transparent 24%),
+        radial-gradient(circle at 80% 30%, rgba(249,115,22,0.16), transparent 24%);
+      pointer-events: none;
+    }
+
+    .gradient-hero {
+      background: linear-gradient(135deg, #0F5E46 0%, #1D9E75 50%, #136B4F 100%);
+      color: white;
+    }
+
+    .card-hover {
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+    }
+
+    .hero-animate {
+      opacity: 0;
+      transform: translateY(18px);
+      animation: heroIn 420ms ease forwards;
+    }
+
+    @keyframes heroIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .float-badge {
+      animation: floatBadge 3s ease-in-out infinite;
+    }
+
+    @keyframes floatBadge {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
     .badge-underweight { background:#DBEAFE; color:#1D4ED8; }
-    .badge-normal      { background:#D1FAE5; color:#065F46; }
-    .badge-overweight  { background:#FEF3C7; color:#92400E; }
-    .badge-obese       { background:#FEE2E2; color:#991B1B; }
-    .spinner { border:3px solid #f3f3f3; border-top:3px solid #1D9E75;
-               border-radius:50%; width:24px; height:24px;
-               animation:spin 0.8s linear infinite; }
-    @keyframes spin { to { transform:rotate(360deg); } }
-    .lang-kn { display:none; }
-    body.kannada .lang-en { display:none; }
-    body.kannada .lang-kn { display:inline; }
+    .badge-normal { background:#D1FAE5; color:#065F46; }
+    .badge-overweight { background:#FEF3C7; color:#92400E; }
+    .badge-obese { background:#FEE2E2; color:#991B1B; }
 
-    /* ── Splash Screen ──────────────────────────────────── */
-  #splashScreen {
-    position: fixed;
-    inset: 0;
-    background: linear-gradient(135deg, #0f5e46, #1D9E75, #1a7a5a);
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-  }
-  .splash-logo {
-    animation: splashPop 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
-  }
-  .splash-foods {
-    font-size: 2rem;
-    letter-spacing: 8px;
-    animation: splashFade 0.8s ease 0.3s both;
-  }
-  @keyframes splashPop {
-    from { transform: scale(0.3) rotate(-10deg); opacity: 0; }
-    to   { transform: scale(1)   rotate(0deg);   opacity: 1; }
-  }
-  @keyframes splashFade {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .splash-bar-track {
-    width: 200px;
-    height: 4px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 99px;
-    overflow: hidden;
-    margin-top: 24px;
-  }
-  .splash-bar-fill {
-    height: 100%;
-    background: white;
-    border-radius: 99px;
-    width: 0%;
-    transition: width 0.15s ease;
-  }
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #1D9E75;
+      border-radius: 9999px;
+      width: 24px;
+      height: 24px;
+      animation: spin 0.8s linear infinite;
+    }
 
-  /* ── Hero Animations ─────────────────────────────────── */
-  .hero-animate {
-    opacity: 0;
-    transform: translateY(28px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  #particleCanvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
-  .hero-section {
-    position: relative;
-    overflow: hidden;
-  }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
 
-  /* ── Scroll Reveal ───────────────────────────────────── */
-  .reveal {
-    opacity: 0;
-    transform: translateY(32px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.from-left {
-    transform: translateX(-32px);
-  }
-  .reveal.from-right {
-    transform: translateX(32px);
-  }
-  .reveal.scale-in {
-    transform: scale(0.92);
-  }
-  .reveal.revealed {
-    opacity: 1;
-    transform: translate(0) scale(1);
-  }
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+    }
 
-  /* ── Tilt Cards ──────────────────────────────────────── */
-  .tilt-card {
-    transition: transform 0.15s ease;
-    will-change: transform;
-  }
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 300ms ease, transform 300ms ease;
+    }
 
-  /* ── Wave Divider ────────────────────────────────────── */
-  .wave-path {
-    animation: waveFlow 4s ease-in-out infinite alternate;
-  }
-  @keyframes waveFlow {
-    from { d: path("M0,40 C150,80 350,0 500,40 L500,80 L0,80 Z"); }
-    to   { d: path("M0,60 C150,20 350,80 500,60 L500,80 L0,80 Z"); }
-  }
+    .tilt-card {
+      transition: transform 160ms ease;
+      will-change: transform;
+    }
 
-  /* ── Glow Button ─────────────────────────────────────── */
-  .btn-glow {
-    position: relative;
-    overflow: hidden;
-  }
-  .btn-glow::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -75%;
-    width: 50%;
-    height: 200%;
-    background: rgba(255,255,255,0.25);
-    transform: skewX(-20deg);
-    transition: left 0.5s ease;
-  }
-  .btn-glow:hover::after {
-    left: 125%;
-  }
+    .soft-card {
+      background: rgba(255,255,255,0.88);
+      border: 1px solid rgba(148,163,184,0.16);
+      border-radius: 1.5rem;
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.05);
+    }
 
-  /* ── Pulse Ring ──────────────────────────────────────── */
-  .pulse-ring {
-    position: relative;
-  }
-  .pulse-ring::before {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    border-radius: inherit;
-    border: 2px solid #1D9E75;
-    animation: pulseRing 2s ease-out infinite;
-  }
-  @keyframes pulseRing {
-    0%   { transform: scale(1);    opacity: 0.6; }
-    100% { transform: scale(1.12); opacity: 0;   }
-  }
+    .metric-card {
+      background: rgba(255,255,255,0.95);
+      border: 1px solid rgba(148,163,184,0.14);
+      border-radius: 1.25rem;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.04);
+    }
 
-  /* ── Floating Badge ──────────────────────────────────── */
-  .float-badge {
-    animation: floatUp 3s ease-in-out infinite;
-  }
-  @keyframes floatUp {
-    0%,100% { transform: translateY(0);    }
-    50%     { transform: translateY(-8px); }
-  }
+    .btn-primary,
+    .btn-secondary,
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border-radius: 9999px;
+      font-weight: 700;
+      transition: all 160ms ease;
+      white-space: nowrap;
+    }
 
-  /* ── Gradient Text ───────────────────────────────────── */
-  .gradient-text {
-    background: linear-gradient(135deg, #1D9E75, #F97316);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+    .btn-primary {
+      background: #1D9E75;
+      color: white;
+      padding: 0.85rem 1.25rem;
+      box-shadow: 0 14px 30px rgba(29, 158, 117, 0.22);
+    }
 
-  /* ── Shimmer Loading ─────────────────────────────────── */
-  .shimmer {
-    background: linear-gradient(
-      90deg,
-      #f0f0f0 25%,
-      #e0e0e0 50%,
-      #f0f0f0 75%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-  }
-  @keyframes shimmer {
-    0%   { background-position:  200% 0; }
-    100% { background-position: -200% 0; }
-  }
+    .btn-primary:hover { transform: translateY(-1px); background: #166F53; }
+
+    .btn-secondary {
+      background: white;
+      color: #0F5E46;
+      border: 1px solid rgba(29, 158, 117, 0.18);
+      padding: 0.85rem 1.25rem;
+    }
+
+    .btn-secondary:hover { background: rgba(29, 158, 117, 0.06); }
+
+    .btn-ghost {
+      color: #0F5E46;
+      background: rgba(29, 158, 117, 0.08);
+      padding: 0.75rem 1rem;
+    }
+
+    .input-field, .select-field {
+      width: 100%;
+      border-radius: 1rem;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      background: rgba(255,255,255,0.95);
+      padding: 0.85rem 1rem;
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .input-field:focus, .select-field:focus {
+      border-color: rgba(29, 158, 117, 0.65);
+      box-shadow: 0 0 0 4px rgba(29, 158, 117, 0.10);
+    }
+
+    .quick-link-card {
+      background: white;
+      border-radius: 1.5rem;
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      padding: 1.1rem;
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.04);
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+
+    .quick-link-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(29, 158, 117, 0.24);
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.07);
+    }
+
+    .sublabel {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #1D9E75;
+    }
+
+    .lang-kn { display: none; }
+    body.kannada .lang-en { display: none; }
+    body.kannada .lang-kn { display: inline; }
   </style>
-
   {% block head %}{% endblock %}
 </head>
 <body>
+{% set current_path = request.url.path %}
 
-<!-- ── SPLASH SCREEN ─────────────────────────────────── -->
-<div id="splashScreen">
-  <!-- Floating food emojis background -->
-  <div class="absolute inset-0 overflow-hidden opacity-10"
-    style="font-size:3rem; line-height:4rem;
-           word-break:break-all; padding:20px;
-           pointer-events:none">
-    🥗🍱🌿🫘🥦🍚🥕🫓🥬🍲🥛🧆🥗🍱🌿🫘🥦🍚🥕🫓🥬🍲🥛🧆🥗🍱🌿🫘🥦🍚🥕🫓🥬
-  </div>
-
-  <!-- Logo -->
-  <div class="splash-logo text-center relative z-10">
-    <div class="mx-auto mb-6 flex justify-center">
-      <img src="/static/images/logo.svg"
-           alt="NutriPrint"
-           class="h-32 w-auto">
-    </div>
-    <h1 class="text-white font-extrabold text-3xl
-               heading tracking-tight">
-      NutriPrint
-    </h1>
-    <p class="text-green-200 text-sm mt-1">
-      Karnataka School Nutrition
-    </p>
-    <p class="text-green-300 text-sm kn mt-0.5">
-      ಕರ್ನಾಟಕ ಶಾಲಾ ಪೋಷಣೆ
-    </p>
-  </div>
-
-  <!-- Food emojis row -->
-  <div class="splash-foods mt-8 relative z-10">
-    🥗 🍱 🌿 🫘 🥦
-  </div>
-
-  <!-- Progress bar -->
-  <div class="splash-bar-track relative z-10">
-    <div id="splashBar" class="splash-bar-fill"></div>
-  </div>
-
-  <!-- Loading message -->
-  <div class="mt-4 text-center relative z-10">
-    <p id="splashMsg"
-      class="text-green-200 text-sm">
-      Loading Karnataka foods...
-    </p>
-    <p id="splashMsgKN"
-      class="text-green-300 text-xs kn mt-1">
-      ಕರ್ನಾಟಕ ಆಹಾರ ಲೋಡ್ ಆಗುತ್ತಿದೆ...
-    </p>
-    <p id="splashPct"
-      class="text-white/50 text-xs mt-2">
-      0%
-    </p>
-  </div>
-
-  <!-- Bottom tagline -->
-  <div class="absolute bottom-8 text-center
-              w-full relative z-10">
-    <p class="text-green-300 text-xs">
-      Free for all Karnataka Schools · ₹0
-    </p>
-    <p class="text-green-400 text-xs kn mt-1">
-      ಎಲ್ಲಾ ಕರ್ನಾಟಕ ಶಾಲೆಗಳಿಗೆ ಉಚಿತ
-    </p>
-  </div>
-</div>
-
-  <!-- Cold start banner -->
-  <div id="coldBanner"
-    class="hidden bg-amber-50 border-b border-amber-200 text-center py-2 text-xs text-amber-700 font-medium">
-    ⏳ Server is waking up... please wait 20 seconds
-  </div>
-  
-  <script>
-    // Show banner if server is slow to respond
-    const t = setTimeout(() => {
-      document.getElementById('coldBanner').classList.remove('hidden');
-    }, 4000);
-    window.addEventListener('load', () => clearTimeout(t));
-  </script>
-
-<!-- ── NAVBAR ─────────────────────────────────────────── -->
-<nav class="bg-white shadow-sm sticky top-0 z-50">
-  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-
-    <!-- Logo -->
-    <a href="/" class="flex items-center gap-2">
-      <img src="/static/images/logo.svg" alt="NutriPrint Logo" class="w-9 h-9 object-contain">
-      <span class="text-primary font-bold text-xl heading">
-        NutriPrint
-      </span>
+<header class="sticky top-0 z-50 border-b border-white/70 bg-white/85 backdrop-blur-xl shadow-[0_1px_0_rgba(15,23,42,0.04)]">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+    <a href="/" class="flex items-center gap-3">
+      <img src="/static/images/logo.svg" alt="NutriPrint" class="h-11 w-11 object-contain"/>
+      <div class="leading-tight">
+        <div class="heading text-lg font-extrabold tracking-tight text-primaryDark">NutriPrint</div>
+        <div class="text-xs font-medium text-slate-500">AI school nutrition platform</div>
+      </div>
     </a>
 
-    <!-- Desktop Nav -->
-    <div id="desktopNav" class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
-      <a href="/#bmi"     class="hover:text-primary transition">
-        <span class="lang-en">BMI Tracker</span>
-        <span class="lang-kn kn">BMI ಟ್ರ್ಯಾಕರ್</span>
-      </a>
-      <a href="/#meal"    class="hover:text-primary transition">
-        <span class="lang-en">Meal Planner</span>
-        <span class="lang-kn kn">ಊಟದ ಯೋಜನೆ</span>
-      </a>
-      <a href="/#foods"   class="hover:text-primary transition">
-        <span class="lang-en">Food Catalog</span>
-        <span class="lang-kn kn">ಆಹಾರ ಪಟ್ಟಿ</span>
-      </a>
-      <a href="/dashboard" class="hover:text-primary transition">
-        <span class="lang-en">Dashboard</span>
-        <span class="lang-kn kn">ಡ್ಯಾಶ್‌ಬೋರ್ಡ್</span>
-      </a>
-    </div>
+    <nav class="hidden items-center gap-1 lg:flex">
+      <a href="/" class="nav-link {% if current_path == '/' %}nav-link-active{% endif %}" {% if current_path == '/' %}aria-current="page"{% endif %}>Home</a>
+      <a href="/bmi" class="nav-link {% if current_path == '/bmi' %}nav-link-active{% endif %}" {% if current_path == '/bmi' %}aria-current="page"{% endif %}>BMI</a>
+      <a href="/meal-planner" class="nav-link {% if current_path == '/meal-planner' %}nav-link-active{% endif %}" {% if current_path == '/meal-planner' %}aria-current="page"{% endif %}>Meal Planner</a>
+      <a href="/food-catalog" class="nav-link {% if current_path == '/food-catalog' %}nav-link-active{% endif %}" {% if current_path == '/food-catalog' %}aria-current="page"{% endif %}>Food Catalog</a>
+      <a href="/dashboard" class="nav-link {% if current_path == '/dashboard' %}nav-link-active{% endif %}" {% if current_path == '/dashboard' %}aria-current="page"{% endif %}>Dashboard</a>
+      <a href="/about" class="nav-link {% if current_path == '/about' %}nav-link-active{% endif %}" {% if current_path == '/about' %}aria-current="page"{% endif %}>About</a>
+    </nav>
 
-    <!-- Right buttons -->
-    <div class="flex items-center gap-3">
-      <!-- Mobile menu toggle -->
-      <button onclick="toggleMobileNav()" id="mobileNavBtn"
-        class="md:hidden text-gray-600 p-1.5 rounded-lg hover:bg-gray-100" aria-label="Menu">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-      </button>
-      <!-- Language Toggle -->
-      <button onclick="toggleLang()"
-        class="text-xs border border-primary text-primary px-3 py-1.5 rounded-full font-semibold hover:bg-primary hover:text-white transition">
+    <div class="flex items-center gap-2">
+      <button onclick="toggleLang()" class="hidden rounded-full border border-primary/20 bg-white px-3 py-2 text-xs font-semibold text-primary shadow-sm transition hover:bg-primary/5 sm:inline-flex">
         <span class="lang-en">ಕನ್ನಡ</span>
         <span class="lang-kn">English</span>
       </button>
-      <!-- Login -->
-      <button onclick="openLogin()"
-        id="loginBtn"
-        class="text-xs bg-primary text-white px-4 py-1.5 rounded-full font-semibold hover:bg-green-700 transition">
-        <span class="lang-en">Login</span>
-        <span class="lang-kn kn">ಲಾಗಿನ್</span>
+      <button onclick="openLogin()" id="loginBtn" class="btn-primary px-4 py-2 text-sm">Login</button>
+      <button onclick="toggleMobileNav()" class="inline-flex rounded-full border border-slate-200 bg-white p-2 text-slate-700 shadow-sm lg:hidden" aria-label="Open menu">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
       </button>
     </div>
   </div>
 
-  <!-- Mobile Nav -->
-  <div id="mobileNav" class="hidden md:hidden border-t bg-white px-4 py-3 space-y-2">
-    <a href="/#bmi" class="block py-2 text-sm text-gray-600 hover:text-primary">BMI Tracker</a>
-    <a href="/#meal" class="block py-2 text-sm text-gray-600 hover:text-primary">Meal Planner</a>
-    <a href="/#foods" class="block py-2 text-sm text-gray-600 hover:text-primary">Food Catalog</a>
-    <a href="/dashboard" class="block py-2 text-sm text-gray-600 hover:text-primary">Dashboard</a>
+  <div id="mobileNav" class="hidden border-t border-slate-100 bg-white px-4 py-3 lg:hidden">
+    <div class="grid gap-2 sm:grid-cols-2">
+      <a href="/" class="nav-link {% if current_path == '/' %}nav-link-active{% endif %}">Home</a>
+      <a href="/bmi" class="nav-link {% if current_path == '/bmi' %}nav-link-active{% endif %}">BMI</a>
+      <a href="/meal-planner" class="nav-link {% if current_path == '/meal-planner' %}nav-link-active{% endif %}">Meal Planner</a>
+      <a href="/food-catalog" class="nav-link {% if current_path == '/food-catalog' %}nav-link-active{% endif %}">Food Catalog</a>
+      <a href="/dashboard" class="nav-link {% if current_path == '/dashboard' %}nav-link-active{% endif %}">Dashboard</a>
+      <a href="/about" class="nav-link {% if current_path == '/about' %}nav-link-active{% endif %}">About</a>
+    </div>
+    <button onclick="toggleLang()" class="mt-3 inline-flex rounded-full border border-primary/20 bg-primary/5 px-3 py-2 text-xs font-semibold text-primary sm:hidden">
+      <span class="lang-en">ಕನ್ನಡ</span>
+      <span class="lang-kn">English</span>
+    </button>
   </div>
-</nav>
+</header>
 
-<!-- ── MAIN CONTENT ───────────────────────────────────── -->
-<main>
+<main class="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
   {% block content %}{% endblock %}
 </main>
 
-<!-- ── FOOTER ─────────────────────────────────────────── -->
-<footer class="bg-gray-900 text-gray-400 text-center py-8 mt-16">
-  <p class="heading font-semibold text-white text-lg mb-1">NutriPrint V2</p>
-  <p class="text-sm">Yenepoya Institute of Technology, Moodbidri</p>
-  <p class="text-sm kn mt-1">ಯೆನೆಪೋಯ ಇನ್ಸ್ಟಿಟ್ಯೂಟ್ ಆಫ್ ಟೆಕ್ನಾಲಜಿ, ಮೂಡುಬಿದ್ರಿ</p>
-  <p class="text-xs mt-3">Free for all Karnataka schools · Built with ❤️ for children</p>
+<footer class="border-t border-slate-200/70 bg-white/80 px-4 py-8 backdrop-blur-xl">
+  <div class="mx-auto max-w-7xl text-center text-sm text-slate-500">
+    <div class="heading text-lg font-bold text-primaryDark">NutriPrint V2</div>
+    <p class="mt-1">Yenepoya Institute of Technology, Moodbidri</p>
+    <p class="kn mt-1">ಯೆನೆಪೋಯ ಇನ್ಸ್ಟಿಟ್ಯೂಟ್ ಆಫ್ ಟೆಕ್ನಾಲಜಿ, ಮೂಡುಬಿದ್ರಿ</p>
+    <p class="mt-3 text-xs uppercase tracking-[0.18em] text-slate-400">Free for Karnataka schools</p>
+  </div>
 </footer>
 
-<!-- ── LOGIN MODAL ────────────────────────────────────── -->
-<div id="loginModal"
-  class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
-  <div class="bg-white rounded-2xl p-8 w-full max-w-sm shadow-2xl">
-    <h2 class="heading font-bold text-xl text-gray-800 mb-1">Teacher Login</h2>
-    <p class="text-sm text-gray-500 mb-6 kn">ಶಿಕ್ಷಕರ ಲಾಗಿನ್</p>
+<div id="loginModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/45 p-4 backdrop-blur-sm">
+  <div class="w-full max-w-md shell-card p-6 sm:p-8">
+    <div class="mb-6 flex items-start justify-between gap-4">
+      <div>
+        <p class="sublabel">Secure access</p>
+        <h2 class="heading mt-2 text-2xl font-extrabold text-slate-900">Teacher Login</h2>
+        <p class="mt-1 text-sm text-slate-500">Enter your email to receive an OTP.</p>
+      </div>
+      <button onclick="closeLogin()" class="rounded-full bg-slate-100 p-2 text-slate-500 hover:bg-slate-200" aria-label="Close">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
 
     <div id="loginStep1">
-      <label class="text-sm font-medium text-gray-700">Email Address</label>
-      <input id="loginEmail" type="email" placeholder="you@school.edu.in"
-        class="w-full mt-1 mb-4 px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary"/>
-      <button onclick="sendOTP()"
-        class="w-full bg-primary text-white py-2.5 rounded-xl font-semibold hover:bg-green-700 transition">
-        Send OTP
-      </button>
+      <label class="mb-2 block text-sm font-semibold text-slate-700">Email Address</label>
+      <input id="loginEmail" type="email" placeholder="you@school.edu.in" class="input-field mb-4"/>
+      <button onclick="sendOTP()" class="btn-primary w-full py-3">Send OTP</button>
     </div>
 
     <div id="loginStep2" class="hidden">
-      <p class="text-sm text-gray-600 mb-4">OTP sent! Check your email.</p>
-      <input id="loginOTP" type="text" placeholder="Enter 6-digit OTP" maxlength="6"
-        class="w-full mb-4 px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary"/>
-      <button onclick="verifyOTP()"
-        class="w-full bg-primary text-white py-2.5 rounded-xl font-semibold hover:bg-green-700 transition">
-        Verify & Login
-      </button>
+      <p class="mb-4 text-sm text-slate-500">OTP sent. Check your email.</p>
+      <input id="loginOTP" type="text" maxlength="6" placeholder="Enter 6-digit OTP" class="input-field mb-4"/>
+      <button onclick="verifyOTP()" class="btn-primary w-full py-3">Verify & Login</button>
     </div>
-
-    <button onclick="closeLogin()"
-      class="mt-4 w-full text-sm text-gray-400 hover:text-gray-600">Cancel</button>
   </div>
 </div>
 
-<!-- ── GLOBAL JS ──────────────────────────────────────── -->
 <script>
-  // Language toggle
   function toggleMobileNav() {
-    document.getElementById('mobileNav').classList.toggle('hidden');
+    const nav = document.getElementById('mobileNav');
+    if (!nav) return;
+    nav.classList.toggle('hidden');
   }
 
   function toggleLang() {
     document.body.classList.toggle('kannada');
     localStorage.setItem('lang', document.body.classList.contains('kannada') ? 'kn' : 'en');
   }
-  // Restore language on load
+
   if (localStorage.getItem('lang') === 'kn') {
     document.body.classList.add('kannada');
   }
 
-  // Login modal
-  function openLogin()  { document.getElementById('loginModal').classList.remove('hidden'); }
-  function closeLogin() { document.getElementById('loginModal').classList.add('hidden'); }
+  function openLogin() {
+    const modal = document.getElementById('loginModal');
+    if (modal) modal.classList.remove('hidden');
+  }
+
+  function closeLogin() {
+    const modal = document.getElementById('loginModal');
+    if (modal) modal.classList.add('hidden');
+  }
 
   async function sendOTP() {
-    const email = document.getElementById('loginEmail').value;
+    const email = document.getElementById('loginEmail')?.value?.trim();
     if (!email) return alert('Enter your email');
     const res = await fetch('/auth/login', {
       method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({email})
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
     });
     if (res.ok) {
-      document.getElementById('loginStep1').classList.add('hidden');
-      document.getElementById('loginStep2').classList.remove('hidden');
+      document.getElementById('loginStep1')?.classList.add('hidden');
+      document.getElementById('loginStep2')?.classList.remove('hidden');
+    } else {
+      alert('Unable to send OTP');
     }
   }
 
   async function verifyOTP() {
-    const email = document.getElementById('loginEmail').value;
-    const token = document.getElementById('loginOTP').value;
+    const email = document.getElementById('loginEmail')?.value?.trim();
+    const token = document.getElementById('loginOTP')?.value?.trim();
     const res = await fetch('/auth/verify', {
       method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({email, token})
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, token }),
     });
     if (res.ok) {
       const data = await res.json();
-      localStorage.setItem('auth_user_id', data.user_id);
-      if (data.teacher_id) {
-        localStorage.setItem('teacher_id', data.teacher_id);
-      }
+      localStorage.setItem('auth_user_id', data.user_id || '');
+      if (data.teacher_id) localStorage.setItem('teacher_id', data.teacher_id);
       closeLogin();
-      document.getElementById('loginBtn').textContent = '✅ Logged In';
+      const loginBtn = document.getElementById('loginBtn');
+      if (loginBtn) loginBtn.textContent = 'Logged In';
+      window.location.reload();
     } else {
       alert('Invalid OTP. Try again.');
     }
   }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.body.classList.add('page-ready');
+    document.querySelectorAll('#mobileNav a').forEach((link) => {
+      link.addEventListener('click', () => {
+        const nav = document.getElementById('mobileNav');
+        if (nav) nav.classList.add('hidden');
+      });
+    });
+  });
 </script>
 
-<script src="/static/js/splash.js"></script>
 <script src="/static/js/animations.js"></script>
 {% block scripts %}{% endblock %}
-  <!-- Chatbot button -->
-<button onclick="toggleChat()"
-  class="fixed bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-full shadow-2xl text-2xl flex items-center justify-center hover:bg-green-700 transition z-50">
-  🤖
-</button>
-
-<!-- Chat window -->
-<div id="chatWindow"
-  class="hidden fixed bottom-24 right-6 w-80 bg-white rounded-2xl shadow-2xl border z-50 overflow-hidden">
-  <div class="bg-primary text-white px-4 py-3 flex justify-between items-center">
-    <div>
-      <p class="font-bold text-sm">NutriBot 🤖</p>
-      <p class="text-xs text-green-200">Ask anything about nutrition</p>
-    </div>
-    <button onclick="toggleChat()" class="text-white opacity-70 hover:opacity-100">✕</button>
-  </div>
-  <div id="chatMessages"
-    class="h-64 overflow-y-auto p-4 space-y-3 text-sm">
-    <div class="bg-green-50 rounded-xl p-3">
-      <p>👋 Hello! I am NutriBot.</p>
-      <p class="mt-1">Ask me about Karnataka foods, nutrition, or BMI!</p>
-      <p class="kn text-xs text-orange-400 mt-1">ಪೋಷಣೆ ಬಗ್ಗೆ ಯಾವುದಾದರೂ ಕೇಳಿ!</p>
-    </div>
-  </div>
-  <div class="border-t p-3 flex gap-2">
-    <input id="chatInput" type="text"
-      placeholder="Ask about nutrition..."
-      class="flex-1 text-sm px-3 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary"
-      onkeydown="if(event.key==='Enter') sendChat()"/>
-    <button onclick="sendChat()"
-      class="bg-primary text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-green-700">
-      Send
-    </button>
-  </div>
-</div>
-
-<script>
-function toggleChat() {
-  document.getElementById('chatWindow').classList.toggle('hidden');
-}
-
-async function sendChat() {
-  const input = document.getElementById('chatInput');
-  const msg   = input.value.trim();
-  if (!msg) return;
-
-  const messages = document.getElementById('chatMessages');
-
-  // Show user message
-  messages.innerHTML += `
-    <div class="flex justify-end">
-      <div class="bg-primary text-white rounded-xl px-3 py-2 max-w-xs text-sm">
-        ${msg}
-      </div>
-    </div>`;
-
-  input.value = '';
-  messages.scrollTop = messages.scrollHeight;
-
-  // Call Groq API
-  const res = await fetch('/api/chat', {
-    method  : 'POST',
-    headers : {'Content-Type':'application/json'},
-    body    : JSON.stringify({message: msg})
-  });
-  const data = await res.json();
-
-  messages.innerHTML += `
-    <div class="bg-green-50 rounded-xl p-3 max-w-xs text-sm">
-      ${data.reply}
-    </div>`;
-  messages.scrollTop = messages.scrollHeight;
-}
-</script>
-  
 </body>
 </html>

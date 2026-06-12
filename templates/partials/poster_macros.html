@@ -1,0 +1,95 @@
+{# Reusable food icon with SVG + emoji fallback #}
+{% macro food_icon(name, size='md') %}
+{% set icon = food_icon_lookup(name) if food_icon_lookup is defined else {'url': none, 'emoji': '🥗'} %}
+{% set sz = 'w-8 h-8' if size == 'sm' else ('w-10 h-10' if size == 'md' else 'w-12 h-12') %}
+{% set img_sz = 'w-6 h-6' if size == 'sm' else ('w-7 h-7' if size == 'md' else 'w-9 h-9') %}
+<div class="food-icon-wrap {{ sz }}">
+  {% if icon.url %}
+  <img src="{{ icon.url }}" alt="{{ name }}"
+    class="{{ img_sz }} object-contain"
+    onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
+  <span class="emoji-fallback" style="display:none">{{ icon.emoji }}</span>
+  {% else %}
+  <span class="emoji-fallback">{{ icon.emoji }}</span>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{# Nutrient stat ring #}
+{% macro nutrient_stat(icon, value, label, unit='') %}
+<div class="nutrient-ring">
+  <div class="icon">{{ icon }}</div>
+  <div class="value">{{ value }}{{ unit }}</div>
+  <div class="label">{{ label }}</div>
+</div>
+{% endmacro %}
+
+{# Macro chip #}
+{% macro macro_chip(type, value, unit='') %}
+<span class="macro-chip macro-{{ type }}">
+  {% if type == 'cal' %}🔥{% elif type == 'pro' %}💪{% elif type == 'carb' %}🍚{% else %}🥑{% endif %}
+  {{ value }}{{ unit }}
+</span>
+{% endmacro %}
+
+{# Meal portion block #}
+{% macro meal_portion(meal, meal_label) %}
+{% set macros = meal_macros(meal) if meal_macros is defined else {'carbs_g': 0, 'fat_g': 0} %}
+<div class="meal-portion-card mb-4">
+  <div class="meal-portion-header">{{ meal_label }}</div>
+  <div class="portion-item">
+    {{ food_icon(meal.name_en, 'md') }}
+    <div class="flex-1 min-w-0">
+      <p class="font-semibold text-gray-800 text-sm">{{ meal.name_en }}</p>
+      <p class="text-xs text-orange-500 kn">{{ meal.name_kn }}</p>
+      {% if meal.ingredients %}
+      <p class="text-xs text-gray-500 mt-1">
+        {% for ing in meal.ingredients %}{{ ing }}{% if not loop.last %} · {% endif %}{% endfor %}
+      </p>
+      {% endif %}
+      <div class="portion-macros">
+        {{ macro_chip('cal', meal.calories|round(0)|int, 'cal') }}
+        {{ macro_chip('pro', meal.protein_g|round(1), 'g') }}
+        {{ macro_chip('carb', macros.carbs_g|round(1), 'g') }}
+        {{ macro_chip('fat', macros.fat_g|round(1), 'g') }}
+      </div>
+    </div>
+  </div>
+</div>
+{% endmacro %}
+
+{# Food equivalent section #}
+{% macro food_equivalents_section(equivs) %}
+<div class="grid md:grid-cols-2 gap-4 mb-8">
+  {% for eq in equivs %}
+  <div class="food-equiv-card">
+    <div class="flex items-center gap-2 mb-3">
+      <span class="text-xl">{{ eq.icon }}</span>
+      <div>
+        <p class="font-bold text-gray-800 text-sm">{{ eq.nutrient }} Goal: {{ eq.target }}{{ eq.unit }}</p>
+      </div>
+    </div>
+    <div class="space-y-1 mb-3">
+      {% for ex in eq.examples %}
+      <div class="food-equiv-row">
+        {{ food_icon(ex.name, 'sm') }}
+        <span class="text-sm text-gray-700">{{ ex.display }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% if eq.suggested_combo %}
+    <div class="mt-2 pt-2 border-t border-gray-200">
+      <p class="text-xs font-bold text-primary mb-2">Suggested combination to reach goal:</p>
+      <div class="flex flex-wrap gap-2">
+        {% for item in eq.suggested_combo %}
+        <span class="combo-badge">
+          {% if item.count > 1 %}{{ item.count }}× {% endif %}{{ item.serving }}
+        </span>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endmacro %}

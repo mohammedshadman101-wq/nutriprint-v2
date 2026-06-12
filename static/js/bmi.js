@@ -213,3 +213,24 @@ async function runDemo() {
 
   await generateMeal();
 }
+
+// Restore prefill from dashboard reassess on page load
+window.addEventListener('DOMContentLoaded', () => {
+  const prefillName   = localStorage.getItem('prefill_name');
+  const prefillAge    = localStorage.getItem('prefill_age');
+  const prefillGender = localStorage.getItem('prefill_gender');
+
+  if (prefillName) {
+    const bmiName = document.getElementById('bmiName');
+    const bmiAge  = document.getElementById('bmiAge');
+    const bmiGender = document.getElementById('bmiGender');
+    const mealStudent = document.getElementById('mealStudent');
+    if (bmiName) bmiName.value = prefillName;
+    if (bmiAge && prefillAge) bmiAge.value = prefillAge;
+    if (bmiGender && prefillGender) bmiGender.value = prefillGender;
+    if (mealStudent) mealStudent.value = prefillName;
+    localStorage.removeItem('prefill_name');
+    localStorage.removeItem('prefill_age');
+    localStorage.removeItem('prefill_gender');
+  }
+});

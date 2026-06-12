@@ -9,6 +9,7 @@ import json
 import traceback
 
 router = APIRouter(prefix="/api/meal", tags=["Meals"])
+legacy_router = APIRouter(prefix="/api/meals", tags=["Meals"])
 
 
 @router.post("/generate", response_model=MealPlan)
@@ -117,6 +118,11 @@ async def generate_meal(data: MealInput):
         )
 
 
+@legacy_router.post("/generate", response_model=MealPlan)
+async def generate_meal_legacy(data: MealInput):
+    return await generate_meal(data)
+
+
 @router.patch("/{plan_id}/day")
 async def regenerate_day(plan_id: str, data: RegenerateDay):
     try:
@@ -175,6 +181,39 @@ async def regenerate_day(plan_id: str, data: RegenerateDay):
             day_payload = new_day.dict()
 
         return {"day": day_payload}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/by-token/{share_token}", response_model=MealPlan)
+async def get_plan_by_token(share_token: str):
+    """Fetch a saved meal plan by share token (for page refresh restoration)."""
+    try:
+        result = (
+            supabase.table("meal_plans")
+            .select("*")
+            .eq("share_token", share_token)
+            .single()
+            .execute()
+        )
+
+        if not result.data:
+            raise HTTPException(status_code=404, detail="Plan not found")
+
+        row = result.data
+        plan_json = row.get("plan_json", {})
+        if isinstance(plan_json, str):
+            plan_json = json.loads(plan_json)
+
+        plan_json.pop("plan_id", None)
+        plan_json.pop("share_token", None)
+        plan_json["plan_id"] = str(row["id"])
+        plan_json["share_token"] = str(row["share_token"])
+
+        return MealPlan(**plan_json)
 
     except HTTPException:
         raise

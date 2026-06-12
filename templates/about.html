@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}NutriPrint — About{% endblock %}
+
+{% block content %}
+<section class="hero-banner page-section">
+  <div class="max-w-3xl">
+    <span class="sublabel text-white/90">Project overview</span>
+    <h1 class="heading mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">About NutriPrint</h1>
+    <p class="mt-4 text-white/88">
+      NutriPrint addresses school nutrition planning with a teacher-friendly platform for BMI assessment, meal generation, and printable health communication.
+    </p>
+  </div>
+</section>
+
+<section class="mt-6 grid gap-4 lg:grid-cols-2">
+  <div class="soft-card p-6"><p class="sublabel">Problem statement</p><h2 class="section-title mt-2 text-3xl text-slate-900">Schools need faster, clearer nutrition planning</h2><p class="mt-4 text-sm leading-7 text-slate-600">Teachers often have to balance student health, regional food availability, print-friendly communication, and budget constraints without a single integrated tool.</p></div>
+  <div class="soft-card p-6"><p class="sublabel">Solution</p><h2 class="section-title mt-2 text-3xl text-slate-900">A multi-page school health-tech workspace</h2><p class="mt-4 text-sm leading-7 text-slate-600">NutriPrint brings BMI assessment, meal planning, food catalog browsing, and analytics together in one modern SaaS-style application.</p></div>
+</section>
+
+<section class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+  <div class="quick-link-card"><p class="sublabel">SDG 2</p><h3 class="heading mt-2 text-xl font-bold text-slate-900">Zero Hunger</h3><p class="mt-2 text-sm text-slate-600">Supports better nutrition planning for children.</p></div>
+  <div class="quick-link-card"><p class="sublabel">SDG 3</p><h3 class="heading mt-2 text-xl font-bold text-slate-900">Good Health & Well-being</h3><p class="mt-2 text-sm text-slate-600">Encourages healthier school meal decisions.</p></div>
+  <div class="quick-link-card"><p class="sublabel">SDG 4</p><h3 class="heading mt-2 text-xl font-bold text-slate-900">Quality Education</h3><p class="mt-2 text-sm text-slate-600">Helps teachers teach healthy habits with better tools.</p></div>
+  <div class="quick-link-card"><p class="sublabel">SDG 12</p><h3 class="heading mt-2 text-xl font-bold text-slate-900">Responsible Consumption</h3><p class="mt-2 text-sm text-slate-600">Promotes local, budget-aware, seasonal food choices.</p></div>
+</section>
+
+<section class="mt-6 grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
+  <div class="soft-card p-6"><p class="sublabel">Project impact</p><h2 class="section-title mt-2 text-3xl text-slate-900">What the platform aims to improve</h2><div class="mt-5 grid gap-3 sm:grid-cols-2"><div class="rounded-2xl bg-slate-50 p-4"><strong class="block text-slate-900">Faster intervention</strong><p class="mt-1 text-sm text-slate-600">Spot underweight and overweight students early.</p></div><div class="rounded-2xl bg-slate-50 p-4"><strong class="block text-slate-900">Clear communication</strong><p class="mt-1 text-sm text-slate-600">Share printable posters and reports with parents.</p></div><div class="rounded-2xl bg-slate-50 p-4"><strong class="block text-slate-900">Regional relevance</strong><p class="mt-1 text-sm text-slate-600">Use foods that fit Karnataka regions and budgets.</p></div><div class="rounded-2xl bg-slate-50 p-4"><strong class="block text-slate-900">Actionable analytics</strong><p class="mt-1 text-sm text-slate-600">Track plans generated and BMI distributions by class.</p></div></div></div>
+  <div class="soft-card p-6"><p class="sublabel">Technology overview</p><h2 class="section-title mt-2 text-3xl text-slate-900">Built for a modern web workflow</h2><ul class="mt-5 space-y-3 text-sm text-slate-600"><li class="rounded-2xl bg-slate-50 p-4"><strong class="text-slate-900">Frontend:</strong> FastAPI templates, Tailwind CSS, responsive Jinja pages.</li><li class="rounded-2xl bg-slate-50 p-4"><strong class="text-slate-900">Backend:</strong> FastAPI routes, Supabase auth and storage, meal generation services.</li><li class="rounded-2xl bg-slate-50 p-4"><strong class="text-slate-900">Analytics:</strong> BMI distribution, dashboard stats, and nutrition gap summaries.</li><li class="rounded-2xl bg-slate-50 p-4"><strong class="text-slate-900">Print output:</strong> Poster PDFs and public plan routes for sharing and scanning.</li></ul></div>
+</section>
+
+<section class="mt-6 soft-card p-6"><p class="sublabel">Team information</p><h2 class="section-title mt-2 text-3xl text-slate-900">Built as an academic interdisciplinary project</h2><p class="mt-4 text-sm leading-7 text-slate-600">NutriPrint V2 is developed for school nutrition planning, teacher workflows, and user-friendly health communication in Karnataka.</p></section>
+{% endblock %}

@@ -2,6 +2,7 @@
 {% block title %}NutriPrint — Teacher Dashboard{% endblock %}
 
 {% block head %}
+<link rel="stylesheet" href="/static/css/poster.css"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 
@@ -488,13 +489,13 @@ function renderRecentPlans(plans) {
     return;
   }
   container.innerHTML = plans.map(p => `
-    <a href="/plan/${p.share_token}"
+    <a href="/plan/${p.share_token}" target="_blank" rel="noopener noreferrer"
       class="flex items-center justify-between p-3 bg-gray-50 rounded-xl hover:bg-green-50 transition">
       <div>
         <p class="font-semibold text-gray-800 text-sm">${p.student_name}</p>
         <p class="text-xs text-gray-400">${p.region} · ${p.diet_pref} · ${p.month}</p>
       </div>
-      <span class="text-xs text-primary font-bold">View →</span>
+      <span class="text-xs text-primary font-bold">View ↗</span>
     </a>`).join('');
 }
 

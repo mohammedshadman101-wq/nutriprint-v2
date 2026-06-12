@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}NutriPrint — BMI Assessment{% endblock %}
+
+{% block content %}
+<section class="grid gap-6 lg:grid-cols-[1fr_0.9fr]">
+  <div class="hero-banner page-section">
+    <span class="sublabel text-white/90">Student health</span>
+    <h1 class="heading mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">BMI Assessment</h1>
+    <p class="mt-4 max-w-2xl text-white/88">
+      Record age, gender, height, and weight to get the BMI category and a quick health summary for the student.
+    </p>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a href="/meal-planner" class="btn-secondary bg-white text-primaryDark hover:bg-slate-50">Move to Meal Planner</a>
+      <a href="#bmiForm" class="btn-ghost bg-white/15 text-white hover:bg-white/20">Start Assessment</a>
+    </div>
+  </div>
+
+  <div class="soft-card p-6">
+    <p class="sublabel">What you get</p>
+    <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+      <div class="rounded-2xl bg-slate-50 p-4"><h2 class="font-semibold text-slate-900">BMI category result</h2><p class="mt-1 text-sm text-slate-600">Underweight, normal, overweight, or obese with a clear badge.</p></div>
+      <div class="rounded-2xl bg-slate-50 p-4"><h2 class="font-semibold text-slate-900">Health report</h2><p class="mt-1 text-sm text-slate-600">A concise summary for teachers and parents after calculation.</p></div>
+      <div class="rounded-2xl bg-slate-50 p-4"><h2 class="font-semibold text-slate-900">AI Advisor placeholder</h2><p class="mt-1 text-sm text-slate-600">Reserved space for future AI nutrition advice integration.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="bmiForm" class="mt-6 grid gap-6 lg:grid-cols-[1fr_0.9fr]">
+  <div class="soft-card p-6">
+    <div class="sublabel">BMI calculator</div>
+    <h2 class="section-title mt-2 text-3xl text-slate-900">Enter student details</h2>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2">
+      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Student Name</label><input id="bmiName" type="text" placeholder="e.g. Priya" class="input-field"/></div>
+      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Age</label><input id="bmiAge" type="number" min="5" max="15" placeholder="5–15" class="input-field"/></div>
+      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Gender</label><select id="bmiGender" class="select-field"><option value="boy">Boy</option><option value="girl">Girl</option></select></div>
+      <div></div>
+      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Height (cm)</label><input id="bmiHeight" type="number" placeholder="e.g. 135" class="input-field"/></div>
+      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Weight (kg)</label><input id="bmiWeight" type="number" placeholder="e.g. 28" class="input-field"/></div>
+    </div>
+    <button onclick="calculateBMI()" class="btn-primary mt-6 w-full py-3">Calculate BMI</button>
+  </div>
+
+  <div class="space-y-6">
+    <div id="bmiResult" class="soft-card hidden p-6">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h3 id="resultName" class="heading text-2xl font-bold text-slate-900"></h3>
+          <p id="resultBMI" class="mt-1 text-sm text-slate-500"></p>
+        </div>
+        <span id="resultBadge" class="rounded-full px-4 py-2 text-sm font-bold"></span>
+      </div>
+      <div class="mt-5">
+        <div class="mb-1 flex justify-between text-xs text-slate-400"><span>Underweight</span><span>Normal</span><span>Overweight</span><span>Obese</span></div>
+        <div class="h-3 w-full rounded-full bg-slate-100"><div id="gaugeBar" class="h-3 rounded-full transition-all duration-700" style="width:0%"></div></div>
+        <p id="resultPercentile" class="mt-2 text-right text-xs text-slate-500"></p>
+      </div>
+      <div id="resultAdviceEN" class="mt-5 rounded-2xl bg-emerald-50 p-4 text-sm text-slate-700"></div>
+      <div id="resultAdviceKN" class="kn mt-3 rounded-2xl bg-amber-50 p-4 text-sm text-slate-700"></div>
+      <button onclick="prefillMealForm()" class="btn-secondary mt-6 w-full py-3">Generate Meal Plan for this Student</button>
+    </div>
+
+    <div class="soft-card p-6">
+      <div class="sublabel">Future AI Advisor</div>
+      <h3 class="heading mt-2 text-2xl font-bold text-slate-900">Nutrition guidance placeholder</h3>
+      <p class="mt-3 text-sm leading-6 text-slate-600">
+        This space is reserved for a future AI-powered advisor that can explain BMI results, suggest interventions, and personalize school nutrition advice.
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/bmi.js"></script>
+<script>
+  function prefillMealForm() {
+    if (!lastBMIResult) return;
+    localStorage.setItem('prefill_name', lastBMIResult.student_name || '');
+    localStorage.setItem('prefill_age', String(lastBMIResult.age || ''));
+    localStorage.setItem('prefill_gender', lastBMIResult.gender || 'boy');
+    window.location.href = '/meal-planner';
+  }
+</script>
+{% endblock %}

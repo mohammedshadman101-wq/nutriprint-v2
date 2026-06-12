@@ -3,6 +3,7 @@ from fastapi.responses import StreamingResponse
 from models.schemas import BMIInput, BMIResult
 from models.db import supabase
 from services.bmi_calculator import calculate_bmi, calculate_nutrition_gap
+from services.food_equivalents import get_food_equivalents
 from datetime import datetime
 
 router = APIRouter(prefix="/api/bmi", tags=["BMI"])
@@ -130,6 +131,12 @@ async def nutrition_gap(plan_id: str, age_group: str):
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/food-equivalents")
+async def food_equivalents(age_group: str = "9-12"):
+    """Practical food serving examples for nutrient targets."""
+    return {"equivalents": get_food_equivalents(age_group), "age_group": age_group}
 
 
 # ── Dashboard Stats ───────────────────────────────────────
