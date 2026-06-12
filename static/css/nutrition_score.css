@@ -1,0 +1,320 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   NutriPrint — Nutrition Score Card Styles
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Card container ────────────────────────────────────────────────────────── */
+.ns-card {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 1.5rem;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  backdrop-filter: blur(18px);
+  animation: nsFadeIn 300ms ease-out;
+}
+
+@media (min-width: 640px) {
+  .ns-card { padding: 1.5rem; }
+}
+
+@keyframes nsFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Header row ────────────────────────────────────────────────────────────── */
+.ns-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.ns-sublabel {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1D9E75;
+  margin-bottom: 0.2rem;
+}
+
+.ns-title {
+  font-family: Poppins, sans-serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: #0F172A;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* ── Score badge ───────────────────────────────────────────────────────────── */
+.ns-score-badge {
+  display: flex;
+  align-items: baseline;
+  gap: 0.1rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 1rem;
+  border: 2px solid;
+  flex-shrink: 0;
+}
+
+.ns-score-number {
+  font-family: Poppins, sans-serif;
+  font-weight: 900;
+  font-size: 2.2rem;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.ns-score-denom {
+  font-family: Poppins, sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+/* ── Grade row ─────────────────────────────────────────────────────────────── */
+.ns-grade-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 0.9rem;
+}
+
+.ns-grade-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: 9999px;
+  border: 1.5px solid;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.ns-grade-hint {
+  font-size: 0.75rem;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+/* ── Main progress bar ─────────────────────────────────────────────────────── */
+.ns-main-bar-track {
+  position: relative;
+  height: 14px;
+  background: #F1F5F9;
+  border-radius: 9999px;
+  overflow: visible;
+  margin-bottom: 0.3rem;
+}
+
+.ns-main-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 800ms cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+
+/* Scale tick marks */
+.ns-bar-markers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ns-bar-markers span {
+  position: absolute;
+  top: -20px;
+  transform: translateX(-50%);
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: #94A3B8;
+  white-space: nowrap;
+}
+
+.ns-bar-markers span::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 20px;
+  width: 1px;
+  height: 14px;
+  background: rgba(148, 163, 184, 0.4);
+  transform: translateX(-50%);
+}
+
+/* ── Toggle button ─────────────────────────────────────────────────────────── */
+.ns-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.9rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(29, 158, 117, 0.2);
+  background: rgba(29, 158, 117, 0.06);
+  color: #0F5E46;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+
+.ns-toggle-btn:hover {
+  background: rgba(29, 158, 117, 0.12);
+  border-color: rgba(29, 158, 117, 0.35);
+}
+
+.ns-toggle-chevron {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  transition: transform 250ms ease;
+}
+
+/* ── Details panel ─────────────────────────────────────────────────────────── */
+.ns-details {
+  margin-top: 1.1rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.15);
+  padding-top: 1.1rem;
+}
+
+.ns-details.hidden { display: none; }
+
+.ns-section-heading {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: #475569;
+  margin-bottom: 0.75rem;
+}
+
+/* ── Factors grid ──────────────────────────────────────────────────────────── */
+.ns-factors-section {
+  margin-bottom: 1.1rem;
+}
+
+.ns-factors-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.ns-factor-row {
+  display: grid;
+  grid-template-columns: 1.6rem 1fr 2.6rem;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.ns-factor-icon {
+  font-size: 1rem;
+  text-align: center;
+  line-height: 1;
+}
+
+.ns-factor-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.ns-factor-name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #334155;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ns-factor-bar-track {
+  height: 7px;
+  background: #F1F5F9;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.ns-factor-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 600ms ease;
+}
+
+.ns-factor-pts {
+  font-family: Poppins, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.ns-factor-max {
+  font-size: 0.65rem;
+  font-weight: 600;
+  opacity: 0.55;
+}
+
+/* ── Suggestions ───────────────────────────────────────────────────────────── */
+.ns-suggestions-section {
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.ns-suggestion-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.ns-suggestion-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 0.85rem;
+  padding: 0.6rem 0.85rem;
+}
+
+.ns-suggestion-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  line-height: 1.4;
+}
+
+.ns-suggestion-text {
+  font-size: 0.78rem;
+  color: #334155;
+  line-height: 1.5;
+}
+
+/* ── Responsive tweaks ─────────────────────────────────────────────────────── */
+@media (min-width: 480px) {
+  .ns-factors-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+
+  /* Each factor row still uses its own internal 3-col grid */
+  .ns-factor-row {
+    grid-template-columns: 1.6rem 1fr 2.6rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .ns-score-number { font-size: 1.8rem; }
+  .ns-title { font-size: 1rem; }
+}

@@ -83,6 +83,11 @@
         </div>
         ${food.description ? `<p class="mt-4 text-sm leading-6 text-slate-600">${escapeHtml(food.description)}</p>` : ''}
         ${ingredients ? `<p class="mt-3 text-xs leading-5 text-slate-500"><strong class="text-slate-700">Ingredients:</strong> ${escapeHtml(ingredients)}</p>` : ''}
+        <div class="mt-4">
+          <a href="/recipes/${encodeURIComponent(food.name_en.replace(/ /g, '_'))}" class="btn-ghost w-full justify-center text-sm py-2 rounded-xl" aria-label="View recipe for ${escapeHtml(food.name_en)}">
+            View Recipe →
+          </a>
+        </div>
       </article>`;
   }
 

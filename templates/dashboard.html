@@ -150,6 +150,12 @@
 
 {% block scripts %}
 <script>
+// Hard auth guard — redirect to /login immediately if not authenticated
+if (typeof NutriAuth !== 'undefined' && !NutriAuth.isLoggedIn()) {
+  sessionStorage.setItem('np_login_redirect', '/dashboard');
+  window.location.replace('/login');
+}
+
 const teacherId = localStorage.getItem('teacher_id');
 
 const BADGE = {
@@ -162,12 +168,40 @@ const BADGE = {
 let allStudents = [];
 
 window.addEventListener('DOMContentLoaded', async () => {
-  if (!teacherId) {
+  // Check NutriAuth session (localStorage login)
+  if (typeof NutriAuth !== 'undefined' && !NutriAuth.isLoggedIn()) {
     document.getElementById('notLoggedIn').classList.remove('hidden');
     return;
   }
+
   document.getElementById('dashContent').classList.remove('hidden');
-  await loadDashboard();
+
+  // Show session info in header
+  if (typeof NutriAuth !== 'undefined') {
+    const session = NutriAuth.getSession();
+    if (session && !teacherId) {
+      document.getElementById('teacherInfo').textContent =
+        `${session.name} · ${session.email}`;
+    }
+  }
+
+  if (teacherId) {
+    await loadDashboard();
+  } else {
+    // No API teacher_id — show static welcome
+    document.getElementById('teacherInfo').textContent = 'Welcome, Teacher';
+    document.getElementById('statStudents').textContent = '—';
+    document.getElementById('statPlans').textContent = '—';
+    document.getElementById('statThisMonth').textContent = '—';
+    document.getElementById('statAssessments').textContent = '—';
+    document.getElementById('recentPlans').innerHTML =
+      '<p class="text-gray-400 text-sm">No plans recorded yet.</p>';
+    document.getElementById('studentTable').innerHTML =
+      `<tr><td colspan="6" class="px-6 py-8 text-center text-gray-400">
+        No students yet. Assess a student from the homepage.</td></tr>`;
+    document.getElementById('classProgress').innerHTML =
+      '<p class="text-gray-400 text-sm text-center py-8">No class data yet.</p>';
+  }
 });
 
 async function loadDashboard() {

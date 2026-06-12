@@ -1,33 +1,1269 @@
 {% extends "base.html" %}
 {% block title %}NutriPrint — About{% endblock %}
 
+{% block head %}
+<style>
+/* ═══════════════════════════════════════════════════════════════════════════
+   About Page — ab- prefix, self-contained
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Shared reveal animation ──────────────────────────────────────────────── */
+.ab-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 480ms cubic-bezier(0.22,1,0.36,1),
+              transform 480ms cubic-bezier(0.22,1,0.36,1);
+}
+.ab-reveal.ab-visible { opacity: 1; transform: translateY(0); }
+.ab-reveal-delay-1 { transition-delay: 60ms; }
+.ab-reveal-delay-2 { transition-delay: 120ms; }
+.ab-reveal-delay-3 { transition-delay: 180ms; }
+.ab-reveal-delay-4 { transition-delay: 240ms; }
+
+/* ── Section wrapper ──────────────────────────────────────────────────────── */
+.ab-section { margin-top: 5rem; }
+
+/* ── Section kicker + heading pattern ────────────────────────────────────── */
+.ab-kicker {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #1D9E75;
+  margin-bottom: 0.6rem;
+}
+
+.ab-section-title {
+  font-family: Poppins, sans-serif;
+  font-weight: 900;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  letter-spacing: -0.03em;
+  color: #0F172A;
+  line-height: 1.2;
+}
+
+.ab-section-sub {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: #475569;
+  max-width: 58ch;
+}
+
+/* ── Divider line ─────────────────────────────────────────────────────────── */
+.ab-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+.ab-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #E2E8F0, transparent);
+}
+
+/* ═══════════ SECTION 1 — HERO ════════════════════════════════════════════ */
+
+.ab-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 2rem;
+  background: linear-gradient(135deg, #071f17 0%, #0F5E46 40%, #1D9E75 75%, #136B4F 100%);
+  padding: 4rem 2rem;
+  color: white;
+  text-align: center;
+}
+
+.ab-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(249,115,22,0.12) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.07) 0%, transparent 35%),
+    radial-gradient(ellipse at 50% 110%, rgba(29,158,117,0.2) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Subtle grid texture */
+.ab-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+.ab-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.ab-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 9999px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.18);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.82);
+  margin-bottom: 1.5rem;
+  backdrop-filter: blur(6px);
+}
+
+.ab-hero-title {
+  font-family: Poppins, sans-serif;
+  font-weight: 900;
+  font-size: clamp(2.4rem, 7vw, 4rem);
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.ab-hero-title span {
+  background: linear-gradient(135deg, #6EE7B7 0%, #34D399 45%, #10B981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ab-hero-subtitle {
+  font-family: Poppins, sans-serif;
+  font-weight: 600;
+  font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+
+.ab-hero-desc {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.7);
+  max-width: 55ch;
+  margin: 0 auto 2rem;
+}
+
+.ab-hero-cta {
+  display: flex;
+  gap: 0.85rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.ab-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #1D9E75;
+  color: white;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(29,158,117,0.35);
+  transition: transform 150ms ease, background 150ms ease, box-shadow 150ms ease;
+}
+.ab-btn-primary:hover {
+  background: #166F53;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(29,158,117,0.45);
+}
+
+.ab-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255,255,255,0.25);
+  text-decoration: none;
+  backdrop-filter: blur(6px);
+  transition: background 150ms ease, transform 150ms ease;
+}
+.ab-btn-ghost:hover {
+  background: rgba(255,255,255,0.18);
+  transform: translateY(-2px);
+}
+
+/* Floating badges below CTA */
+.ab-hero-badges {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2.25rem;
+}
+
+.ab-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.7rem;
+  border-radius: 9999px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+}
+
+/* ═══════════ SECTION 2 — PROBLEM STATEMENT ═══════════════════════════════ */
+
+.ab-problem-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+@media (min-width: 900px) {
+  .ab-problem-grid { grid-template-columns: 1.1fr 0.9fr; align-items: center; }
+}
+
+.ab-problem-card {
+  background: rgba(255,255,255,0.9);
+  border: 1px solid rgba(148,163,184,0.18);
+  border-radius: 1.5rem;
+  box-shadow: 0 14px 35px rgba(15,23,42,0.05);
+  padding: 1.75rem;
+  backdrop-filter: blur(12px);
+}
+
+.ab-problem-stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.ab-problem-stat {
+  background: linear-gradient(135deg, #F0FDF4, #ECFDF5);
+  border: 1px solid #BBF7D0;
+  border-radius: 1rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.ab-problem-stat-value {
+  font-family: Poppins, sans-serif;
+  font-weight: 900;
+  font-size: 1.5rem;
+  color: #0F5E46;
+  line-height: 1;
+}
+
+.ab-problem-stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #64748B;
+  margin-top: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.ab-gap-list {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.ab-gap-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 0.9rem;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: 0.85rem;
+  font-size: 0.86rem;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.ab-gap-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+
+/* ═══════════ SECTION 3 — OUR SOLUTION ═══════════════════════════════════ */
+
+.ab-solution-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+}
+@media (min-width: 640px)  { .ab-solution-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1024px) { .ab-solution-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.ab-feature-card {
+  background: rgba(255,255,255,0.95);
+  border: 1px solid rgba(148,163,184,0.15);
+  border-radius: 1.25rem;
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  box-shadow: 0 8px 24px rgba(15,23,42,0.04);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.ab-feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #1D9E75, #34D399);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 200ms ease;
+}
+
+.ab-feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(15,23,42,0.09);
+  border-color: rgba(29,158,117,0.2);
+}
+.ab-feature-card:hover::before { transform: scaleX(1); }
+
+.ab-feature-icon-wrap {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.85rem;
+  background: linear-gradient(135deg, rgba(29,158,117,0.12), rgba(29,158,117,0.06));
+  border: 1px solid rgba(29,158,117,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.ab-feature-title {
+  font-family: Poppins, sans-serif;
+  font-weight: 800;
+  font-size: 0.88rem;
+  color: #0F172A;
+  line-height: 1.3;
+}
+
+.ab-feature-desc {
+  font-size: 0.78rem;
+  color: #64748B;
+  line-height: 1.55;
+}
+
+/* ═══════════ SECTION 4 — IMPACT ═════════════════════════════════════════ */
+
+.ab-impact-strip {
+  background: linear-gradient(135deg, #0F172A 0%, #0F5E46 60%, #1D9E75 100%);
+  border-radius: 2rem;
+  padding: 3rem 2rem;
+  position: relative;
+  overflow: hidden;
+  color: white;
+}
+
+.ab-impact-strip::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 0% 50%, rgba(249,115,22,0.1) 0%, transparent 40%),
+    radial-gradient(ellipse at 100% 0%, rgba(255,255,255,0.06) 0%, transparent 35%);
+  pointer-events: none;
+}
+
+.ab-impact-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.ab-impact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+@media (min-width: 640px) { .ab-impact-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.ab-impact-tile {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 1.25rem;
+  padding: 1.5rem 1.25rem;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  transition: background 150ms ease, transform 150ms ease;
+}
+.ab-impact-tile:hover {
+  background: rgba(255,255,255,0.14);
+  transform: translateY(-3px);
+}
+
+.ab-impact-tile-icon { font-size: 2rem; line-height: 1; margin-bottom: 0.6rem; }
+.ab-impact-tile-value {
+  font-family: Poppins, sans-serif;
+  font-weight: 900;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  color: #ffffff;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.ab-impact-tile-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.65);
+  margin-top: 0.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+/* ═══════════ SECTION 5 — TECH STACK ════════════════════════════════════ */
+
+.ab-tech-grid {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 540px)  { .ab-tech-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 900px)  { .ab-tech-grid { grid-template-columns: repeat(5, 1fr); } }
+
+.ab-tech-card {
+  background: rgba(255,255,255,0.95);
+  border: 1px solid rgba(148,163,184,0.15);
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(15,23,42,0.04);
+  transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+  position: relative;
+}
+
+.ab-tech-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(15,23,42,0.08);
+  border-color: rgba(29,158,117,0.22);
+}
+
+.ab-tech-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #F0FDF4, #DCFCE7);
+  border: 1px solid #BBF7D0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+.ab-tech-category {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #1D9E75;
+}
+
+.ab-tech-name {
+  font-family: Poppins, sans-serif;
+  font-weight: 800;
+  font-size: 0.88rem;
+  color: #0F172A;
+  line-height: 1.25;
+}
+
+.ab-tech-detail {
+  font-size: 0.72rem;
+  color: #64748B;
+  line-height: 1.4;
+}
+
+/* ═══════════ SECTION 6 — TEAM ═══════════════════════════════════════════ */
+
+.ab-team-wrap {
+  background: rgba(255,255,255,0.95);
+  border: 1px solid rgba(148,163,184,0.18);
+  border-radius: 1.5rem;
+  box-shadow: 0 14px 35px rgba(15,23,42,0.05);
+  overflow: hidden;
+}
+
+.ab-team-header {
+  background: linear-gradient(135deg, #0F5E46, #1D9E75);
+  padding: 1.75rem 2rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.ab-team-group-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: white;
+  backdrop-filter: blur(6px);
+}
+
+.ab-team-body { padding: 1.75rem 2rem; }
+
+.ab-members-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+@media (min-width: 640px)  { .ab-members-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1024px) { .ab-members-grid { grid-template-columns: repeat(6, 1fr); } }
+
+.ab-member-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 0.75rem;
+  background: #F8FAFC;
+  border: 1px solid rgba(148,163,184,0.14);
+  border-radius: 1rem;
+  text-align: center;
+  transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
+}
+.ab-member-chip:hover {
+  background: #F0FDF4;
+  border-color: rgba(29,158,117,0.2);
+  transform: translateY(-2px);
+}
+
+.ab-member-avatar {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1D9E75, #0F5E46);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Poppins, sans-serif;
+  font-weight: 800;
+  font-size: 0.88rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.ab-member-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #0F172A;
+  line-height: 1.3;
+}
+
+.ab-guide-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  background: linear-gradient(90deg, #F0FDF4, #ECFDF5);
+  border: 1px solid #BBF7D0;
+  border-radius: 1rem;
+  flex-wrap: wrap;
+}
+
+.ab-guide-avatar {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F97316, #EA580C);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.ab-guide-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #1D9E75;
+  margin-bottom: 0.15rem;
+}
+
+.ab-guide-name {
+  font-family: Poppins, sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #0F172A;
+}
+
+.ab-guide-dept {
+  font-size: 0.78rem;
+  color: #64748B;
+  margin-top: 0.1rem;
+}
+
+/* ═══════════ SECTION 7 — FUTURE SCOPE ══════════════════════════════════ */
+
+.ab-future-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+}
+@media (min-width: 540px)  { .ab-future-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 900px)  { .ab-future-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.ab-future-card {
+  background: rgba(255,255,255,0.95);
+  border: 1px solid rgba(148,163,184,0.15);
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  box-shadow: 0 6px 18px rgba(15,23,42,0.04);
+  transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+}
+.ab-future-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(15,23,42,0.08);
+  border-color: rgba(29,158,117,0.2);
+}
+
+.ab-future-icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.85rem;
+  background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
+  border: 1px solid #BFDBFE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.ab-future-title {
+  font-family: Poppins, sans-serif;
+  font-weight: 800;
+  font-size: 0.88rem;
+  color: #0F172A;
+  margin-bottom: 0.25rem;
+}
+
+.ab-future-desc {
+  font-size: 0.78rem;
+  color: #64748B;
+  line-height: 1.55;
+}
+
+/* ═══════════ SECTION 8 — SDG ALIGNMENT ═════════════════════════════════ */
+
+.ab-sdg-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) { .ab-sdg-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.ab-sdg-card {
+  border-radius: 1.5rem;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+.ab-sdg-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(15,23,42,0.12);
+}
+
+.ab-sdg-card--2 {
+  background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+  border: 1px solid #FCD34D;
+  color: #78350F;
+}
+.ab-sdg-card--3 {
+  background: linear-gradient(135deg, #D1FAE5, #A7F3D0);
+  border: 1px solid #6EE7B7;
+  color: #064E3B;
+}
+.ab-sdg-card--4 {
+  background: linear-gradient(135deg, #FED7AA, #FDBA74);
+  border: 1px solid #FB923C;
+  color: #7C2D12;
+}
+
+.ab-sdg-num-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  font-family: Poppins, sans-serif;
+  font-weight: 900;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.ab-sdg-card--2 .ab-sdg-num-badge { background: #F59E0B; color: white; }
+.ab-sdg-card--3 .ab-sdg-num-badge { background: #10B981; color: white; }
+.ab-sdg-card--4 .ab-sdg-num-badge { background: #F97316; color: white; }
+
+.ab-sdg-goal {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+}
+
+.ab-sdg-title {
+  font-family: Poppins, sans-serif;
+  font-weight: 900;
+  font-size: 1.1rem;
+  line-height: 1.25;
+}
+
+.ab-sdg-desc {
+  font-size: 0.84rem;
+  line-height: 1.65;
+  opacity: 0.85;
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .ab-reveal, .ab-feature-card, .ab-future-card,
+  .ab-tech-card, .ab-impact-tile, .ab-sdg-card,
+  .ab-btn-primary, .ab-btn-ghost {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+</style>
+{% endblock %}
+
 {% block content %}
-<section class="hero-banner page-section">
-  <div class="max-w-3xl">
-    <span class="sublabel text-white/90">Project overview</span>
-    <h1 class="heading mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">About NutriPrint</h1>
-    <p class="mt-4 text-white/88">
-      NutriPrint addresses school nutrition planning with a teacher-friendly platform for BMI assessment, meal generation, and printable health communication.
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 1 — HERO
+     ══════════════════════════════════════════════════════════════════════════ -->
+<section class="ab-hero" aria-labelledby="ab-hero-title">
+  <div class="ab-hero-inner">
+
+    <div class="ab-hero-eyebrow ab-reveal">
+      <span>🌿</span> Project Showcase · NutriPrint V2
+    </div>
+
+    <h1 class="ab-hero-title ab-reveal ab-reveal-delay-1" id="ab-hero-title">
+      <span>NutriPrint</span>
+    </h1>
+
+    <p class="ab-hero-subtitle ab-reveal ab-reveal-delay-2">
+      AI-Powered Nutrition Awareness Platform for Karnataka Schools
     </p>
+
+    <p class="ab-hero-desc ab-reveal ab-reveal-delay-3">
+      NutriPrint helps schools identify nutritional gaps, generate balanced meal plans,
+      promote healthy eating habits, and improve nutrition awareness among children.
+    </p>
+
+    <div class="ab-hero-cta ab-reveal ab-reveal-delay-4">
+      <a href="/meal-planner" class="ab-btn-primary">
+        <span aria-hidden="true">🗓️</span> Generate Meal Plan
+      </a>
+      <a href="/food-catalog" class="ab-btn-ghost">
+        <span aria-hidden="true">🥗</span> Explore Food Catalog
+      </a>
+    </div>
+
+    <div class="ab-hero-badges ab-reveal ab-reveal-delay-4">
+      <span class="ab-hero-badge">🤖 Groq AI</span>
+      <span class="ab-hero-badge">🌿 53+ Karnataka Foods</span>
+      <span class="ab-hero-badge">🗣️ EN · ಕನ್ನಡ Bilingual</span>
+      <span class="ab-hero-badge">📊 BMI Analytics</span>
+      <span class="ab-hero-badge">⬜ QR Recipes</span>
+    </div>
+
   </div>
 </section>
 
-<section class="mt-6 grid gap-4 lg:grid-cols-2">
-  <div class="soft-card p-6"><p class="sublabel">Problem statement</p><h2 class="section-title mt-2 text-3xl text-slate-900">Schools need faster, clearer nutrition planning</h2><p class="mt-4 text-sm leading-7 text-slate-600">Teachers often have to balance student health, regional food availability, print-friendly communication, and budget constraints without a single integrated tool.</p></div>
-  <div class="soft-card p-6"><p class="sublabel">Solution</p><h2 class="section-title mt-2 text-3xl text-slate-900">A multi-page school health-tech workspace</h2><p class="mt-4 text-sm leading-7 text-slate-600">NutriPrint brings BMI assessment, meal planning, food catalog browsing, and analytics together in one modern SaaS-style application.</p></div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 2 — PROBLEM STATEMENT
+     ══════════════════════════════════════════════════════════════════════════ -->
+<section class="ab-section" aria-labelledby="ab-problem-title">
+  <div class="ab-divider ab-reveal">
+    <span class="ab-kicker">The Challenge</span>
+  </div>
+
+  <div class="ab-problem-grid">
+
+    <div class="ab-problem-card ab-reveal">
+      <h2 class="ab-section-title" id="ab-problem-title">Nutrition gaps in Karnataka schools</h2>
+      <p class="ab-section-sub">
+        Many school children face nutritional challenges such as undernutrition, poor dietary awareness,
+        and imbalanced meal consumption. Schools often lack simple tools to address these issues.
+      </p>
+
+      <ul class="ab-gap-list" role="list" aria-label="Problems schools face">
+        <li class="ab-gap-item">
+          <span class="ab-gap-icon" aria-hidden="true">⚠️</span>
+          <span>No easy way to <strong>assess BMI</strong> and track nutritional risk across students</span>
+        </li>
+        <li class="ab-gap-item">
+          <span class="ab-gap-icon" aria-hidden="true">⚠️</span>
+          <span>Teachers struggle to <strong>understand nutrition gaps</strong> without clinical expertise</span>
+        </li>
+        <li class="ab-gap-item">
+          <span class="ab-gap-icon" aria-hidden="true">⚠️</span>
+          <span>No structured way to <strong>recommend balanced meals</strong> using local, affordable foods</span>
+        </li>
+        <li class="ab-gap-item">
+          <span class="ab-gap-icon" aria-hidden="true">⚠️</span>
+          <span>Parents receive little <strong>nutrition education</strong> in a language they understand</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="ab-reveal ab-reveal-delay-2">
+      <div class="ab-problem-stat-grid">
+        <div class="ab-problem-stat">
+          <div class="ab-problem-stat-value">1 in 3</div>
+          <div class="ab-problem-stat-label">School children undernourished</div>
+        </div>
+        <div class="ab-problem-stat">
+          <div class="ab-problem-stat-value">53+</div>
+          <div class="ab-problem-stat-label">Local foods catalogued</div>
+        </div>
+        <div class="ab-problem-stat">
+          <div class="ab-problem-stat-value">6</div>
+          <div class="ab-problem-stat-label">Karnataka regions covered</div>
+        </div>
+        <div class="ab-problem-stat">
+          <div class="ab-problem-stat-value">₹150</div>
+          <div class="ab-problem-stat-label">Budget per student per day</div>
+        </div>
+      </div>
+
+      <div class="ab-problem-card" style="margin-top: 1.25rem;">
+        <p class="ab-kicker">Why it matters</p>
+        <p style="font-size:0.88rem;line-height:1.75;color:#475569;margin-top:0.5rem;">
+          Early nutritional intervention improves cognitive development, school attendance,
+          and long-term health outcomes. Karnataka's diversity in diet and region makes
+          a one-size-fits-all approach ineffective — NutriPrint is built to be regional and personal.
+        </p>
+      </div>
+    </div>
+
+  </div>
 </section>
 
-<section class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-  <div class="quick-link-card"><p class="sublabel">SDG 2</p><h3 class="heading mt-2 text-xl font-bold text-slate-900">Zero Hunger</h3><p class="mt-2 text-sm text-slate-600">Supports better nutrition planning for children.</p></div>
-  <div class="quick-link-card"><p class="sublabel">SDG 3</p><h3 class="heading mt-2 text-xl font-bold text-slate-900">Good Health & Well-being</h3><p class="mt-2 text-sm text-slate-600">Encourages healthier school meal decisions.</p></div>
-  <div class="quick-link-card"><p class="sublabel">SDG 4</p><h3 class="heading mt-2 text-xl font-bold text-slate-900">Quality Education</h3><p class="mt-2 text-sm text-slate-600">Helps teachers teach healthy habits with better tools.</p></div>
-  <div class="quick-link-card"><p class="sublabel">SDG 12</p><h3 class="heading mt-2 text-xl font-bold text-slate-900">Responsible Consumption</h3><p class="mt-2 text-sm text-slate-600">Promotes local, budget-aware, seasonal food choices.</p></div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 3 — OUR SOLUTION
+     ══════════════════════════════════════════════════════════════════════════ -->
+<section class="ab-section" aria-labelledby="ab-solution-title">
+  <div class="ab-divider ab-reveal">
+    <span class="ab-kicker">Our Solution</span>
+  </div>
+  <div class="ab-reveal" style="margin-bottom: 2rem;">
+    <h2 class="ab-section-title" id="ab-solution-title">Everything a school needs in one platform</h2>
+    <p class="ab-section-sub">Eight integrated features that take schools from data to action.</p>
+  </div>
+
+  <div class="ab-solution-grid">
+
+    <div class="ab-feature-card ab-reveal">
+      <div class="ab-feature-icon-wrap" aria-hidden="true">📐</div>
+      <div class="ab-feature-title">BMI Assessment</div>
+      <div class="ab-feature-desc">Accurate BMI calculation with age-gender-specific percentile classification and personalised advice.</div>
+    </div>
+
+    <div class="ab-feature-card ab-reveal ab-reveal-delay-1">
+      <div class="ab-feature-icon-wrap" aria-hidden="true">🤖</div>
+      <div class="ab-feature-title">AI Nutrition Advisor</div>
+      <div class="ab-feature-desc">Groq-powered conversational advisor that answers nutrition questions in English and Kannada.</div>
+    </div>
+
+    <div class="ab-feature-card ab-reveal ab-reveal-delay-2">
+      <div class="ab-feature-icon-wrap" aria-hidden="true">🗓️</div>
+      <div class="ab-feature-title">Weekly Meal Planning</div>
+      <div class="ab-feature-desc">AI-generated 7-day meal plans tailored to age group, diet type, region, and nutrition strategy.</div>
+    </div>
+
+    <div class="ab-feature-card ab-reveal ab-reveal-delay-3">
+      <div class="ab-feature-icon-wrap" aria-hidden="true">📊</div>
+      <div class="ab-feature-title">Nutrition Gap Analysis</div>
+      <div class="ab-feature-desc">Identifies shortfalls in calories, protein, calcium, and iron against age-appropriate targets.</div>
+    </div>
+
+    <div class="ab-feature-card ab-reveal ab-reveal-delay-1">
+      <div class="ab-feature-icon-wrap" aria-hidden="true">⬜</div>
+      <div class="ab-feature-title">QR Recipe System</div>
+      <div class="ab-feature-desc">Scan QR codes on meal plan items to open detailed recipe pages with ingredients and steps.</div>
+    </div>
+
+    <div class="ab-feature-card ab-reveal ab-reveal-delay-2">
+      <div class="ab-feature-icon-wrap" aria-hidden="true">🏅</div>
+      <div class="ab-feature-title">Nutrition Score</div>
+      <div class="ab-feature-desc">Automated weekly nutrition scoring system that grades meal plan quality from A to F.</div>
+    </div>
+
+    <div class="ab-feature-card ab-reveal ab-reveal-delay-3">
+      <div class="ab-feature-icon-wrap" aria-hidden="true">🖨️</div>
+      <div class="ab-feature-title">Printable Posters</div>
+      <div class="ab-feature-desc">Exportable infographic health posters and PDF reports ready for classroom display and parent sharing.</div>
+    </div>
+
+    <div class="ab-feature-card ab-reveal ab-reveal-delay-4">
+      <div class="ab-feature-icon-wrap" aria-hidden="true">🗣️</div>
+      <div class="ab-feature-title">Bilingual Support</div>
+      <div class="ab-feature-desc">Full English and ಕನ್ನಡ interface so teachers and parents engage in their preferred language.</div>
+    </div>
+
+  </div>
 </section>
 
-<section class="mt-6 grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
-  <div class="soft-card p-6"><p class="sublabel">Project impact</p><h2 class="section-title mt-2 text-3xl text-slate-900">What the platform aims to improve</h2><div class="mt-5 grid gap-3 sm:grid-cols-2"><div class="rounded-2xl bg-slate-50 p-4"><strong class="block text-slate-900">Faster intervention</strong><p class="mt-1 text-sm text-slate-600">Spot underweight and overweight students early.</p></div><div class="rounded-2xl bg-slate-50 p-4"><strong class="block text-slate-900">Clear communication</strong><p class="mt-1 text-sm text-slate-600">Share printable posters and reports with parents.</p></div><div class="rounded-2xl bg-slate-50 p-4"><strong class="block text-slate-900">Regional relevance</strong><p class="mt-1 text-sm text-slate-600">Use foods that fit Karnataka regions and budgets.</p></div><div class="rounded-2xl bg-slate-50 p-4"><strong class="block text-slate-900">Actionable analytics</strong><p class="mt-1 text-sm text-slate-600">Track plans generated and BMI distributions by class.</p></div></div></div>
-  <div class="soft-card p-6"><p class="sublabel">Technology overview</p><h2 class="section-title mt-2 text-3xl text-slate-900">Built for a modern web workflow</h2><ul class="mt-5 space-y-3 text-sm text-slate-600"><li class="rounded-2xl bg-slate-50 p-4"><strong class="text-slate-900">Frontend:</strong> FastAPI templates, Tailwind CSS, responsive Jinja pages.</li><li class="rounded-2xl bg-slate-50 p-4"><strong class="text-slate-900">Backend:</strong> FastAPI routes, Supabase auth and storage, meal generation services.</li><li class="rounded-2xl bg-slate-50 p-4"><strong class="text-slate-900">Analytics:</strong> BMI distribution, dashboard stats, and nutrition gap summaries.</li><li class="rounded-2xl bg-slate-50 p-4"><strong class="text-slate-900">Print output:</strong> Poster PDFs and public plan routes for sharing and scanning.</li></ul></div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 4 — IMPACT
+     ══════════════════════════════════════════════════════════════════════════ -->
+<section class="ab-section" aria-labelledby="ab-impact-title">
+  <div class="ab-impact-strip">
+    <div class="ab-impact-inner">
+
+      <div class="text-center ab-reveal">
+        <span class="ab-kicker" style="color:rgba(255,255,255,0.6)">Project Impact</span>
+        <h2 class="ab-section-title" id="ab-impact-title" style="color:white;margin-top:0.4rem;">
+          Built for real-world nutrition outcomes
+        </h2>
+        <p style="color:rgba(255,255,255,0.65);font-size:0.9rem;margin-top:0.6rem;">
+          NutriPrint delivers measurable impact across all seven pillars of school health.
+        </p>
+      </div>
+
+      <div class="ab-impact-grid" role="list">
+        <div class="ab-impact-tile ab-reveal" role="listitem">
+          <div class="ab-impact-tile-icon" aria-hidden="true">🥘</div>
+          <div class="ab-impact-tile-value">53+</div>
+          <div class="ab-impact-tile-label">Karnataka Foods</div>
+        </div>
+        <div class="ab-impact-tile ab-reveal ab-reveal-delay-1" role="listitem">
+          <div class="ab-impact-tile-icon" aria-hidden="true">🤖</div>
+          <div class="ab-impact-tile-value">AI</div>
+          <div class="ab-impact-tile-label">Powered Recommendations</div>
+        </div>
+        <div class="ab-impact-tile ab-reveal ab-reveal-delay-2" role="listitem">
+          <div class="ab-impact-tile-icon" aria-hidden="true">📚</div>
+          <div class="ab-impact-tile-value">Active</div>
+          <div class="ab-impact-tile-label">Nutrition Education</div>
+        </div>
+        <div class="ab-impact-tile ab-reveal ab-reveal-delay-3" role="listitem">
+          <div class="ab-impact-tile-icon" aria-hidden="true">🏫</div>
+          <div class="ab-impact-tile-value">Pilot</div>
+          <div class="ab-impact-tile-label">School Outreach</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </section>
 
-<section class="mt-6 soft-card p-6"><p class="sublabel">Team information</p><h2 class="section-title mt-2 text-3xl text-slate-900">Built as an academic interdisciplinary project</h2><p class="mt-4 text-sm leading-7 text-slate-600">NutriPrint V2 is developed for school nutrition planning, teacher workflows, and user-friendly health communication in Karnataka.</p></section>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 5 — TECHNOLOGY STACK
+     ══════════════════════════════════════════════════════════════════════════ -->
+<section class="ab-section" aria-labelledby="ab-tech-title">
+  <div class="ab-divider ab-reveal">
+    <span class="ab-kicker">Technology Stack</span>
+  </div>
+  <div class="ab-reveal" style="margin-bottom: 2rem;">
+    <h2 class="ab-section-title" id="ab-tech-title">Built on a modern production stack</h2>
+    <p class="ab-section-sub">Each layer is chosen for reliability, speed, and developer experience.</p>
+  </div>
+
+  <div class="ab-tech-grid">
+
+    <div class="ab-tech-card ab-reveal">
+      <div class="ab-tech-icon" aria-hidden="true">🌐</div>
+      <div class="ab-tech-category">Frontend</div>
+      <div class="ab-tech-name">HTML · CSS · JavaScript</div>
+      <div class="ab-tech-detail">Tailwind CSS utility classes, Jinja2 templating, vanilla JS with no heavy framework dependency.</div>
+    </div>
+
+    <div class="ab-tech-card ab-reveal ab-reveal-delay-1">
+      <div class="ab-tech-icon" aria-hidden="true">⚡</div>
+      <div class="ab-tech-category">Backend</div>
+      <div class="ab-tech-name">Python · FastAPI</div>
+      <div class="ab-tech-detail">Async REST API with Pydantic validation, structured routers, and Supabase integration.</div>
+    </div>
+
+    <div class="ab-tech-card ab-reveal ab-reveal-delay-2">
+      <div class="ab-tech-icon" aria-hidden="true">🗄️</div>
+      <div class="ab-tech-category">Database</div>
+      <div class="ab-tech-name">Supabase · PostgreSQL</div>
+      <div class="ab-tech-detail">Managed Postgres with row-level security, real-time capabilities, and built-in auth.</div>
+    </div>
+
+    <div class="ab-tech-card ab-reveal ab-reveal-delay-3">
+      <div class="ab-tech-icon" aria-hidden="true">🤖</div>
+      <div class="ab-tech-category">AI Engine</div>
+      <div class="ab-tech-name">Groq API</div>
+      <div class="ab-tech-detail">Ultra-fast LLM inference for meal plan generation, nutrition advice, and bilingual responses.</div>
+    </div>
+
+    <div class="ab-tech-card ab-reveal ab-reveal-delay-4">
+      <div class="ab-tech-icon" aria-hidden="true">🚀</div>
+      <div class="ab-tech-category">Deployment</div>
+      <div class="ab-tech-name">Render</div>
+      <div class="ab-tech-detail">Continuous deployment from Git with automatic HTTPS, environment variables, and zero-config scaling.</div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 6 — TEAM
+     ══════════════════════════════════════════════════════════════════════════ -->
+<section class="ab-section" aria-labelledby="ab-team-title">
+  <div class="ab-divider ab-reveal">
+    <span class="ab-kicker">Meet the Team</span>
+  </div>
+
+  <div class="ab-team-wrap ab-reveal">
+
+    <div class="ab-team-header">
+      <div>
+        <h2 class="ab-section-title" id="ab-team-title" style="color:white;font-size:1.5rem;">
+          The People Behind NutriPrint
+        </h2>
+        <p style="color:rgba(255,255,255,0.7);font-size:0.84rem;margin-top:0.35rem;">
+          Yenepoya Institute of Technology, Moodbidri · Interdisciplinary Project Work
+        </p>
+      </div>
+      <span class="ab-team-group-badge">
+        <span aria-hidden="true">👥</span> Group 7
+      </span>
+    </div>
+
+    <div class="ab-team-body">
+      <p class="ab-kicker" style="margin-bottom:1rem;">Team Members</p>
+
+      <div class="ab-members-grid" role="list" aria-label="Team members">
+
+        {% set members = [
+          ("Mohammed Shadman",    "MS"),
+          ("Prakruthi P Shetty",  "PP"),
+          ("Prasad N Shenoy",     "PN"),
+          ("Shaili S",            "SS"),
+          ("Inal Xavier Dsilva",  "IX"),
+          ("Swasthi",             "SW")
+        ] %}
+
+        {% for name, initials in members %}
+        <div class="ab-member-chip" role="listitem">
+          <div class="ab-member-avatar" aria-hidden="true">{{ initials }}</div>
+          <div class="ab-member-name">{{ name }}</div>
+        </div>
+        {% endfor %}
+
+      </div>
+
+      <div class="ab-guide-card">
+        <div class="ab-guide-avatar" aria-hidden="true">👨‍🏫</div>
+        <div>
+          <div class="ab-guide-label">Project Guide</div>
+          <div class="ab-guide-name">Mr. G. Jaganesh Chengappa</div>
+          <div class="ab-guide-dept">Assistant Professor · Department of Mechanical Engineering · YIT Moodbidri</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 7 — FUTURE SCOPE
+     ══════════════════════════════════════════════════════════════════════════ -->
+<section class="ab-section" aria-labelledby="ab-future-title">
+  <div class="ab-divider ab-reveal">
+    <span class="ab-kicker">Future Scope</span>
+  </div>
+  <div class="ab-reveal" style="margin-bottom: 2rem;">
+    <h2 class="ab-section-title" id="ab-future-title">What comes next</h2>
+    <p class="ab-section-sub">A roadmap of features planned for NutriPrint V3 and beyond.</p>
+  </div>
+
+  <div class="ab-future-grid">
+
+    <div class="ab-future-card ab-reveal">
+      <div class="ab-future-icon" aria-hidden="true">📈</div>
+      <div>
+        <div class="ab-future-title">Student Progress Tracking</div>
+        <div class="ab-future-desc">Longitudinal BMI and nutrition monitoring per student with trend analysis over academic terms.</div>
+      </div>
+    </div>
+
+    <div class="ab-future-card ab-reveal ab-reveal-delay-1">
+      <div class="ab-future-icon" aria-hidden="true">👨‍👩‍👧</div>
+      <div>
+        <div class="ab-future-title">Parent Portal</div>
+        <div class="ab-future-desc">Dedicated parent dashboard with nutrition reports, meal suggestions, and multilingual WhatsApp alerts.</div>
+      </div>
+    </div>
+
+    <div class="ab-future-card ab-reveal ab-reveal-delay-2">
+      <div class="ab-future-icon" aria-hidden="true">📊</div>
+      <div>
+        <div class="ab-future-title">School Analytics Dashboard</div>
+        <div class="ab-future-desc">Class-level nutrition analytics with BMI distribution, meal compliance rates, and intervention flags.</div>
+      </div>
+    </div>
+
+    <div class="ab-future-card ab-reveal ab-reveal-delay-1">
+      <div class="ab-future-icon" aria-hidden="true">📱</div>
+      <div>
+        <div class="ab-future-title">Mobile Application</div>
+        <div class="ab-future-desc">Native Android and iOS app for offline BMI assessment and meal plan access in low-connectivity areas.</div>
+      </div>
+    </div>
+
+    <div class="ab-future-card ab-reveal ab-reveal-delay-2">
+      <div class="ab-future-icon" aria-hidden="true">🏛️</div>
+      <div>
+        <div class="ab-future-title">Government Nutrition Monitoring</div>
+        <div class="ab-future-desc">Integration with state-level mid-day meal schemes for compliance reporting and nutrition auditing.</div>
+      </div>
+    </div>
+
+    <div class="ab-future-card ab-reveal ab-reveal-delay-3">
+      <div class="ab-future-icon" aria-hidden="true">🌐</div>
+      <div>
+        <div class="ab-future-title">Multi-School Deployment</div>
+        <div class="ab-future-desc">White-label SaaS offering for multiple schools with district-level administrator access and reporting.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     SECTION 8 — SDG ALIGNMENT
+     ══════════════════════════════════════════════════════════════════════════ -->
+<section class="ab-section" style="margin-bottom: 4rem;" aria-labelledby="ab-sdg-title">
+  <div class="ab-divider ab-reveal">
+    <span class="ab-kicker">SDG Alignment</span>
+  </div>
+  <div class="ab-reveal" style="margin-bottom: 2rem;">
+    <h2 class="ab-section-title" id="ab-sdg-title">Contributing to the UN Sustainable Development Goals</h2>
+    <p class="ab-section-sub">NutriPrint directly supports three global goals through its nutrition-first approach to school health.</p>
+  </div>
+
+  <div class="ab-sdg-grid" role="list">
+
+    <div class="ab-sdg-card ab-sdg-card--2 ab-reveal" role="listitem">
+      <div style="display:flex;align-items:center;gap:0.85rem;">
+        <div class="ab-sdg-num-badge">2</div>
+        <div class="ab-sdg-goal">SDG 2</div>
+      </div>
+      <div class="ab-sdg-title">Zero Hunger</div>
+      <div class="ab-sdg-desc">
+        Supports better nutrition planning for school children through affordable, locally-sourced
+        meal plans that address undernutrition and micronutrient deficiency.
+      </div>
+    </div>
+
+    <div class="ab-sdg-card ab-sdg-card--3 ab-reveal ab-reveal-delay-1" role="listitem">
+      <div style="display:flex;align-items:center;gap:0.85rem;">
+        <div class="ab-sdg-num-badge">3</div>
+        <div class="ab-sdg-goal">SDG 3</div>
+      </div>
+      <div class="ab-sdg-title">Good Health &amp; Well-being</div>
+      <div class="ab-sdg-desc">
+        Enables early identification of BMI risk, promotes balanced diets, and empowers schools
+        to act on health data before problems escalate.
+      </div>
+    </div>
+
+    <div class="ab-sdg-card ab-sdg-card--4 ab-reveal ab-reveal-delay-2" role="listitem">
+      <div style="display:flex;align-items:center;gap:0.85rem;">
+        <div class="ab-sdg-num-badge">4</div>
+        <div class="ab-sdg-goal">SDG 4</div>
+      </div>
+      <div class="ab-sdg-title">Quality Education</div>
+      <div class="ab-sdg-desc">
+        Improves teacher capacity with digital tools, provides bilingual nutrition education resources,
+        and supports healthy learning environments for all students.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* Intersection Observer — triggers .ab-reveal animations as sections scroll into view */
+(function () {
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('ab-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  /* Trigger hero elements immediately (already in view on load) */
+  document.querySelectorAll('.ab-hero .ab-reveal').forEach(function (el) {
+    observer.observe(el);
+  });
+
+  /* Observe all other reveal elements */
+  document.querySelectorAll('.ab-reveal:not(.ab-hero .ab-reveal)').forEach(function (el) {
+    observer.observe(el);
+  });
+}());
+</script>
 {% endblock %}

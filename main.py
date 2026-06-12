@@ -7,7 +7,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers import ai_advisor, bmi, meals, foods, auth, poster
+from routers import ai_advisor, bmi, meals, foods, auth, poster, recipes
 from routers.foods import impact
 
 
@@ -45,6 +45,15 @@ app.include_router(auth.router)
 app.include_router(auth.legacy_router)
 app.include_router(poster.router)
 app.include_router(ai_advisor.router)
+app.include_router(recipes.router)
+
+
+@app.get("/login", response_class=HTMLResponse)
+async def login_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="login.html",
+    )
 
 
 @app.get("/", response_class=HTMLResponse)
