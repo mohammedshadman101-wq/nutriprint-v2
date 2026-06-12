@@ -38,9 +38,9 @@
           <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">{{ plan.month | title }}</span>
         </div>
       </div>
-      <div class="bg-white rounded-xl p-3 text-center self-start">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ base_url }}plan/{{ share_token }}"
-          alt="QR Code" class="w-20 h-20 sm:w-24 sm:h-24 mx-auto"/>
+      <div class="bg-white rounded-xl p-3 text-center self-start no-print">
+        <img src="/api/plans/qr/{{ base_url }}plan/{{ share_token }}"
+          alt="QR Code — scan to open meal plan" class="w-20 h-20 sm:w-24 sm:h-24 mx-auto"/>
         <p class="text-gray-500 text-xs mt-1">Scan to open</p>
       </div>
     </div>

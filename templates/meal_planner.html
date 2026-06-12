@@ -6,73 +6,254 @@
 {% endblock %}
 
 {% block content %}
+
+<!-- Hero Banner -->
 <section class="hero-banner page-section">
-  <div class="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+  <div class="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
     <div>
       <span class="sublabel text-white/90">Meal workflow</span>
-      <h1 class="heading mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">Meal Planner</h1>
-      <p class="mt-4 max-w-2xl text-white/88">
-        Consult the AI nutrition co-pilot first, then generate a printable 7-day school meal plan using student details, regional preferences, and budget-aware nutrition rules.
+      <h1 class="heading mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">Meal Planner</h1>
+      <p class="mt-3 max-w-xl text-sm leading-6 text-white/85 sm:text-base">
+        Consult the AI co-pilot, then generate a printable 7-day school meal plan with regional food, nutrient targets, and parent guidance built in.
       </p>
-      <div class="mt-6 flex flex-wrap gap-3">
+      <div class="mt-5 flex flex-wrap gap-3">
         <a href="#mealForm" class="btn-secondary bg-white text-primaryDark hover:bg-slate-50">Start Planning</a>
         <a href="/food-catalog" class="btn-ghost bg-white/15 text-white hover:bg-white/20">Browse Foods</a>
       </div>
     </div>
-    <div class="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-      <div class="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur"><p class="text-sm font-semibold text-white/70">1</p><h2 class="mt-1 text-lg font-bold text-white">Student details</h2><p class="mt-1 text-sm text-white/80">Enter school, student, age group, diet, region, and strategy.</p></div>
-      <div class="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur"><p class="text-sm font-semibold text-white/70">2</p><h2 class="mt-1 text-lg font-bold text-white">AI consultation</h2><p class="mt-1 text-sm text-white/80">Ask questions and choose advice for reports, parents, and posters.</p></div>
-      <div class="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur"><p class="text-sm font-semibold text-white/70">3</p><h2 class="mt-1 text-lg font-bold text-white">Generate and share</h2><p class="mt-1 text-sm text-white/80">Create the plan and include selected AI recommendations automatically.</p></div>
+    <div class="grid gap-2 sm:grid-cols-3 lg:grid-cols-1">
+      <div class="flex items-center gap-3 rounded-2xl border border-white/15 bg-white/10 p-3 backdrop-blur">
+        <span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-white/20 text-sm font-bold text-white">1</span>
+        <div><p class="text-sm font-bold text-white">Student details</p><p class="text-xs text-white/75">School, age, diet, region, strategy.</p></div>
+      </div>
+      <div class="flex items-center gap-3 rounded-2xl border border-white/15 bg-white/10 p-3 backdrop-blur">
+        <span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-white/20 text-sm font-bold text-white">2</span>
+        <div><p class="text-sm font-bold text-white">AI consultation</p><p class="text-xs text-white/75">Get advice for poster, report & parents.</p></div>
+      </div>
+      <div class="flex items-center gap-3 rounded-2xl border border-white/15 bg-white/10 p-3 backdrop-blur">
+        <span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-white/20 text-sm font-bold text-white">3</span>
+        <div><p class="text-sm font-bold text-white">Generate &amp; share</p><p class="text-xs text-white/75">Poster, PDF, WhatsApp, Health Report.</p></div>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="mealForm" class="mt-6 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-  <div class="soft-card p-6">
-    <div class="sublabel">Student information</div>
-    <h2 class="section-title mt-2 text-3xl text-slate-900">Plan a weekly menu</h2>
-    <div class="mt-6 grid gap-4 sm:grid-cols-2">
-      <div><label class="mb-2 block text-sm font-semibold text-slate-700">School Name</label><input id="mealSchool" type="text" placeholder="Govt HS Mangalore" class="input-field"/></div>
-      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Student Name</label><input id="mealStudent" type="text" placeholder="Priya" class="input-field"/></div>
-      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Age Group</label><select id="mealAge" class="select-field"><option value="5-8">5–8 years</option><option value="9-12" selected>9–12 years</option><option value="13-15">13–15 years</option></select></div>
-      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Gender</label><select id="mealGender" class="select-field"><option value="">Not specified</option><option value="girl">Girl</option><option value="boy">Boy</option></select></div>
-      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Activity Level</label><select id="mealActivity" class="select-field"><option value="moderate">Moderate school activity</option><option value="low">Low activity</option><option value="high">High activity / sports</option></select></div>
-      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Height (cm)</label><input id="mealHeight" type="number" min="50" max="250" step="0.1" placeholder="132" class="input-field"/></div>
-      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Weight (kg)</label><input id="mealWeight" type="number" min="5" max="150" step="0.1" placeholder="28" class="input-field"/></div>
-      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Diet Type</label><select id="mealDiet" class="select-field"><option value="vegetarian">Vegetarian</option><option value="eggetarian">Eggetarian</option><option value="non-vegetarian">Non-Veg</option></select></div>
-      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Region</label><select id="mealRegion" class="select-field"><option value="mangalore">Mangalore</option><option value="udupi">Udupi</option><option value="shivamogga">Shivamogga</option><option value="bengaluru_rural">Bengaluru Rural</option><option value="mysuru">Mysuru</option><option value="hubli_dharwad">Hubli-Dharwad</option></select></div>
-      <div><label class="mb-2 block text-sm font-semibold text-slate-700">Month</label><select id="mealMonth" class="select-field"><option>january</option><option>february</option><option>march</option><option>april</option><option>may</option><option>june</option><option>july</option><option>august</option><option>september</option><option>october</option><option>november</option><option>december</option></select></div>
-      <div class="sm:col-span-2"><label class="mb-2 block text-sm font-semibold text-slate-700">Nutrition Strategy</label><select id="mealStrategy" class="select-field"><option value="standard">Standard Balanced</option><option value="high_protein">High Protein</option><option value="calcium_iron">Calcium + Iron Rich</option><option value="calorie_control">Calorie Control</option></select></div>
-      <div class="sm:col-span-2"><label class="mb-2 block text-sm font-semibold text-slate-700">Health Notes</label><textarea id="mealHealthNotes" rows="3" placeholder="Allergies, appetite, anemia concern, sports, doctor notes..." class="input-field resize-none"></textarea></div>
+<!-- Main Form + Results -->
+<section id="mealForm" class="mt-5 grid gap-5 xl:grid-cols-[420px_1fr]">
+
+  <!-- Left: Input form -->
+  <div class="soft-card p-5 sm:p-6">
+    <p class="sublabel">Student information</p>
+    <h2 class="section-title mt-1 text-2xl text-slate-900">Plan a weekly menu</h2>
+
+    <div class="mt-5 grid gap-3 sm:grid-cols-2">
+
+      <!-- School & Student -->
+      <div>
+        <label class="mb-1 block text-xs font-semibold text-slate-600">School Name <span class="text-red-400">*</span></label>
+        <input id="mealSchool" type="text" placeholder="Govt HS Mangalore" autocomplete="organization"
+          class="input-field" oninput="clearFieldError(this)"/>
+        <p id="mealSchoolErr" class="mt-1 hidden text-xs text-red-500">Please enter school name</p>
+      </div>
+      <div>
+        <label class="mb-1 block text-xs font-semibold text-slate-600">Student Name</label>
+        <input id="mealStudent" type="text" placeholder="Priya" autocomplete="name" class="input-field"/>
+      </div>
+
+      <!-- Age & Gender -->
+      <div>
+        <label class="mb-1 block text-xs font-semibold text-slate-600">Age Group</label>
+        <select id="mealAge" class="select-field">
+          <option value="5-8">5–8 years</option>
+          <option value="9-12" selected>9–12 years</option>
+          <option value="13-15">13–15 years</option>
+        </select>
+      </div>
+      <div>
+        <label class="mb-1 block text-xs font-semibold text-slate-600">Gender</label>
+        <select id="mealGender" class="select-field">
+          <option value="">Not specified</option>
+          <option value="girl">Girl</option>
+          <option value="boy">Boy</option>
+        </select>
+      </div>
+
+      <!-- Height & Weight -->
+      <div>
+        <label class="mb-1 block text-xs font-semibold text-slate-600">Height (cm)</label>
+        <input id="mealHeight" type="number" min="50" max="250" step="0.1" placeholder="132"
+          class="input-field" oninput="clearFieldError(this)"/>
+        <p id="mealHeightErr" class="mt-1 hidden text-xs text-red-500">Enter 50–250</p>
+      </div>
+      <div>
+        <label class="mb-1 block text-xs font-semibold text-slate-600">Weight (kg)</label>
+        <input id="mealWeight" type="number" min="5" max="150" step="0.1" placeholder="28"
+          class="input-field" oninput="clearFieldError(this)"/>
+        <p id="mealWeightErr" class="mt-1 hidden text-xs text-red-500">Enter 5–150</p>
+      </div>
+
+      <!-- Diet & Activity -->
+      <div>
+        <label class="mb-1 block text-xs font-semibold text-slate-600">Diet Type</label>
+        <select id="mealDiet" class="select-field" onchange="onDietChange()">
+          <option value="vegetarian">🥗 Vegetarian</option>
+          <option value="eggetarian">🥚 Eggetarian</option>
+          <option value="non-vegetarian">🍗 Non-Veg</option>
+        </select>
+      </div>
+      <div>
+        <label class="mb-1 block text-xs font-semibold text-slate-600">Activity Level</label>
+        <select id="mealActivity" class="select-field">
+          <option value="moderate">Moderate school activity</option>
+          <option value="low">Low activity</option>
+          <option value="high">High activity / sports</option>
+        </select>
+      </div>
+
+      <!-- Region & Month -->
+      <div>
+        <label class="mb-1 block text-xs font-semibold text-slate-600">Region</label>
+        <select id="mealRegion" class="select-field">
+          <option value="mangalore">Mangalore</option>
+          <option value="udupi">Udupi</option>
+          <option value="shivamogga">Shivamogga</option>
+          <option value="bengaluru_rural">Bengaluru Rural</option>
+          <option value="mysuru">Mysuru</option>
+          <option value="hubli_dharwad">Hubli-Dharwad</option>
+        </select>
+      </div>
+      <div>
+        <label class="mb-1 block text-xs font-semibold text-slate-600">Month</label>
+        <select id="mealMonth" class="select-field">
+          <option>january</option><option>february</option><option>march</option>
+          <option>april</option><option>may</option><option>june</option>
+          <option>july</option><option>august</option><option>september</option>
+          <option>october</option><option>november</option><option>december</option>
+        </select>
+      </div>
+
+      <!-- Strategy (full width) -->
+      <div class="sm:col-span-2">
+        <label class="mb-1 block text-xs font-semibold text-slate-600">Nutrition Strategy</label>
+        <select id="mealStrategy" class="select-field">
+          <option value="standard">⚖️ Standard Balanced</option>
+          <option value="high_protein">💪 High Protein</option>
+          <option value="calcium_iron">🦴 Calcium + Iron Rich</option>
+          <option value="calorie_control">🥗 Calorie Control</option>
+        </select>
+      </div>
+
+      <!-- Health notes (full width) -->
+      <div class="sm:col-span-2">
+        <label class="mb-1 block text-xs font-semibold text-slate-600">Health Notes</label>
+        <textarea id="mealHealthNotes" rows="2"
+          placeholder="Allergies, appetite, anaemia, sports, doctor notes..."
+          class="input-field resize-none text-sm"></textarea>
+      </div>
+
     </div>
-    <div id="advisorPanel" class="mt-6"></div>
-    <button id="generateBtn" onclick="generateMeal()" class="btn-primary mt-6 w-full py-3">Generate Meal Plan with Selected AI Advice</button>
+
+    <!-- AI Advisor panel injected here -->
+    <div id="advisorPanel" class="mt-5"></div>
+
+    <!-- Generate button -->
+    <button id="generateBtn" onclick="generateMeal()"
+      class="btn-primary mt-5 w-full py-3 text-sm font-bold">
+      ✨ Generate Meal Plan with Selected AI Advice
+    </button>
+
+    <!-- Inline error toast -->
+    <div id="formError" class="mt-3 hidden rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"></div>
   </div>
 
-  <div class="space-y-6">
-    <div class="soft-card p-6">
-      <div class="sublabel">Workflow</div>
-      <div class="mt-4 grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-        <div class="rounded-2xl bg-slate-50 p-4"><h3 class="font-semibold text-slate-900">Input student data</h3><p class="mt-1 text-sm text-slate-600">Use age group, diet, and region to guide plan generation.</p></div>
-        <div class="rounded-2xl bg-slate-50 p-4"><h3 class="font-semibold text-slate-900">Ask the AI co-pilot</h3><p class="mt-1 text-sm text-slate-600">Get English or Kannada guidance before generating.</p></div>
-        <div class="rounded-2xl bg-slate-50 p-4"><h3 class="font-semibold text-slate-900">Print and download</h3><p class="mt-1 text-sm text-slate-600">Selected advice appears in parent guidance, report, and poster.</p></div>
+  <!-- Right: Results area -->
+  <div class="flex flex-col gap-5 min-w-0">
+
+    <!-- Placeholder (shown before generation) -->
+    <div id="mealPlaceholder" class="soft-card p-6">
+      <p class="sublabel">How it works</p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-3">
+        <div class="rounded-2xl bg-slate-50 p-4">
+          <div class="mb-2 text-2xl">📝</div>
+          <h3 class="text-sm font-semibold text-slate-900">Input student data</h3>
+          <p class="mt-1 text-xs text-slate-500">Age, diet, and region guide the plan.</p>
+        </div>
+        <div class="rounded-2xl bg-slate-50 p-4">
+          <div class="mb-2 text-2xl">🤖</div>
+          <h3 class="text-sm font-semibold text-slate-900">Ask the AI co-pilot</h3>
+          <p class="mt-1 text-xs text-slate-500">Get English or Kannada guidance first.</p>
+        </div>
+        <div class="rounded-2xl bg-slate-50 p-4">
+          <div class="mb-2 text-2xl">🖨️</div>
+          <h3 class="text-sm font-semibold text-slate-900">Print &amp; download</h3>
+          <p class="mt-1 text-xs text-slate-500">AI advice flows into poster, report, parents.</p>
+        </div>
       </div>
     </div>
 
-    <div id="mealLoading" class="hidden soft-card p-8 text-center"><div class="spinner mx-auto"></div><p class="mt-4 text-sm font-medium text-slate-600">Generating nutrient-balanced meal plan...</p></div>
-    <div id="mealResult" class="hidden"></div>
+    <!-- Loading -->
+    <div id="mealLoading" class="hidden soft-card p-8 text-center">
+      <div class="spinner mx-auto"></div>
+      <p class="mt-4 text-sm font-medium text-slate-600">Generating nutrient-balanced meal plan…</p>
+      <p class="mt-1 text-xs text-slate-400 kn">ಊಟದ ಯೋಜನೆ ತಯಾರಾಗುತ್ತಿದೆ…</p>
+    </div>
+
+    <!-- Results (populated by JS) -->
+    <div id="mealResult" class="hidden min-w-0"></div>
   </div>
+
 </section>
 {% endblock %}
 
 {% block scripts %}
+<script src="/static/js/router.js"></script>
 <script src="/static/js/advisor.js"></script>
 <script src="/static/js/meal.js"></script>
 <script>
-  const monthSelect = document.getElementById('mealMonth');
-  if (monthSelect) {
-    const monthNames = ["january","february","march","april","may","june","july","august","september","october","november","december"];
-    monthSelect.value = monthNames[new Date().getMonth()];
+  // Set current month
+  (function () {
+    const sel = document.getElementById('mealMonth');
+    if (sel) {
+      const months = ["january","february","march","april","may","june",
+                      "july","august","september","october","november","december"];
+      sel.value = months[new Date().getMonth()];
+    }
+  })();
+
+  // Prefill from BMI or localStorage
+  window.addEventListener('DOMContentLoaded', () => {
+    const name   = localStorage.getItem('prefill_name');
+    const age    = localStorage.getItem('prefill_age');
+    const gender = localStorage.getItem('prefill_gender');
+    if (name)   { const el = document.getElementById('mealStudent');  if (el) el.value = name; }
+    if (age) {
+      const sel = document.getElementById('mealAge');
+      if (sel) sel.value = Number(age) <= 8 ? '5-8' : Number(age) <= 12 ? '9-12' : '13-15';
+    }
+    if (gender) { const el = document.getElementById('mealGender'); if (el) el.value = gender; }
+    localStorage.removeItem('prefill_name');
+    localStorage.removeItem('prefill_age');
+    localStorage.removeItem('prefill_gender');
+
+    // Restore plan from URL ?plan=token
+    const params = new URLSearchParams(window.location.search);
+    const token  = params.get('plan');
+    if (token) loadPlanByToken(token);
+  });
+
+  function onDietChange() {
+    // Re-render advisor with updated profile if already open
+    if (window.NutriPrintAdvisor) {
+      const p = document.getElementById('advisorPanel');
+      if (p && p.innerHTML.trim()) window.NutriPrintAdvisor.render(p);
+    }
+  }
+
+  function clearFieldError(el) {
+    const err = document.getElementById(el.id + 'Err');
+    if (err) err.classList.add('hidden');
+    const fe = document.getElementById('formError');
+    if (fe) fe.classList.add('hidden');
   }
 </script>
 {% endblock %}

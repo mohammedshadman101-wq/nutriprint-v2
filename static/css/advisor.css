@@ -532,3 +532,133 @@
   background: linear-gradient(90deg, transparent, rgba(29, 158, 117, 0.24), transparent);
   margin: 1rem 0;
 }
+
+/* ─── Advisor v2 additions ────────────────────────────────────────────────── */
+
+/* Message with icon */
+.advisor-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.advisor-msg-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+  margin-top: 0.1rem;
+  display: none; /* shown only for assistant */
+}
+
+.advisor-message.assistant .advisor-msg-icon {
+  display: block;
+}
+
+.advisor-msg-content {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.6;
+}
+
+/* User messages keep right-aligned bubble */
+.advisor-message.user {
+  flex-direction: row-reverse;
+}
+
+.advisor-message.user .advisor-msg-content {
+  background: #1D9E75;
+  color: white;
+  border-radius: 0.9rem 0.9rem 0 0.9rem;
+  padding: 0.6rem 0.75rem;
+  max-width: 88%;
+}
+
+.advisor-message.assistant .advisor-msg-content {
+  background: white;
+  color: #334155;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 0 0.9rem 0.9rem 0.9rem;
+  padding: 0.6rem 0.75rem;
+  max-width: 96%;
+}
+
+/* Remove old generic bubble background (now handled above) */
+.advisor-messages .advisor-message { background: transparent !important; border: none !important; padding: 0 !important; }
+
+/* Recommendation card improvements */
+.advisor-rec-card {
+  position: relative;
+  transition: box-shadow 120ms ease;
+}
+
+.advisor-rec-card:hover {
+  box-shadow: 0 4px 16px rgba(29, 158, 117, 0.12);
+}
+
+/* Chip hover */
+.advisor-chip {
+  cursor: pointer;
+  transition: background 120ms ease, transform 100ms ease;
+}
+
+.advisor-chip:hover {
+  background: #DCFCE7;
+  transform: translateY(-1px);
+}
+
+/* Collapse body animation */
+#advisorBody {
+  transition: none;
+}
+
+/* Compact advisor on narrow left column */
+@media (max-width: 1279px) {
+  .advisor-chat-grid {
+    grid-template-columns: 1fr;
+  }
+  .advisor-messages {
+    min-height: 10rem;
+    max-height: 16rem;
+  }
+}
+
+/* Rec list scroll */
+.advisor-rec-list {
+  scrollbar-width: thin;
+  scrollbar-color: #D1FAE5 transparent;
+}
+
+/* Placeholder text */
+.advisor-empty {
+  text-align: center;
+  padding: 1.25rem 0.75rem;
+}
+
+/* Nutrient ring inside meal result */
+.nutrient-ring .value {
+  font-size: 1.15rem;
+}
+
+/* Gap bar track color-coded background */
+.gap-bar-track {
+  position: relative;
+}
+
+/* Mobile meal portion grid */
+@media (max-width: 640px) {
+  .meal-portion-card {
+    border-radius: 0;
+  }
+  .meal-portion-card:first-child {
+    border-radius: 0.75rem 0.75rem 0 0;
+  }
+  .meal-portion-card:last-child {
+    border-radius: 0 0 0.75rem 0.75rem;
+  }
+}
+
+/* Action button grid in meal result */
+@media (max-width: 480px) {
+  .meal-actions-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
