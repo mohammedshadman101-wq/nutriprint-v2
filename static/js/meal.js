@@ -560,7 +560,7 @@ function renderMealPlan(plan) {
       </button>
       <button onclick="downloadReportCard()"
         class="flex flex-col items-center gap-1 rounded-2xl bg-blue-500 py-3 px-2 text-white font-bold text-xs hover:bg-blue-600 transition shadow-sm">
-        <span class="text-lg">🏥</span>Health Report
+        <span class="text-lg">📋</span>Parent Pack
       </button>
     </div>`;
 

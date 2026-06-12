@@ -254,6 +254,13 @@
 {% endblock %}
 
 {% block scripts %}
+<script>
+/* Auth guard — runs immediately before any content renders */
+if (typeof NutriAuth !== 'undefined' && !NutriAuth.isLoggedIn()) {
+  sessionStorage.setItem('np_login_redirect', '/meal-planner');
+  window.location.replace('/login?msg=protected');
+}
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
         integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSi2jPyMtAn6rZe8XHVE0IPCbPhRV1YlCEq8g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>

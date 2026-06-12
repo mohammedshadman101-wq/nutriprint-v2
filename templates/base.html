@@ -810,11 +810,17 @@
       <a href="/bmi" class="nav-link {% if current_path == '/bmi' %}nav-link-active{% endif %}" {% if current_path == '/bmi' %}aria-current="page"{% endif %}>BMI</a>
       <a href="/meal-planner" class="nav-link {% if current_path == '/meal-planner' %}nav-link-active{% endif %}" {% if current_path == '/meal-planner' %}aria-current="page"{% endif %}>Meal Planner</a>
       <a href="/food-catalog" class="nav-link {% if current_path == '/food-catalog' %}nav-link-active{% endif %}" {% if current_path == '/food-catalog' %}aria-current="page"{% endif %}>Food Catalog</a>
-      <a href="/dashboard" class="nav-link {% if current_path == '/dashboard' %}nav-link-active{% endif %}" {% if current_path == '/dashboard' %}aria-current="page"{% endif %}>Dashboard</a>
+      <a href="/dashboard" class="nav-link nav-dashboard-link {% if current_path == '/dashboard' %}nav-link-active{% endif %}" {% if current_path == '/dashboard' %}aria-current="page"{% endif %} style="display:none">Dashboard</a>
       <a href="/about" class="nav-link {% if current_path == '/about' %}nav-link-active{% endif %}" {% if current_path == '/about' %}aria-current="page"{% endif %}>About</a>
     </nav>
 
     <div class="flex items-center gap-2">
+      <!-- Teacher badge (shown when logged in) -->
+      <span id="teacherBadge"
+            class="hidden items-center gap-1.5 rounded-full border border-primary/25 bg-primary/8 px-3 py-1.5 text-xs font-bold text-primaryDark"
+            style="display:none">
+        👩‍🏫 Teacher
+      </span>
       <button onclick="toggleLang()" class="hidden rounded-full border border-primary/20 bg-white px-3 py-2 text-xs font-semibold text-primary shadow-sm transition hover:bg-primary/5 sm:inline-flex">
         <span class="lang-en">ಕನ್ನಡ</span>
         <span class="lang-kn">English</span>
@@ -843,7 +849,7 @@
       <a href="/bmi" class="nav-link {% if current_path == '/bmi' %}nav-link-active{% endif %}">BMI</a>
       <a href="/meal-planner" class="nav-link {% if current_path == '/meal-planner' %}nav-link-active{% endif %}">Meal Planner</a>
       <a href="/food-catalog" class="nav-link {% if current_path == '/food-catalog' %}nav-link-active{% endif %}">Food Catalog</a>
-      <a href="/dashboard" class="nav-link {% if current_path == '/dashboard' %}nav-link-active{% endif %}">Dashboard</a>
+      <a href="/dashboard" class="nav-link nav-dashboard-link {% if current_path == '/dashboard' %}nav-link-active{% endif %}" style="display:none">Dashboard</a>
       <a href="/about" class="nav-link {% if current_path == '/about' %}nav-link-active{% endif %}">About</a>
     </div>
     <button onclick="toggleLang()" class="mt-3 inline-flex rounded-full border border-primary/20 bg-primary/5 px-3 py-2 text-xs font-semibold text-primary sm:hidden">

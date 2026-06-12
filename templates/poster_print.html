@@ -200,6 +200,52 @@ body {
 }
 .footer-left p { font-size: 7.5px; color: #9CA3AF; margin-bottom: 1px; }
 .footer-left strong { color: #1D9E75; }
+
+/* ── Meal recipe link ── */
+.meal-recipe-link {
+  display: block;
+  margin-top: 2px;
+  font-size: 6px;
+  color: #1D9E75;
+}
+
+/* ── QR strip (screen + print) ── */
+.qr-strip {
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: 5px;
+  padding: 5px 8px;
+  margin-bottom: 6px;
+}
+.qr-strip-title {
+  font-size: 7.5px;
+  font-weight: 800;
+  color: #065F46;
+  margin-bottom: 5px;
+}
+.qr-strip-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.qr-strip-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.qr-strip-label {
+  font-size: 6px;
+  font-weight: 600;
+  color: #374151;
+  text-align: center;
+  max-width: 42px;
+  word-break: break-word;
+}
+@media print {
+  .qr-strip { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .no-print { display: none !important; }
+}
 </style>
 </head>
 <body>
@@ -208,7 +254,7 @@ body {
 <div class="no-print no-print-bar">
   <button class="btn-print" onclick="window.print()">🖨️ Print Poster</button>
   <a class="btn-back" href="/plan/{{ share_token }}">← Back to Plan</a>
-  <a class="btn-back" href="/report/{{ share_token }}">📊 Health Report</a>
+  <a class="btn-back" href="/report/{{ share_token }}">📋 Parent Pack</a>
 </div>
 
 <div class="page" id="poster">
@@ -371,6 +417,7 @@ body {
         </td>
         {% for meal in [day.breakfast, day.lunch, day.dinner] %}
         {% set macros = meal_macros(meal) %}
+        {% set recipe_slug = meal.name_en | replace(' ', '_') | urlencode %}
         <td>
           <span class="meal-name">{{ meal.name_en }}</span>
           {% if meal.name_kn %}
@@ -380,12 +427,35 @@ body {
           <span class="meal-ingr">{{ meal.ingredients | join(', ') }}</span>
           {% endif %}
           <span class="meal-macros">🔥{{ meal.calories|round(0)|int }} · 💪{{ meal.protein_g|round(1) }}g · 🦴{{ meal.calcium_mg|round(0)|int }}mg</span>
+          <span class="meal-recipe-link">
+            ⬜ <a href="{{ base_url }}recipes/{{ recipe_slug }}" style="color:#1D9E75;font-size:6px;text-decoration:none;">Recipe</a>
+          </span>
         </td>
         {% endfor %}
       </tr>
       {% endfor %}
     </tbody>
   </table>
+
+  <!-- ⑨ QR strip for key meals (Mon–Wed) -->
+  <div class="qr-strip no-print">
+    {% if plan.week %}
+    {% set sample_day = plan.week[0] %}
+    <div class="qr-strip-title">📱 Scan for recipes · <span class="kn">ರೆಸಿಪಿ ನೋಡಲು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ</span></div>
+    <div class="qr-strip-row">
+      {% for meal in [sample_day.breakfast, sample_day.lunch, sample_day.dinner] %}
+      <div class="qr-strip-item">
+        {% set recipe_url = base_url + 'recipes/' + (meal.name_en | replace(' ', '_')) %}
+        <img src="/api/plans/qr?url={{ recipe_url }}"
+             alt="QR for {{ meal.name_en }}"
+             style="width:38px;height:38px;border-radius:3px;display:block;"
+             onerror="this.parentNode.innerHTML='<span style=\'font-size:6px;color:#9CA3AF\'>⬜</span>'"/>
+        <span class="qr-strip-label">{{ meal.name_en[:14] }}{% if meal.name_en|length > 14 %}…{% endif %}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
 
   <!-- ⑨ Footer with QR -->
   <div class="poster-footer">

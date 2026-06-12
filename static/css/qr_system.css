@@ -1,0 +1,513 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   NutriPrint — QR System Styles
+   Prefix: nq-  (nutriprint-qr)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Food-card QR toggle button ─────────────────────────────────────────── */
+.nq-card-qr {
+  position: relative;
+  margin-top: 0.5rem;
+}
+
+.nq-qr-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 0.85rem;
+  background: #F0FDF4;
+  border: 1.5px solid #BBF7D0;
+  color: #065F46;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 160ms ease;
+  letter-spacing: 0.01em;
+}
+
+.nq-qr-toggle:hover {
+  background: #DCFCE7;
+  border-color: #1D9E75;
+  color: #0F5E46;
+}
+
+.nq-qr-toggle[aria-expanded="true"] {
+  background: #1D9E75;
+  border-color: #1D9E75;
+  color: white;
+}
+
+.nq-qr-icon { font-size: 0.9rem; line-height: 1; }
+.nq-qr-label { font-size: 0.75rem; font-weight: 800; }
+
+/* ── QR popover card ────────────────────────────────────────────────────── */
+.nq-qr-popover {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 400;
+  width: 220px;
+  filter: drop-shadow(0 12px 32px rgba(15,23,42,0.18));
+  animation: nqPopIn 180ms cubic-bezier(0.22,1,0.36,1) both;
+}
+
+.nq-qr-popover[hidden] { display: none; }
+
+@keyframes nqPopIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(8px) scale(0.95); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0)  scale(1);    }
+}
+
+.nq-qr-popover-inner {
+  background: white;
+  border: 1.5px solid #BBF7D0;
+  border-radius: 1.1rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+/* Arrow pointer at bottom */
+.nq-qr-popover-inner::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #BBF7D0;
+}
+
+.nq-qr-canvas-wrap {
+  padding: 6px;
+  border: 1.5px solid #BBF7D0;
+  border-radius: 0.65rem;
+  background: white;
+  line-height: 0;
+}
+
+.nq-qr-canvas-wrap canvas,
+.nq-qr-canvas-wrap img {
+  display: block;
+  border-radius: 4px;
+}
+
+.nq-qr-popover-meta {
+  text-align: center;
+}
+
+.nq-qr-food-name {
+  display: block;
+  font-family: Poppins, sans-serif;
+  font-weight: 800;
+  font-size: 0.78rem;
+  color: #0F172A;
+  line-height: 1.3;
+}
+
+.nq-qr-scan-hint {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #1D9E75;
+  margin-top: 0.2rem;
+  letter-spacing: 0.02em;
+}
+
+.nq-qr-popover-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.nq-qr-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.45rem 0.75rem;
+  border-radius: 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 140ms ease;
+  text-decoration: none;
+  border: none;
+  letter-spacing: 0.01em;
+}
+
+.nq-qr-btn--primary {
+  background: #1D9E75;
+  color: white;
+}
+.nq-qr-btn--primary:hover { background: #166F53; }
+
+.nq-qr-btn--ghost {
+  background: #F8FAFC;
+  color: #374151;
+  border: 1px solid rgba(148,163,184,0.25);
+}
+.nq-qr-btn--ghost:hover { background: #F0FDF4; color: #065F46; border-color: #BBF7D0; }
+
+/* ── Meal plan QR chip ───────────────────────────────────────────────────── */
+.nq-meal-qr-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  color: #065F46;
+  text-decoration: none;
+  transition: all 140ms ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.nq-meal-qr-chip:hover {
+  background: #1D9E75;
+  color: white;
+  border-color: #1D9E75;
+}
+
+.nq-meal-qr-icon { font-size: 0.72rem; line-height: 1; }
+
+/* ── Recipe page QR section ──────────────────────────────────────────────── */
+.nq-recipe-qr-section {
+  background: rgba(255,255,255,0.97);
+  border: 1px solid rgba(148,163,184,0.18);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 24px rgba(15,23,42,0.05);
+  overflow: hidden;
+  margin-top: 1.5rem;
+  animation: nqFadeUp 300ms ease-out both;
+  animation-delay: 80ms;
+}
+
+@keyframes nqFadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.nq-recipe-qr-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.35rem;
+  background: linear-gradient(90deg, #F0FDF4, #ECFDF5);
+  border-bottom: 1px solid #D1FAE5;
+}
+
+.nq-recipe-qr-icon-wrap {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 0.75rem;
+  background: #D1FAE5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.nq-recipe-qr-title {
+  font-family: Poppins, sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #065F46;
+}
+
+.nq-recipe-qr-sub {
+  font-size: 0.72rem;
+  color: #6EE7B7;
+  font-weight: 600;
+  margin-top: 0.05rem;
+}
+
+.nq-recipe-qr-body {
+  padding: 1.35rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* QR code frame on recipe page */
+.nq-recipe-qr-frame {
+  flex-shrink: 0;
+  padding: 12px;
+  background: white;
+  border: 2px solid #BBF7D0;
+  border-radius: 1rem;
+  box-shadow: 0 4px 16px rgba(29,158,117,0.12);
+  line-height: 0;
+}
+
+.nq-recipe-qr-frame canvas,
+.nq-recipe-qr-frame img {
+  display: block;
+  border-radius: 6px;
+}
+
+.nq-recipe-qr-info {
+  flex: 1;
+  min-width: 180px;
+}
+
+.nq-recipe-qr-headline {
+  font-family: Poppins, sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #0F172A;
+  margin-bottom: 0.35rem;
+}
+
+.nq-recipe-qr-desc {
+  font-size: 0.82rem;
+  color: #64748B;
+  line-height: 1.65;
+  margin-bottom: 0.85rem;
+}
+
+.nq-recipe-qr-url {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: #94A3B8;
+  word-break: break-all;
+  margin-bottom: 1rem;
+  font-family: monospace;
+  background: #F8FAFC;
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.4rem;
+  border: 1px solid rgba(148,163,184,0.2);
+  max-width: 100%;
+}
+
+.nq-recipe-qr-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.nq-recipe-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 150ms ease;
+  border: none;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nq-recipe-action-btn--green {
+  background: #1D9E75;
+  color: white;
+  box-shadow: 0 4px 14px rgba(29,158,117,0.28);
+}
+.nq-recipe-action-btn--green:hover { background: #166F53; transform: translateY(-1px); }
+
+.nq-recipe-action-btn--outline {
+  background: white;
+  color: #065F46;
+  border: 1.5px solid #BBF7D0;
+}
+.nq-recipe-action-btn--outline:hover { background: #F0FDF4; border-color: #1D9E75; }
+
+/* ── Modal QR overlay (for meal plan items) ─────────────────────────────── */
+.nq-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(15,23,42,0.55);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: nqBackdropIn 200ms ease both;
+}
+
+@keyframes nqBackdropIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.nq-modal {
+  background: white;
+  border-radius: 1.5rem;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 32px 80px rgba(15,23,42,0.22);
+  overflow: hidden;
+  animation: nqModalIn 220ms cubic-bezier(0.22,1,0.36,1) both;
+}
+
+@keyframes nqModalIn {
+  from { opacity: 0; transform: scale(0.93) translateY(16px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+.nq-modal-header {
+  background: linear-gradient(135deg, #0F5E46, #1D9E75);
+  padding: 1.1rem 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nq-modal-title {
+  font-family: Poppins, sans-serif;
+  font-weight: 800;
+  font-size: 0.92rem;
+  color: white;
+  line-height: 1.2;
+}
+
+.nq-modal-kn {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.65);
+  margin-top: 0.15rem;
+  font-family: 'Noto Sans Kannada', sans-serif;
+}
+
+.nq-modal-close {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: white;
+  font-size: 1rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 140ms ease;
+  flex-shrink: 0;
+}
+.nq-modal-close:hover { background: rgba(255,255,255,0.28); }
+
+.nq-modal-body {
+  padding: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nq-modal-qr-wrap {
+  padding: 12px;
+  border: 2px solid #BBF7D0;
+  border-radius: 1rem;
+  background: white;
+  box-shadow: 0 4px 16px rgba(29,158,117,0.1);
+  line-height: 0;
+}
+
+.nq-modal-scan-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #1D9E75;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.nq-modal-url {
+  font-size: 0.65rem;
+  color: #94A3B8;
+  word-break: break-all;
+  text-align: center;
+  font-family: monospace;
+  background: #F8FAFC;
+  padding: 0.35rem 0.65rem;
+  border-radius: 0.4rem;
+  border: 1px solid rgba(148,163,184,0.18);
+  width: 100%;
+}
+
+.nq-modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.nq-modal-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.6rem 0.5rem;
+  border-radius: 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 140ms ease;
+  border: none;
+  text-decoration: none;
+}
+
+.nq-modal-btn--green {
+  background: #1D9E75;
+  color: white;
+  grid-column: span 2;
+}
+.nq-modal-btn--green:hover { background: #166F53; }
+
+.nq-modal-btn--outline {
+  background: #F8FAFC;
+  color: #374151;
+  border: 1px solid rgba(148,163,184,0.25);
+}
+.nq-modal-btn--outline:hover { background: #F0FDF4; color: #065F46; border-color: #BBF7D0; }
+
+/* ── Dashboard recipe actions ────────────────────────────────────────────── */
+.nq-dash-recipe-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  color: #065F46;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 140ms ease;
+}
+.nq-dash-recipe-btn:hover { background: #1D9E75; color: white; border-color: #1D9E75; }
+
+/* ── Printable recipe card page ──────────────────────────────────────────── */
+@media print {
+  .nq-recipe-qr-section { break-inside: avoid; }
+  .nq-recipe-qr-actions,
+  .nq-recipe-action-btn { display: none !important; }
+  .nq-recipe-qr-frame { box-shadow: none; }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .nq-qr-popover,
+  .nq-modal,
+  .nq-modal-backdrop,
+  .nq-recipe-qr-section {
+    animation: none !important;
+  }
+}

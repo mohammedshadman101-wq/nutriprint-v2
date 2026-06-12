@@ -69,6 +69,13 @@
 {% endblock %}
 
 {% block scripts %}
+<script>
+/* Auth guard — runs immediately before any content renders */
+if (typeof NutriAuth !== 'undefined' && !NutriAuth.isLoggedIn()) {
+  sessionStorage.setItem('np_login_redirect', '/bmi');
+  window.location.replace('/login?msg=protected');
+}
+</script>
 <script src="/static/js/advisor.js"></script>
 <script src="/static/js/bmi.js"></script>
 <script>

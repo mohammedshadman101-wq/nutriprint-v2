@@ -69,18 +69,26 @@
       return true;
     },
 
-    /** Update the navbar button state (Login ↔ Logout). */
+    /** Update the navbar button state (Login ↔ Logout + teacher badge + Dashboard visibility). */
     updateNavbar() {
       const session    = this.getSession();
       const loginBtn   = document.getElementById('loginBtn');
       const logoutBtn  = document.getElementById('logoutBtn');
+      const badge      = document.getElementById('teacherBadge');
+
+      // Dashboard links (desktop + mobile)
+      const dashLinks  = document.querySelectorAll('.nav-dashboard-link');
 
       if (session) {
         if (loginBtn)  loginBtn.style.display  = 'none';
         if (logoutBtn) logoutBtn.style.display = '';
+        if (badge)     badge.style.display     = '';
+        dashLinks.forEach(function (el) { el.style.display = ''; });
       } else {
         if (loginBtn)  loginBtn.style.display  = '';
         if (logoutBtn) logoutBtn.style.display = 'none';
+        if (badge)     badge.style.display     = 'none';
+        dashLinks.forEach(function (el) { el.style.display = 'none'; });
       }
     },
   };

@@ -3,6 +3,10 @@
 
 {% block head %}
 <link rel="stylesheet" href="/static/css/recipe.css"/>
+<link rel="stylesheet" href="/static/css/qr_system.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+        integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSi2jPyMtAn6rZe8XHVE0IPCbPhRV1YlCEq8g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 {% endblock %}
 
 {% block content %}
@@ -190,6 +194,52 @@
 
 </section>
 
+{# ── QR Code section ─────────────────────────────────────────────────────── #}
+<section class="nq-recipe-qr-section" aria-labelledby="qr-heading">
+  <div class="nq-recipe-qr-header">
+    <div class="nq-recipe-qr-icon-wrap" aria-hidden="true">⬜</div>
+    <div>
+      <h2 class="nq-recipe-qr-title" id="qr-heading">QR Recipe Code</h2>
+      <p class="nq-recipe-qr-sub">Scan to open this recipe on any phone · parents can access offline</p>
+    </div>
+  </div>
+  <div class="nq-recipe-qr-body">
+
+    {# QR code rendered by JS #}
+    <div class="nq-recipe-qr-frame"
+         id="recipeQRFrame"
+         data-qr-render
+         data-qr-food="{{ food.name_en }}"
+         data-qr-size="160"
+         aria-label="QR code linking to this recipe page">
+    </div>
+
+    <div class="nq-recipe-qr-info">
+      <div class="nq-recipe-qr-headline">Share this recipe instantly</div>
+      <div class="nq-recipe-qr-desc">
+        Print this QR code on your meal plan poster. Parents scan it with any smartphone camera —
+        no app needed — and see the full step-by-step recipe in English or Kannada.
+      </div>
+      <code class="nq-recipe-qr-url" id="recipeQRUrl">Loading…</code>
+      <div class="nq-recipe-qr-actions">
+        <button class="nq-recipe-action-btn nq-recipe-action-btn--green"
+                onclick="NutriQR.downloadQR(document.getElementById('recipeQRFrame'), '{{ food.name_en }}')">
+          📥 Download QR PNG
+        </button>
+        <button class="nq-recipe-action-btn nq-recipe-action-btn--outline"
+                onclick="NutriQR._printRecipeCard('{{ food.name_en }}', document.getElementById('recipeQRUrl').textContent)">
+          🖨 Print Recipe Card
+        </button>
+        <button class="nq-recipe-action-btn nq-recipe-action-btn--outline"
+                onclick="navigator.clipboard?.writeText(document.getElementById('recipeQRUrl').textContent).then(()=>this.textContent='✅ Copied!')">
+          🔗 Copy Link
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 {# ── Main content: Ingredients + Steps ───────────────────────────────────── #}
 <div class="rp-content-grid">
 
@@ -276,8 +326,6 @@
 </div>
 
 {% else %}
-
-{# ── Not found state ─────────────────────────────────────────────────────── #}
 <div class="rp-not-found">
   <div class="rp-not-found-icon">🍽️</div>
   <h1 class="rp-not-found-title">Food not found</h1>
@@ -289,4 +337,22 @@
 
 {% endif %}
 
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/qr_system.js"></script>
+{% if food %}
+<script>
+(function () {
+  'use strict';
+
+  /* Set the canonical URL in the code element */
+  var foodName = {{ food.name_en | tojson }};
+  var urlEl = document.getElementById('recipeQRUrl');
+  if (urlEl && typeof NutriQR !== 'undefined') {
+    urlEl.textContent = NutriQR.recipeUrl(foodName);
+  }
+})();
+</script>
+{% endif %}
 {% endblock %}

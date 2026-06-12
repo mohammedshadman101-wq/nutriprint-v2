@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 {% block title %}NutriPrint — Food Catalog{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="/static/css/qr_system.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+        integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSi2jPyMtAn6rZe8XHVE0IPCbPhRV1YlCEq8g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock %}
+
 {% block content %}
 <section class="hero-banner page-section">
   <div class="grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-center">
@@ -43,14 +50,108 @@
 
 {% block scripts %}
 <script src="/static/js/meal.js"></script>
+<script src="/static/js/qr_system.js"></script>
+<style>
+/* ── Catalog QR drawer ─────────────────────────────────────── */
+.nq-catalog-qr-drawer {
+  margin-top: .65rem;
+  padding: 1rem;
+  background: #F0FDF4;
+  border: 1.5px solid #BBF7D0;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .55rem;
+  animation: nqCatalogIn 200ms cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes nqCatalogIn {
+  from { opacity:0; transform:translateY(-6px) scale(.97); }
+  to   { opacity:1; transform:translateY(0)    scale(1);   }
+}
+.nq-catalog-qr-drawer[hidden] { display:none !important; }
+.nq-catalog-qr-drawer canvas,
+.nq-catalog-qr-drawer img { display:block; border-radius:6px; }
+.nq-catalog-qr-lbl {
+  font-size:.68rem; font-weight:700; color:#065F46;
+  letter-spacing:.05em; text-transform:uppercase;
+}
+.nq-catalog-qr-actions { display:flex; gap:.4rem; flex-wrap:wrap; justify-content:center; }
+.nq-catalog-qr-btn {
+  display:inline-flex; align-items:center; gap:.25rem;
+  padding:.3rem .7rem; border-radius:9999px;
+  font-size:.68rem; font-weight:700; cursor:pointer;
+  transition:all 140ms ease; border:none; text-decoration:none;
+}
+.nq-catalog-qr-btn--green { background:#1D9E75; color:white; }
+.nq-catalog-qr-btn--green:hover { background:#166F53; }
+.nq-catalog-qr-btn--ghost { background:white; color:#065F46; border:1px solid #BBF7D0; }
+.nq-catalog-qr-btn--ghost:hover { background:#DCFCE7; }
+@media (prefers-reduced-motion:reduce) {
+  .nq-catalog-qr-drawer { animation:none !important; }
+}
+</style>
 <script>
   let foodPage = 1;
 
   function escapeHtml(value) {
-    return String(value || '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+    return String(value || '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#39;");
   }
 
-  /** Use the same resolver as meal.js — renders a 56px image tile */
+  /* ── QR toggle for catalog cards ─────────────────────────── */
+  function toggleCatalogQR(btn, foodName) {
+    const card   = btn.closest('article');
+    const drawer = card.querySelector('.nq-catalog-qr-drawer');
+    if (!drawer) return;
+    const isOpen = !drawer.hidden;
+    if (isOpen) {
+      drawer.hidden = true;
+      btn.innerHTML = '⬜ QR Code';
+      return;
+    }
+    drawer.hidden = false;
+    btn.innerHTML = '✕ Close QR';
+    if (drawer.dataset.rendered) return;
+    drawer.dataset.rendered = '1';
+
+    const origin = window.location.origin;
+    const url    = origin + '/recipes/' + encodeURIComponent(foodName.replace(/ /g, '_'));
+
+    const canWrap = document.createElement('div');
+    canWrap.style.cssText = 'padding:8px;background:white;border:1.5px solid #BBF7D0;border-radius:.75rem;line-height:0;';
+    if (typeof QRCode !== 'undefined') {
+      new QRCode(canWrap, {
+        text: url, width: 120, height: 120,
+        colorDark: '#0F5E46', colorLight: '#FFFFFF',
+        correctLevel: QRCode.CorrectLevel.M,
+      });
+    }
+
+    const lbl = document.createElement('div');
+    lbl.className   = 'nq-catalog-qr-lbl';
+    lbl.textContent = '📱 Scan for recipe';
+
+    const safeName = foodName.replace(/'/g, "\\'");
+    const actions  = document.createElement('div');
+    actions.className = 'nq-catalog-qr-actions';
+    actions.innerHTML = `
+      <a href="${url}" target="_blank" rel="noopener noreferrer"
+         class="nq-catalog-qr-btn nq-catalog-qr-btn--green">Open Recipe ↗</a>
+      <button class="nq-catalog-qr-btn nq-catalog-qr-btn--ghost"
+              onclick="NutriQR.downloadQR(this.closest('.nq-catalog-qr-drawer').querySelector('div'),'${safeName}')">
+        📥 Download
+      </button>
+      <button class="nq-catalog-qr-btn nq-catalog-qr-btn--ghost"
+              onclick="NutriQR._printRecipeCard('${safeName}','${url}')">
+        🖨 Print Card
+      </button>`;
+
+    drawer.appendChild(canWrap);
+    drawer.appendChild(lbl);
+    drawer.appendChild(actions);
+  }
+
+  /** Use the same resolver as meal.js */
   function foodCatalogImg(name) {
     return foodImgHtml(name, 'w-14 h-14', 'contain');
   }
@@ -83,11 +184,19 @@
         </div>
         ${food.description ? `<p class="mt-4 text-sm leading-6 text-slate-600">${escapeHtml(food.description)}</p>` : ''}
         ${ingredients ? `<p class="mt-3 text-xs leading-5 text-slate-500"><strong class="text-slate-700">Ingredients:</strong> ${escapeHtml(ingredients)}</p>` : ''}
-        <div class="mt-4">
-          <a href="/recipes/${encodeURIComponent(food.name_en.replace(/ /g, '_'))}" class="btn-ghost w-full justify-center text-sm py-2 rounded-xl" aria-label="View recipe for ${escapeHtml(food.name_en)}">
-            View Recipe →
+        <div class="mt-4 grid grid-cols-2 gap-2">
+          <a href="/recipes/${encodeURIComponent(food.name_en.replace(/ /g, '_'))}"
+             class="btn-ghost justify-center text-sm py-2 rounded-xl"
+             aria-label="View recipe for ${escapeHtml(food.name_en)}">
+            🍽 View Recipe →
           </a>
+          <button onclick="toggleCatalogQR(this, ${JSON.stringify(food.name_en)})"
+             class="inline-flex items-center justify-center gap-1.5 rounded-xl border border-primary/25 bg-green-50 px-3 py-2 text-xs font-bold text-primary hover:bg-primary hover:text-white transition"
+             aria-label="Show QR code for ${escapeHtml(food.name_en)} recipe">
+            ⬜ QR Code
+          </button>
         </div>
+        <div class="nq-catalog-qr-drawer" hidden aria-live="polite"></div>
       </article>`;
   }
 

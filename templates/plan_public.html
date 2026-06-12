@@ -4,6 +4,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="/static/css/poster.css"/>
+<link rel="stylesheet" href="/static/css/qr_system.css"/>
 <style>
 @media print {
   .no-print, nav, footer, .sticky, button { display: none !important; }
@@ -11,6 +12,32 @@
   #poster, #poster * { visibility: visible; }
   #poster { position: absolute; left: 0; top: 0; width: 100%; }
 }
+/* Per-meal QR strip */
+.pp-qr-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  padding: .5rem .85rem .65rem;
+  background: #F8FAFC;
+  border-top: 1px solid rgba(148,163,184,.1);
+}
+.pp-qr-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .22rem .6rem;
+  border-radius: 9999px;
+  font-size: .65rem;
+  font-weight: 700;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  color: #065F46;
+  text-decoration: none;
+  transition: all 140ms ease;
+  cursor: pointer;
+}
+.pp-qr-chip:hover { background: #1D9E75; color: white; border-color: #1D9E75; }
+@media print { .pp-qr-strip { display: none !important; } }
 </style>
 <meta property="og:title" content="Weekly Meal Plan for {{ plan.student_name }}"/>
 <meta property="og:description" content="{{ plan.school_name }} · {{ plan.diet_pref }} · {{ plan.region }} · Karnataka"/>
@@ -123,6 +150,17 @@
         {{ meal_portion(day.lunch, '☀️ Lunch') }}
         {{ meal_portion(day.dinner, '🌙 Dinner') }}
       </div>
+      {# QR chip strip — one chip per meal linking to its recipe page #}
+      <div class="pp-qr-strip no-print" aria-label="Recipe QR codes for {{ day.day }}">
+        {% for meal, label in [(day.breakfast,'Breakfast'),(day.lunch,'Lunch'),(day.dinner,'Dinner')] %}
+        <a href="/recipes/{{ meal.name_en | replace(' ','_') | urlencode }}"
+           target="_blank" rel="noopener noreferrer"
+           class="pp-qr-chip"
+           title="Open {{ meal.name_en }} recipe">
+          ⬜ {{ label }}: {{ meal.name_en }}
+        </a>
+        {% endfor %}
+      </div>
     </div>
     {% endfor %}
   </div>
@@ -139,7 +177,7 @@
     </a>
     <a href="/report/{{ share_token }}" target="_blank" rel="noopener noreferrer"
       class="flex-1 bg-blue-500 text-white font-bold py-3 sm:py-4 rounded-2xl text-center hover:bg-blue-600 transition heading text-sm sm:text-base">
-      🏥 Health Report
+      📋 Parent Pack
     </a>
     <button onclick="shareWA()"
       class="flex-1 bg-green-500 text-white font-bold py-3 sm:py-4 rounded-2xl hover:bg-green-600 transition heading shadow-lg text-sm sm:text-base">
@@ -154,6 +192,10 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+        integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSi2jPyMtAn6rZe8XHVE0IPCbPhRV1YlCEq8g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="/static/js/qr_system.js"></script>
 <script>
 function shareWA() {
   const url = window.location.href;

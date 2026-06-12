@@ -1,359 +1,1133 @@
 {% extends "base.html" %}
 {% from "partials/poster_macros.html" import food_icon, nutrient_stat, meal_portion, food_equivalents_section, macro_chip %}
-{% block title %}NutriPrint — Health Report · {{ plan.student_name }}{% endblock %}
+{% block title %}NutriPrint — Parent Nutrition Pack · {{ plan.student_name }}{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="/static/css/poster.css"/>
+<link rel="stylesheet" href="/static/css/qr_system.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+        integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSi2jPyMtAn6rZe8XHVE0IPCbPhRV1YlCEq8g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
-/* ── Report-specific styles ── */
-.report-progress-wrap { margin-bottom: 1.25rem; }
-.report-progress-label {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 0.35rem;
-}
-.report-progress-title { font-size: 0.875rem; font-weight: 700; color: #1F2937; }
-.report-progress-pct   { font-size: 0.75rem; font-weight: 700; }
-.report-progress-nums  { font-size: 0.7rem; color: #6B7280; }
-.report-bar-track {
-  height: 1rem; background: #F3F4F6; border-radius: 9999px;
-  overflow: hidden; position: relative;
-}
-.report-bar-fill {
-  height: 100%; border-radius: 9999px;
-  transition: width 0.8s ease;
-  display: flex; align-items: center; padding-left: 6px;
-}
-.report-bar-text { font-size: 0.6rem; font-weight: 800; color: white; white-space: nowrap; }
+/* ══════════════════════════════════════════════════════════════════════════════
+   Parent Nutrition Awareness Pack — hr- prefix, self-contained
+   ══════════════════════════════════════════════════════════════════════════════ */
 
-/* BMI gauge */
-.bmi-gauge-track {
-  height: 1.25rem; border-radius: 9999px; overflow: hidden;
-  background: linear-gradient(90deg, #3B82F6 0%, #10B981 35%, #F97316 70%, #EF4444 100%);
+/* ── Page shell ─────────────────────────────────────────────────────────── */
+.hr-page { max-width: 960px; margin: 0 auto; padding: 0 1rem 4rem; }
+@media (min-width:640px)  { .hr-page { padding: 0 1.5rem 4rem; } }
+@media (min-width:1024px) { .hr-page { padding: 0 2rem   4rem; } }
+
+/* ── Section header ─────────────────────────────────────────────────────── */
+.hr-section-hdr {
+  background: linear-gradient(90deg, #F0FDF4, #ECFDF5);
+  border-left: 4px solid #1D9E75;
+  border-radius: 0 0.85rem 0.85rem 0;
+  padding: .75rem 1.1rem;
+  margin-bottom: 1.1rem;
+  display: flex; align-items: center; gap: .6rem;
+}
+.hr-section-icon { font-size: 1.2rem; line-height: 1; }
+.hr-section-title {
+  font-family: Poppins, sans-serif;
+  font-weight: 800; font-size: 1rem;
+  color: #065F46; letter-spacing: -.01em; line-height: 1.2;
+}
+.hr-section-sub { font-size: .72rem; color: #94A3B8; font-weight: 500; margin-top: .1rem; }
+.hr-section-num {
+  font-family: Poppins, sans-serif;
+  font-weight: 900; font-size: .7rem;
+  color: white; background: #1D9E75;
+  width: 1.5rem; height: 1.5rem;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── Card wrapper ───────────────────────────────────────────────────────── */
+.hr-card {
+  background: rgba(255,255,255,.97);
+  border: 1px solid rgba(148,163,184,.16);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 24px rgba(15,23,42,.05);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+.hr-card-body { padding: 1.25rem 1.5rem; }
+
+/* ── Cover header ───────────────────────────────────────────────────────── */
+.hr-cover {
+  background: linear-gradient(135deg, #071f17 0%, #0F5E46 40%, #1D9E75 70%, #136B4F 100%);
+  border-radius: 2rem;
+  padding: 2.5rem 2rem;
+  color: white;
   position: relative;
-  margin: 0.5rem 0;
+  overflow: hidden;
+  margin-bottom: 1.75rem;
 }
-.bmi-gauge-needle {
-  position: absolute; top: -4px;
-  width: 3px; height: calc(100% + 8px);
-  background: #1F2937; border-radius: 2px;
-  transform: translateX(-50%);
+.hr-cover::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 10% 60%, rgba(249,115,22,.12) 0%, transparent 40%),
+    radial-gradient(ellipse at 90% 10%, rgba(255,255,255,.06) 0%, transparent 30%);
+  pointer-events: none;
+}
+.hr-cover::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+}
+.hr-cover-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-wrap: wrap;
+  align-items: flex-start; justify-content: space-between;
+  gap: 1.5rem;
+}
+.hr-cover-logo-row {
+  display: flex; align-items: center; gap: .6rem;
+  margin-bottom: .85rem;
+}
+.hr-cover-logo-dot {
+  width: .55rem; height: .55rem;
+  background: rgba(255,255,255,.5); border-radius: 50%;
+}
+.hr-cover-eyebrow {
+  font-size: .62rem; font-weight: 700;
+  letter-spacing: .15em; text-transform: uppercase;
+  color: rgba(255,255,255,.65);
+}
+.hr-cover-student {
+  font-family: Poppins, sans-serif;
+  font-weight: 900; font-size: clamp(1.5rem, 4vw, 2.1rem);
+  letter-spacing: -.03em; line-height: 1.1;
+  color: white; margin-bottom: .35rem;
+}
+.hr-cover-school { font-size: .9rem; color: rgba(255,255,255,.72); }
+.hr-cover-pills {
+  display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1rem;
+}
+.hr-cover-pill {
+  display: inline-flex; align-items: center; gap: .3rem;
+  padding: .25rem .7rem;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 9999px;
+  font-size: .68rem; font-weight: 600;
+  color: rgba(255,255,255,.8);
+}
+.hr-cover-doc-badge {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .4rem .9rem;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 9999px;
+  font-size: .72rem; font-weight: 800;
+  color: white; letter-spacing: .04em;
+  text-transform: uppercase;
 }
 
-/* Strengths / Improvement cards */
-.strength-card   { background: #F0FDF4; border: 1.5px solid #86EFAC; border-radius: 1rem; padding: 1rem; }
-.improve-card    { background: #FFF7ED; border: 1.5px solid #FED7AA; border-radius: 1rem; padding: 1rem; }
-.strength-title  { font-size: 0.875rem; font-weight: 800; color: #15803D; margin-bottom: 0.5rem; }
-.improve-title   { font-size: 0.875rem; font-weight: 800; color: #C2410C; margin-bottom: 0.5rem; }
-.strength-item   { font-size: 0.78rem; color: #166534; padding: 0.25rem 0; border-bottom: 1px solid #BBF7D0; }
-.improve-item    { font-size: 0.78rem; color: #92400E; padding: 0.25rem 0; border-bottom: 1px solid #FDE68A; }
-.strength-item:last-child, .improve-item:last-child { border-bottom: none; }
-
-/* Parent card */
-.parent-card {
-  background: linear-gradient(135deg, #FFFBEB, #FFF7ED);
-  border: 1.5px solid #FED7AA; border-radius: 1rem; padding: 1rem;
+/* ── Student info grid ──────────────────────────────────────────────────── */
+.hr-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: .5rem;
 }
-.parent-card-title { font-size: 0.875rem; font-weight: 800; color: #92400E; margin-bottom: 0.625rem; }
-.parent-item       { display: flex; gap: 0.5rem; padding: 0.35rem 0; font-size: 0.8rem; color: #78350F;
-                     border-bottom: 1px solid rgba(251,191,36,0.3); }
-.parent-item:last-child { border-bottom: none; }
-.parent-item-dot   { flex-shrink: 0; color: #F97316; font-weight: 900; }
+@media (min-width:640px) { .hr-info-grid { grid-template-columns: repeat(4, 1fr); } }
 
-/* Print */
+.hr-info-tile {
+  background: #F8FAFC;
+  border: 1px solid rgba(148,163,184,.14);
+  border-radius: .85rem;
+  padding: .75rem .9rem;
+}
+.hr-info-label { font-size: .62rem; font-weight: 700; text-transform: uppercase;
+                  letter-spacing: .09em; color: #94A3B8; margin-bottom: .2rem; }
+.hr-info-value { font-family: Poppins, sans-serif; font-weight: 800;
+                  font-size: .92rem; color: #0F172A; line-height: 1.2; }
+
+/* ── BMI status card ────────────────────────────────────────────────────── */
+.hr-bmi-card {
+  border-radius: 1.25rem;
+  padding: 1.1rem 1.35rem;
+  display: flex; align-items: center; gap: 1.1rem;
+  flex-wrap: wrap;
+  border: 2px solid;
+  margin-bottom: 1rem;
+}
+.hr-bmi-badge {
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  width: 5.5rem; height: 5.5rem;
+  border-radius: 1.1rem;
+  font-family: Poppins, sans-serif;
+  font-weight: 900; font-size: .85rem;
+  text-align: center; line-height: 1.2;
+  padding: .35rem;
+}
+.hr-bmi-text { flex: 1; min-width: 180px; }
+.hr-bmi-title { font-family: Poppins, sans-serif; font-weight: 800;
+                 font-size: 1.1rem; margin-bottom: .35rem; }
+.hr-bmi-desc { font-size: .85rem; color: #475569; line-height: 1.65; }
+
+/* Colors */
+.hr-bmi--normal      { background: #F0FDF4; border-color: #BBF7D0; }
+.hr-bmi--normal      .hr-bmi-badge { background: #1D9E75; color: white; }
+.hr-bmi--normal      .hr-bmi-title { color: #065F46; }
+.hr-bmi--underweight { background: #EFF6FF; border-color: #BFDBFE; }
+.hr-bmi--underweight .hr-bmi-badge { background: #3B82F6; color: white; }
+.hr-bmi--underweight .hr-bmi-title { color: #1D4ED8; }
+.hr-bmi--overweight  { background: #FFF7ED; border-color: #FED7AA; }
+.hr-bmi--overweight  .hr-bmi-badge { background: #F97316; color: white; }
+.hr-bmi--overweight  .hr-bmi-title { color: #9A3412; }
+.hr-bmi--obese       { background: #FEF2F2; border-color: #FECACA; }
+.hr-bmi--obese       .hr-bmi-badge { background: #EF4444; color: white; }
+.hr-bmi--obese       .hr-bmi-title { color: #991B1B; }
+
+/* ── Nutrition chips ────────────────────────────────────────────────────── */
+.hr-nut-chips {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: .6rem; margin-bottom: 1.25rem;
+}
+@media (min-width:640px) { .hr-nut-chips { grid-template-columns: repeat(5, 1fr); } }
+
+.hr-nut-chip {
+  background: #F8FAFC;
+  border: 1px solid rgba(148,163,184,.14);
+  border-radius: 1rem; padding: .85rem .6rem;
+  text-align: center;
+}
+.hr-nut-chip-val {
+  font-family: Poppins, sans-serif; font-weight: 900;
+  font-size: 1.2rem; color: #1D9E75; letter-spacing: -.02em; line-height: 1;
+}
+.hr-nut-chip-lbl { font-size: .62rem; font-weight: 700; color: #94A3B8;
+                    text-transform: uppercase; letter-spacing: .07em;
+                    margin-top: .25rem; }
+
+/* ── AI reco cards ──────────────────────────────────────────────────────── */
+.hr-ai-card {
+  display: flex; gap: .85rem;
+  padding: 1rem 1.1rem;
+  border-radius: 1rem;
+  border: 1px solid #BBF7D0;
+  background: #F0FDF4;
+  margin-bottom: .65rem;
+  transition: transform 140ms ease;
+}
+.hr-ai-card:hover { transform: translateX(3px); }
+.hr-ai-num {
+  width: 1.8rem; height: 1.8rem;
+  background: #1D9E75; color: white;
+  border-radius: 50%;
+  font-family: Poppins, sans-serif; font-weight: 800; font-size: .8rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: .05rem;
+}
+.hr-ai-title { font-family: Poppins, sans-serif; font-weight: 800;
+                font-size: .9rem; color: #065F46; margin-bottom: .25rem; }
+.hr-ai-detail { font-size: .83rem; color: #374151; line-height: 1.65; }
+.hr-ai-guidance {
+  margin-top: .5rem; font-size: .8rem; color: #92400E;
+  background: #FFF7ED; border: 1px solid #FED7AA;
+  border-radius: .5rem; padding: .4rem .7rem;
+}
+
+/* ── Meal plan table ────────────────────────────────────────────────────── */
+.hr-meal-table { width: 100%; border-collapse: collapse; font-size: .8rem; }
+.hr-meal-table th {
+  background: #0F5E46; color: white;
+  padding: .6rem .7rem; text-align: left;
+  font-family: Poppins, sans-serif; font-weight: 700; font-size: .72rem;
+  text-transform: uppercase; letter-spacing: .08em;
+}
+.hr-meal-table th:first-child { border-radius: 0; width: 9%; }
+.hr-meal-table td {
+  padding: .65rem .7rem; border-bottom: 1px solid rgba(148,163,184,.1);
+  vertical-align: top;
+}
+.hr-meal-table tr:nth-child(even) td { background: #F8FAFC; }
+.hr-meal-table tr:hover td { background: #F0FDF4; }
+.hr-meal-name { font-weight: 700; color: #0F172A; line-height: 1.3; }
+.hr-meal-kn   { font-size: .68rem; color: #F97316; margin-top: .1rem;
+                 font-family: 'Noto Sans Kannada', sans-serif; }
+.hr-meal-meta { font-size: .65rem; color: #94A3B8; margin-top: .2rem; }
+.hr-meal-day  { font-family: Poppins, sans-serif; font-weight: 800;
+                 font-size: .82rem; color: #1D9E75; }
+.hr-meal-day-kn { font-size: .65rem; color: #F97316; }
+
+/* ── Food benefits ──────────────────────────────────────────────────────── */
+.hr-benefits-grid {
+  display: grid; gap: 1.1rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width:768px) { .hr-benefits-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+.hr-benefit-section { border-radius: 1.1rem; overflow: hidden; }
+.hr-benefit-hdr {
+  padding: .65rem .9rem;
+  font-family: Poppins, sans-serif; font-weight: 800;
+  font-size: .82rem; color: white;
+  display: flex; align-items: center; gap: .4rem;
+}
+.hr-benefit-hdr--protein  { background: #3B82F6; }
+.hr-benefit-hdr--iron     { background: #EF4444; }
+.hr-benefit-hdr--calcium  { background: #8B5CF6; }
+
+.hr-benefit-row {
+  display: flex; align-items: flex-start;
+  gap: .65rem; padding: .55rem .9rem;
+  border-bottom: 1px solid rgba(148,163,184,.08);
+  font-size: .78rem;
+}
+.hr-benefit-row:last-child { border-bottom: none; }
+.hr-benefit-food { font-weight: 700; color: #0F172A; min-width: 7rem; }
+.hr-benefit-qty  { font-family: Poppins, sans-serif; font-weight: 800;
+                    font-size: .72rem; min-width: 5.5rem; }
+.hr-benefit-desc { color: #64748B; line-height: 1.5; font-size: .75rem; }
+.hr-benefit-hdr--protein  ~ .hr-benefit-row .hr-benefit-qty { color: #1D4ED8; }
+.hr-benefit-hdr--iron     ~ .hr-benefit-row .hr-benefit-qty { color: #DC2626; }
+.hr-benefit-hdr--calcium  ~ .hr-benefit-row .hr-benefit-qty { color: #7C3AED; }
+
+/* ── QR grid ────────────────────────────────────────────────────────────── */
+.hr-qr-grid {
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width:540px) { .hr-qr-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width:900px) { .hr-qr-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.hr-qr-tile {
+  display: flex; flex-direction: column; align-items: center;
+  gap: .45rem; padding: .85rem .6rem;
+  background: #F8FAFC;
+  border: 1.5px solid #BBF7D0;
+  border-radius: 1.1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+.hr-qr-tile:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(29,158,117,.15);
+  border-color: #1D9E75;
+}
+.hr-qr-canvas { line-height: 0; }
+.hr-qr-canvas canvas, .hr-qr-canvas img { display: block; border-radius: 6px; }
+.hr-qr-food-name { font-family: Poppins, sans-serif; font-weight: 800;
+                    font-size: .72rem; color: #0F172A; line-height: 1.3; }
+.hr-qr-food-kn   { font-size: .63rem; color: #F97316; }
+.hr-qr-scan      { font-size: .62rem; color: #1D9E75; font-weight: 700;
+                    letter-spacing: .04em; text-transform: uppercase; }
+
+.hr-qr-plan-tile {
+  display: flex; align-items: center; gap: 1.25rem;
+  padding: 1.1rem 1.35rem;
+  background: linear-gradient(135deg, #F0FDF4, #ECFDF5);
+  border: 2px solid #BBF7D0;
+  border-radius: 1.5rem;
+  margin-top: 1.1rem;
+}
+.hr-qr-plan-label { font-family: Poppins, sans-serif; font-weight: 800;
+                     font-size: .95rem; color: #065F46; margin-bottom: .25rem; }
+.hr-qr-plan-desc  { font-size: .82rem; color: #64748B; line-height: 1.6; }
+.hr-qr-plan-url   { font-size: .7rem; color: #94A3B8; font-family: monospace;
+                     word-break: break-all; margin-top: .35rem; }
+
+/* ── Parent guidance ────────────────────────────────────────────────────── */
+.hr-parent-grid {
+  display: grid; gap: .85rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width:640px) { .hr-parent-grid { grid-template-columns: 1fr 1fr; } }
+
+.hr-parent-tip {
+  background: #FFFBEB;
+  border: 1.5px solid #FDE68A;
+  border-radius: 1.1rem;
+  padding: 1rem 1.1rem;
+  display: flex; gap: .75rem; align-items: flex-start;
+}
+.hr-parent-tip-icon { font-size: 1.35rem; line-height: 1; flex-shrink: 0; margin-top: .05rem; }
+.hr-parent-tip-title { font-family: Poppins, sans-serif; font-weight: 800;
+                        font-size: .85rem; color: #92400E; margin-bottom: .3rem; }
+.hr-parent-tip-body  { font-size: .8rem; color: #78350F; line-height: 1.6; }
+.hr-parent-tip-action {
+  margin-top: .45rem; font-size: .78rem; color: #065F46;
+  background: #F0FDF4; border: 1px solid #BBF7D0;
+  border-radius: .5rem; padding: .35rem .6rem;
+  font-weight: 600;
+}
+
+/* ── School recommendation ──────────────────────────────────────────────── */
+.hr-reco-block {
+  background: #F8FAFC;
+  border: 1px solid rgba(148,163,184,.18);
+  border-left: 4px solid #1D9E75;
+  border-radius: 0 1rem 1rem 0;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.hr-reco-para { font-size: .88rem; color: #374151; line-height: 1.75;
+                 margin-bottom: .75rem; }
+.hr-reco-para:last-child { margin-bottom: 0; }
+.hr-reco-urgent { color: #DC2626; font-weight: 700; }
+
+.hr-sig-grid {
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 1.25rem;
+}
+.hr-sig-block { padding: .85rem 1rem; border: 1px solid rgba(148,163,184,.15);
+                 border-radius: .85rem; }
+.hr-sig-label { font-size: .7rem; color: #94A3B8; font-weight: 600;
+                  text-transform: uppercase; letter-spacing: .08em; margin-bottom: .6rem; }
+.hr-sig-line  { border-bottom: 1.5px solid #0F172A; margin-bottom: .4rem; height: 2.2rem; }
+.hr-sig-name  { font-size: .72rem; color: #94A3B8; }
+
+/* ── Action buttons ─────────────────────────────────────────────────────── */
+.hr-actions {
+  display: flex; flex-wrap: wrap; gap: .75rem;
+  margin-bottom: 1.5rem;
+}
+.hr-action-btn {
+  display: inline-flex; align-items: center; gap: .45rem;
+  padding: .75rem 1.35rem; border-radius: 9999px;
+  font-size: .83rem; font-weight: 800; text-decoration: none;
+  cursor: pointer; border: none;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+.hr-action-btn:hover { transform: translateY(-2px); }
+.hr-action-btn--green  { background: #1D9E75; color: white; box-shadow: 0 6px 18px rgba(29,158,117,.28); }
+.hr-action-btn--green:hover  { background: #166F53; }
+.hr-action-btn--outline{ background: white; color: #0F5E46; border: 1.5px solid #BBF7D0; }
+.hr-action-btn--outline:hover{ background: #F0FDF4; }
+.hr-action-btn--dark   { background: #0F172A; color: white; }
+.hr-action-btn--dark:hover   { background: #1E293B; }
+.hr-action-btn--wa     { background: #25D366; color: white; }
+.hr-action-btn--wa:hover     { background: #1ebe5d; }
+
+/* ── Reveal animation ───────────────────────────────────────────────────── */
+.hr-reveal {
+  opacity: 0; transform: translateY(14px);
+  transition: opacity 440ms cubic-bezier(.22,1,.36,1),
+              transform 440ms cubic-bezier(.22,1,.36,1);
+}
+.hr-reveal.hr-visible { opacity: 1; transform: translateY(0); }
+.hr-d1 { transition-delay:  60ms; }
+.hr-d2 { transition-delay: 120ms; }
+.hr-d3 { transition-delay: 180ms; }
+
+/* ── Print ──────────────────────────────────────────────────────────────── */
 @media print {
-  .no-print, nav, footer, header, button, a[href] { display: none !important; }
+  .hr-actions, nav, footer, header, button { display: none !important; }
   body { background: white !important; }
-  #report { padding: 0 !important; }
-  .report-bar-fill { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .hr-cover { border-radius: .5rem !important; }
+  .hr-card   { box-shadow: none !important; border: 1px solid #E2E8F0 !important; }
+  .hr-qr-tile { break-inside: avoid; }
+  .hr-sig-grid { break-inside: avoid; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hr-reveal { transition: none !important; }
 }
 </style>
 {% endblock %}
 
 {% block content %}
-<div id="report" class="max-w-4xl mx-auto px-4 py-6 sm:py-8">
+<div class="hr-page">
 
-  <!-- ① Report header -->
-  <div class="infographic-header mb-6">
-    <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
-      <div class="flex-1">
-        <p class="text-green-200 text-xs font-semibold tracking-widest uppercase mb-1">🏥 NutriPrint Health &amp; Nutrition Report</p>
-        <h1 class="heading font-extrabold text-2xl sm:text-3xl">{{ plan.student_name }}</h1>
-        <p class="text-green-100 mt-1 text-sm">{{ plan.school_name }}</p>
-        {% if plan.teacher_name %}
-        <p class="text-green-200 text-xs mt-0.5">Teacher: {{ plan.teacher_name }}</p>
-        {% endif %}
-        <div class="flex flex-wrap gap-2 mt-3">
-          <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">Age {{ plan.age_group }} years</span>
-          <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">{{ plan.diet_pref | title }}</span>
-          <span class="bg-white/20 text-white text-xs px-3 py-1 rounded-full">{{ plan.region | replace('_',' ') | title }}</span>
+  {# ═══════════════════════════════════════════════════════════════════════
+     COVER
+     ═══════════════════════════════════════════════════════════════════════ #}
+  <div class="hr-cover hr-reveal">
+    <div class="hr-cover-inner">
+      <div>
+        <div class="hr-cover-logo-row">
+          <img src="/static/images/logo.svg" alt="NutriPrint" style="height:2.2rem;width:2.2rem;object-fit:contain;filter:brightness(0) invert(1);"/>
+          <span style="font-family:Poppins,sans-serif;font-weight:900;font-size:1.1rem;color:white;letter-spacing:-.02em;">NutriPrint</span>
+          <div class="hr-cover-logo-dot"></div>
+          <span style="font-size:.65rem;color:rgba(255,255,255,.55);font-weight:600;letter-spacing:.1em;text-transform:uppercase;">AI School Nutrition</span>
+        </div>
+        <div style="margin-bottom:.85rem;">
+          <span class="hr-cover-doc-badge">
+            📋 Parent Nutrition Awareness Pack
+          </span>
+        </div>
+        <div class="hr-cover-student">{{ plan.student_name }}</div>
+        <div class="hr-cover-school">{{ plan.school_name }}{% if plan.teacher_name %} · {{ plan.teacher_name }}{% endif %}</div>
+        <div class="hr-cover-pills">
+          <span class="hr-cover-pill">🎂 Age {{ plan.age_group }} years</span>
+          <span class="hr-cover-pill">🥗 {{ plan.diet_pref | title }}</span>
+          <span class="hr-cover-pill">📍 {{ plan.region | replace('_',' ') | title }}</span>
+          <span class="hr-cover-pill">🗓 {{ plan.month | title }}</span>
           {% if plan.bmi_class %}
-          {% set bmi_bg = {'normal':'bg-green-400','underweight':'bg-blue-400','overweight':'bg-orange-400','obese':'bg-red-400'} %}
-          <span class="{{ bmi_bg.get(plan.bmi_class,'bg-gray-400') }} text-white text-xs px-3 py-1 rounded-full font-bold">
-            BMI: {{ plan.bmi_class | upper }}
+          {% set bmi_pill_colors = {'normal':'background:rgba(16,185,129,.2);border-color:rgba(16,185,129,.45);','underweight':'background:rgba(59,130,246,.2);border-color:rgba(59,130,246,.45);','overweight':'background:rgba(249,115,22,.2);border-color:rgba(249,115,22,.45);','obese':'background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.45);'} %}
+          <span class="hr-cover-pill" style="{{ bmi_pill_colors.get(plan.bmi_class,'') }}">
+            📏 BMI: {{ plan.bmi_class | upper }}
           </span>
           {% endif %}
+          <span class="hr-cover-pill">✅ Under ₹150/day</span>
         </div>
       </div>
-      <div class="text-right text-green-100 text-xs shrink-0">
-        <p class="font-semibold">{{ plan.month | title }} {{ plan.age_group }} years</p>
-        <p class="mt-1">{{ plan.region | replace('_',' ') | title }}, Karnataka</p>
-        <p class="mt-2 text-green-300 text-xs">ICMR RDA Standards</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ② Nutrition at a glance -->
-  <div class="section-divider"><span>📊 Nutrition at a Glance · <span class="kn">ಪೋಷಣೆ ಸಂಕ್ಷಿಪ್ತ</span></span></div>
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-    {{ nutrient_stat('🔥', plan.avg_daily_cal|round(0)|int, 'Calories/day') }}
-    {{ nutrient_stat('💪', plan.avg_protein_g|round(1), 'Protein/day', 'g') }}
-    {{ nutrient_stat('🦴', plan.avg_calcium_mg|round(0)|int, 'Calcium/day', 'mg') }}
-    {{ nutrient_stat('🩸', plan.avg_iron_mg|round(1), 'Iron/day', 'mg') }}
-  </div>
-
-  <!-- ③ BMI interpretation -->
-  {% if plan.bmi_class %}
-  <div class="section-divider"><span>📏 BMI Interpretation · <span class="kn">BMI ವ್ಯಾಖ್ಯಾನ</span></span></div>
-  <div class="bg-white rounded-2xl border p-4 sm:p-6 mb-6">
-    <div class="grid sm:grid-cols-2 gap-6 items-start">
-      <div>
-        {% set bmi_data = {
-          'underweight': {'label':'Underweight','kn':'ಕಡಿಮೆ ತೂಕ','color':'#3B82F6','bg':'#EFF6FF','border':'#BFDBFE',
-            'meaning': 'The student\'s BMI is below the 5th percentile for their age and gender, indicating insufficient weight for healthy growth.',
-            'action': 'Focus on energy-dense Karnataka foods: Ragi Mudde, Groundnut Laddu, Ghee Rice, Banana Sheera. Ensure 3 full meals daily.'},
-          'normal':      {'label':'Normal Weight','kn':'ಆರೋಗ್ಯಕರ ತೂಕ','color':'#10B981','bg':'#F0FDF4','border':'#BBF7D0',
-            'meaning': 'The student\'s BMI falls between the 5th and 85th percentile — healthy weight for age and gender.',
-            'action': 'Continue balanced meals with Ragi, Jowar, seasonal vegetables, and adequate protein and calcium daily.'},
-          'overweight':  {'label':'Overweight','kn':'ಹೆಚ್ಚು ತೂಕ','color':'#F97316','bg':'#FFF7ED','border':'#FED7AA',
-            'meaning': 'BMI between 85th–95th percentile. Excess body weight relative to age and gender. Early intervention recommended.',
-            'action': 'Reduce fried foods and sweets. Increase vegetables, Ragi, and physical activity to 45 minutes daily.'},
-          'obese':       {'label':'Obese','kn':'ಸ್ಥೂಲಕಾಯ','color':'#EF4444','bg':'#FEF2F2','border':'#FECACA',
-            'meaning': 'BMI above the 95th percentile. Significant health risk requiring medical attention and structured dietary plan.',
-            'action': 'Please consult a doctor immediately. Avoid junk food completely. Use the high-fiber, low-calorie meal plan.'}
-        } %}
-        {% set bd = bmi_data.get(plan.bmi_class, bmi_data.normal) %}
-        <div class="rounded-xl p-4 mb-3" style="background:{{ bd.bg }};border:1.5px solid {{ bd.border }}">
-          <div class="flex items-center gap-3 mb-2">
-            <span class="text-2xl font-black" style="color:{{ bd.color }}">{{ bd.label }}</span>
-            <span class="text-base kn font-bold" style="color:{{ bd.color }}">{{ bd.kn }}</span>
-          </div>
-          <p class="text-xs text-gray-600 leading-relaxed mb-2">{{ bd.meaning }}</p>
-          <p class="text-xs font-semibold" style="color:{{ bd.color }}">📋 {{ bd.action }}</p>
-        </div>
-      </div>
-      <div>
-        <p class="text-xs font-semibold text-gray-600 mb-2">BMI Classification Scale (IAP Pediatric Chart)</p>
-        <div class="bmi-gauge-track">
-          {% set needle_pos = {'underweight': 8, 'normal': 40, 'overweight': 75, 'obese': 92} %}
-          <div class="bmi-gauge-needle" style="left:{{ needle_pos.get(plan.bmi_class, 40) }}%"></div>
-        </div>
-        <div class="flex justify-between text-xs text-gray-500 mt-1">
-          <span>Underweight</span><span>Normal</span><span>Over</span><span>Obese</span>
-        </div>
-        <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
-          <div class="rounded-lg bg-slate-50 p-2">
-            <span class="text-gray-400 block">Age group</span>
-            <span class="font-bold text-gray-800">{{ plan.age_group }} years</span>
-          </div>
-          <div class="rounded-lg bg-slate-50 p-2">
-            <span class="text-gray-400 block">Diet</span>
-            <span class="font-bold text-gray-800">{{ plan.diet_pref | title }}</span>
-          </div>
-          <div class="rounded-lg bg-slate-50 p-2">
-            <span class="text-gray-400 block">Region</span>
-            <span class="font-bold text-gray-800">{{ plan.region | replace('_',' ') | title }}</span>
-          </div>
-          <div class="rounded-lg bg-slate-50 p-2">
-            <span class="text-gray-400 block">Plan period</span>
-            <span class="font-bold text-gray-800">{{ plan.month | title }}</span>
-          </div>
-        </div>
+      <div style="text-align:right;color:rgba(255,255,255,.55);font-size:.72rem;line-height:1.7;">
+        <div style="color:rgba(255,255,255,.35);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem;">Confidential</div>
+        ICMR RDA Standards<br/>
+        IAP Growth Charts<br/>
+        Karnataka Regional Foods<br/>
+        <span style="color:rgba(255,255,255,.35);font-size:.6rem;">Yenepoya Institute of Technology</span>
       </div>
     </div>
   </div>
-  {% endif %}
 
-  <!-- ④ ICMR RDA visual progress bars -->
-  {% if nutrition_gaps %}
-  <div class="section-divider"><span>🎯 ICMR RDA Progress · <span class="kn">ಪ್ರತಿದಿನ ಪೋಷಣೆ ಗುರಿ</span></span></div>
-  <div class="bg-white rounded-2xl border p-4 sm:p-6 mb-6">
-    <p class="text-xs text-gray-400 mb-4">Bars show % of daily ICMR RDA target achieved by this meal plan</p>
-    <div class="grid sm:grid-cols-2 gap-x-8 gap-y-4">
-      {% for g in nutrition_gaps %}
-      {% set pct = [g.percent, 100]|min %}
-      {% set bar_color = '#EF4444' if g.percent < 60 else ('#F97316' if g.percent < 85 else '#10B981') %}
-      {% set icon = '🔥' if g.key == 'calories' else ('💪' if g.key == 'protein_g' else ('🦴' if g.key == 'calcium_mg' else '🩸')) %}
-      <div class="report-progress-wrap">
-        <div class="report-progress-label">
-          <span class="report-progress-title">{{ icon }} {{ g.nutrient }} <span class="text-xs font-normal text-gray-400 ml-1">{{ g.status_label }}</span></span>
-          <div class="text-right">
-            <span class="report-progress-pct" style="color:{{ bar_color }}">{{ g.percent }}%</span>
-            <span class="report-progress-nums ml-2">{{ g.getting }}/{{ g.needed }}{{ g.unit }}</span>
-          </div>
-        </div>
-        <div class="report-bar-track">
-          <div class="report-bar-fill" style="width:{{ pct }}%;background:{{ bar_color }}">
-            {% if pct > 12 %}<span class="report-bar-text">{{ g.getting }}{{ g.unit }}</span>{% endif %}
-          </div>
-        </div>
-        {% if g.fix_en and g.status != 'good' %}
-        <p class="text-xs text-gray-500 mt-1 leading-relaxed">
-          💡 <span class="font-medium text-gray-700">{{ g.fix_en }}</span>
-        </p>
-        <p class="text-xs text-orange-400 kn mt-0.5">{{ g.fix_kn or '' }}</p>
-        {% endif %}
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-  {% endif %}
-
-  <!-- ⑤ Strengths and improvement areas -->
-  {% if nutrition_gaps %}
-  <div class="section-divider"><span>💪 Strengths &amp; Improvement Areas</span></div>
-  <div class="grid sm:grid-cols-2 gap-4 mb-6">
-    <div class="strength-card">
-      <p class="strength-title">✅ Nutritional Strengths · <span class="kn text-sm">ಶಕ್ತಿಗಳು</span></p>
-      {% set has_strengths = namespace(value=false) %}
-      {% for g in nutrition_gaps %}
-        {% if g.status == 'good' %}
-          {% set has_strengths.value = true %}
-          <div class="strength-item">✓ {{ g.nutrient }} — {{ g.getting }}{{ g.unit }}/day ({{ g.percent }}% of RDA)</div>
-        {% endif %}
-      {% endfor %}
-      {% if not has_strengths.value %}
-        <div class="strength-item">📋 Consistent meal planning will improve nutrient levels over 4–6 weeks</div>
-        <div class="strength-item">✓ Regional Karnataka foods used — culturally appropriate</div>
-        <div class="strength-item">✓ Budget under ₹150/day — financially sustainable</div>
-      {% endif %}
-      <div class="strength-item">✓ 7-day plan with breakfast, lunch, and dinner</div>
-      <div class="strength-item">✓ Diet preference respected: {{ plan.diet_pref | title }}</div>
-    </div>
-    <div class="improve-card">
-      <p class="improve-title">⚠️ Needs Improvement · <span class="kn text-sm">ಸುಧಾರಣೆ ಬೇಕು</span></p>
-      {% set has_gaps = namespace(value=false) %}
-      {% for g in nutrition_gaps %}
-        {% if g.status != 'good' %}
-          {% set has_gaps.value = true %}
-          <div class="improve-item">
-            {{ '🔴' if g.status == 'critical' else '⚠️' }} {{ g.nutrient }}: {{ g.percent }}% of RDA
-            {% if g.status == 'critical' %} — Critical, needs immediate attention{% endif %}
-          </div>
-        {% endif %}
-      {% endfor %}
-      {% if not has_gaps.value %}
-        <div class="improve-item">✅ All nutrients meeting ICMR RDA — maintain this plan</div>
-      {% endif %}
-      <div class="improve-item">📅 Review and update plan every month</div>
-      <div class="improve-item">⚕️ Consult school health officer if BMI is abnormal for 3+ months</div>
-    </div>
-  </div>
-  {% endif %}
-
-  <!-- ⑥ Food quantity guide -->
-  {% if food_equivalents %}
-  <div class="section-divider"><span>🍽️ How Much to Eat Daily · <span class="kn">ಎಷ್ಟು ಆಹಾರ ತಿನ್ನಬೇಕು</span></span></div>
-  <p class="text-xs text-gray-500 mb-4">Practical Karnataka food quantities to meet daily nutrient targets for age group {{ plan.age_group }}</p>
-  {{ food_equivalents_section(food_equivalents) }}
-  {% endif %}
-
-  <!-- ⑦ AI report recommendations -->
-  {% if ai_report_recommendations %}
-  <div class="section-divider"><span>🤖 AI Nutrition Recommendations</span></div>
-  <div class="bg-white rounded-2xl border p-4 sm:p-6 mb-6">
-    <div class="grid gap-3">
-      {% for rec in ai_report_recommendations %}
-      <div class="flex gap-3 border-l-4 border-primary bg-green-50/50 rounded-r-xl p-4">
-        <span class="text-xl flex-shrink-0 mt-0.5">💡</span>
+  {# ═══════════════════════════════════════════════════════════════════════
+     § 1 — STUDENT SUMMARY
+     ═══════════════════════════════════════════════════════════════════════ #}
+  <div class="hr-card hr-reveal hr-d1">
+    <div class="hr-card-body">
+      <div class="hr-section-hdr">
+        <span class="hr-section-num">1</span>
+        <div class="hr-section-icon">👩‍🎓</div>
         <div>
-          <p class="font-bold text-green-900 text-sm">{{ rec.title }}</p>
-          <p class="text-sm text-slate-700 mt-1 leading-relaxed">{{ rec.detailed_explanation }}</p>
+          <div class="hr-section-title">Student Summary</div>
+          <div class="hr-section-sub">Health metrics recorded by the class teacher</div>
         </div>
       </div>
-      {% endfor %}
-    </div>
-  </div>
-  {% endif %}
 
-  <!-- ⑧ Sample day portions -->
-  <div class="section-divider"><span>📋 Sample Day — Monday Portions · <span class="kn">ಸೋಮವಾರ ಊಟದ ಪ್ರಮಾಣ</span></span></div>
-  {% set sample_day = plan.week[0] %}
-  <div class="grid md:grid-cols-3 gap-4 mb-6">
-    {{ meal_portion(sample_day.breakfast, '🌅 Breakfast') }}
-    {{ meal_portion(sample_day.lunch, '☀️ Lunch') }}
-    {{ meal_portion(sample_day.dinner, '🌙 Dinner') }}
-  </div>
+      {# Info grid #}
+      <div class="hr-info-grid" style="margin-bottom:1rem;">
+        <div class="hr-info-tile">
+          <div class="hr-info-label">Student Name</div>
+          <div class="hr-info-value">{{ plan.student_name }}</div>
+        </div>
+        <div class="hr-info-tile">
+          <div class="hr-info-label">School</div>
+          <div class="hr-info-value" style="font-size:.78rem;">{{ plan.school_name }}</div>
+        </div>
+        <div class="hr-info-tile">
+          <div class="hr-info-label">Age Group</div>
+          <div class="hr-info-value">{{ plan.age_group }} yrs</div>
+        </div>
+        <div class="hr-info-tile">
+          <div class="hr-info-label">Diet Type</div>
+          <div class="hr-info-value">{{ plan.diet_pref | title }}</div>
+        </div>
+        <div class="hr-info-tile">
+          <div class="hr-info-label">Region</div>
+          <div class="hr-info-value">{{ plan.region | replace('_',' ') | title }}</div>
+        </div>
+        <div class="hr-info-tile">
+          <div class="hr-info-label">Plan Month</div>
+          <div class="hr-info-value">{{ plan.month | title }}</div>
+        </div>
+        {% if plan.bmi_class %}
+        <div class="hr-info-tile">
+          <div class="hr-info-label">BMI Category</div>
+          <div class="hr-info-value">{{ plan.bmi_class | title }}</div>
+        </div>
+        {% endif %}
+        {% if plan.strategy %}
+        <div class="hr-info-tile">
+          <div class="hr-info-label">Nutrition Focus</div>
+          <div class="hr-info-value" style="font-size:.78rem;">{{ plan.strategy | replace('_',' ') | title }}</div>
+        </div>
+        {% endif %}
+      </div>
 
-  <!-- ⑨ Parent recommendations -->
-  <div class="section-divider"><span>👨‍👩‍👧 Parent Guidance · <span class="kn">ಪಾಲಕರ ಮಾರ್ಗದರ್ಶನ</span></span></div>
-  <div class="grid sm:grid-cols-2 gap-4 mb-6">
-    {% if ai_parent_recommendations %}
-      {% for rec in ai_parent_recommendations %}
-      <div class="parent-card">
-        <p class="parent-card-title">{{ rec.title }}</p>
-        <div class="parent-item">
-          <span class="parent-item-dot">▶</span>
-          <span>{{ rec.parent_guidance }}</span>
+      {# BMI status card #}
+      {% if plan.bmi_class %}
+      {% set bmi_meta = {
+        'normal':      {'icon':'✓',  'label':'Healthy Weight',  'kn':'ಆರೋಗ್ಯಕರ ತೂಕ',
+          'desc':'The student is in the healthy BMI range for their age. Continue balanced meals with regional Karnataka foods and monitor monthly.',
+          'action':'Continue current dietary habits. Include Ragi, Jowar and seasonal vegetables daily.'},
+        'underweight': {'icon':'⚠',  'label':'Underweight',     'kn':'ಕಡಿಮೆ ತೂಕ',
+          'desc':'The student\'s BMI is below the 5th percentile. Prioritise calorie-dense, iron-rich and protein-rich foods to support healthy growth.',
+          'action':'Include Ragi Mudde, Groundnut Laddu, Bisibelebath and Eggs. Ensure 3 full meals daily.'},
+        'overweight':  {'icon':'⚠',  'label':'Overweight',      'kn':'ಹೆಚ್ಚು ತೂಕ',
+          'desc':'BMI is between the 85th–95th percentile. Reduce fried foods and sweets. Increase vegetables and physical activity.',
+          'action':'Replace fried snacks with fruits. Walk or play outdoors for 45 minutes every day.'},
+        'obese':       {'icon':'⚠',  'label':'Obese',           'kn':'ಸ್ಥೂಲಕಾಯ',
+          'desc':'BMI above 95th percentile. Significant health risk. Please consult a school health officer or doctor immediately.',
+          'action':'URGENT: Consult a doctor within 2 weeks. Avoid junk food completely. Use a high-fibre, low-calorie meal plan.'},
+      } %}
+      {% set bm = bmi_meta.get(plan.bmi_class, bmi_meta.normal) %}
+      <div class="hr-bmi-card hr-bmi--{{ plan.bmi_class }}">
+        <div class="hr-bmi-badge">
+          <div style="font-size:1.5rem;line-height:1.1;">{{ bm.icon }}</div>
+          <div style="font-size:.72rem;font-weight:800;margin-top:.2rem;">{{ bm.label }}</div>
+        </div>
+        <div class="hr-bmi-text">
+          <div class="hr-bmi-title">{{ bm.label }} · <span class="kn" style="font-size:.88rem;">{{ bm.kn }}</span></div>
+          <div class="hr-bmi-desc">{{ bm.desc }}</div>
+          <div style="margin-top:.6rem;font-size:.8rem;font-weight:700;color:inherit;opacity:.8;">
+            📋 {{ bm.action }}
+          </div>
         </div>
       </div>
-      {% endfor %}
-    {% else %}
-    <div class="parent-card">
-      <p class="parent-card-title">🍽️ Daily Meals · <span class="kn text-sm">ಪ್ರತಿದಿನ ಊಟ</span></p>
-      <div class="parent-item"><span class="parent-item-dot">▶</span><span>Serve all 3 meals — do not skip breakfast</span></div>
-      <div class="parent-item"><span class="parent-item-dot">▶</span><span>Include Ragi, Jowar, seasonal vegetables daily</span></div>
-      <div class="parent-item"><span class="parent-item-dot">▶</span><span>Offer 6–8 glasses of clean water</span></div>
-      <div class="parent-item"><span class="parent-item-dot">▶</span><span class="kn">ಪ್ರತಿದಿನ ರಾಗಿ, ಜೋಳ ಮತ್ತು ತರಕಾರಿ ನೀಡಿ</span></div>
+      {% endif %}
+
+      {# Nutrition chips #}
+      <div class="hr-nut-chips">
+        <div class="hr-nut-chip">
+          <div class="hr-nut-chip-val">{{ plan.avg_daily_cal | round(0) | int }}</div>
+          <div class="hr-nut-chip-lbl">🔥 Cal/day</div>
+        </div>
+        <div class="hr-nut-chip">
+          <div class="hr-nut-chip-val">{{ plan.avg_protein_g | round(1) }}g</div>
+          <div class="hr-nut-chip-lbl">💪 Protein</div>
+        </div>
+        <div class="hr-nut-chip">
+          <div class="hr-nut-chip-val">{{ plan.avg_calcium_mg | round(0) | int }}mg</div>
+          <div class="hr-nut-chip-lbl">🦴 Calcium</div>
+        </div>
+        <div class="hr-nut-chip">
+          <div class="hr-nut-chip-val">{{ plan.avg_iron_mg | round(1) }}mg</div>
+          <div class="hr-nut-chip-lbl">🩸 Iron</div>
+        </div>
+        <div class="hr-nut-chip" style="background:#FFF7ED;border-color:#FED7AA;">
+          <div class="hr-nut-chip-val" style="color:#F97316;">₹{{ plan.total_cost_inr }}</div>
+          <div class="hr-nut-chip-lbl">Week Total</div>
+        </div>
+      </div>
     </div>
-    <div class="parent-card">
-      <p class="parent-card-title">🚫 Avoid · <span class="kn text-sm">ತಡೆಯಿರಿ</span></p>
-      <div class="parent-item"><span class="parent-item-dot">▶</span><span>Fried snacks, chips, biscuits as main food</span></div>
-      <div class="parent-item"><span class="parent-item-dot">▶</span><span>Sugary drinks, cold drinks, packaged juices</span></div>
-      <div class="parent-item"><span class="parent-item-dot">▶</span><span>Skipping meals due to time or cost</span></div>
-      <div class="parent-item"><span class="parent-item-dot">▶</span><span class="kn">ಕರಿದ ತಿನಿಸು ಮತ್ತು ಸಿಹಿ ಪಾನೀಯ ತಪ್ಪಿಸಿ</span></div>
-    </div>
-    {% endif %}
   </div>
 
-  <!-- ⑩ Signature block -->
-  <div class="grid sm:grid-cols-2 gap-8 mb-6 pt-6 border-t border-gray-200">
-    <div>
-      <p class="text-sm text-gray-500 mb-8">Teacher Signature / <span class="kn text-sm">ಶಿಕ್ಷಕರ ಸಹಿ</span>:</p>
-      <div class="border-b-2 border-gray-300 w-48 mt-6"></div>
-      {% if plan.teacher_name %}
-      <p class="text-xs text-gray-400 mt-2">{{ plan.teacher_name }}</p>
+  {# ═══════════════════════════════════════════════════════════════════════
+     § 2 — AI NUTRITION RECOMMENDATIONS
+     ═══════════════════════════════════════════════════════════════════════ #}
+  <div class="hr-card hr-reveal hr-d2">
+    <div class="hr-card-body">
+      <div class="hr-section-hdr">
+        <span class="hr-section-num">2</span>
+        <div class="hr-section-icon">🤖</div>
+        <div>
+          <div class="hr-section-title">AI Nutrition Recommendations</div>
+          <div class="hr-section-sub">Personalised guidance generated by Groq AI · <span class="kn">ಪೋಷಣೆ ಸಲಹೆಗಳು</span></div>
+        </div>
+      </div>
+
+      {% set ai_recs = ai_report_recommendations or [] %}
+      {% if ai_recs %}
+        {% for rec in ai_recs %}
+        <div class="hr-ai-card">
+          <div class="hr-ai-num">{{ loop.index }}</div>
+          <div style="flex:1;">
+            <div class="hr-ai-title">{{ rec.title }}</div>
+            <div class="hr-ai-detail">{{ rec.detailed_explanation }}</div>
+            {% if rec.parent_guidance %}
+            <div class="hr-ai-guidance">👨‍👩‍👧 Parent action: {{ rec.parent_guidance }}</div>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        {# Default recommendations #}
+        {% set defaults = [
+          ('🥗 Increase Nutrient Diversity',
+           'Include at least 5 different food groups daily — grains, legumes, vegetables, dairy/eggs, and fruits. Rotate between Karnataka regional foods to maximise micronutrient coverage.',
+           'Cook ragi or jowar at least 3 times per week. Add drumstick leaves or palak to at least one meal daily.'),
+          ('💪 Boost Protein Intake',
+           'School-age children require 0.9–1.2 g of protein per kg body weight for optimal growth. Include horsegram, avarekalu, eggs, or dal at every meal.',
+           'Add a boiled egg or sprouted moong to tiffin. Replace plain rice meals with bisibelebath or sambar rice.'),
+          ('🦴 Prioritise Calcium and Iron',
+           'Calcium supports bone density and iron prevents anaemia — both critical during school-age growth. Ragi, drumstick leaves and sesame are excellent natural sources.',
+           'Serve ragi malt as morning drink. Include drumstick leaves curry at least twice per week.'),
+          ('💧 Hydration and Meal Timing',
+           'Dehydration reduces concentration. Children should drink 6–8 glasses of clean water daily and eat at regular intervals — breakfast, lunch and dinner without skipping.',
+           'Send a 500ml water bottle to school. Never skip breakfast — it is critical for cognitive performance.'),
+        ] %}
+        {% for title, detail, guidance in defaults %}
+        <div class="hr-ai-card">
+          <div class="hr-ai-num">{{ loop.index }}</div>
+          <div style="flex:1;">
+            <div class="hr-ai-title">{{ title }}</div>
+            <div class="hr-ai-detail">{{ detail }}</div>
+            <div class="hr-ai-guidance">👨‍👩‍👧 Parent action: {{ guidance }}</div>
+          </div>
+        </div>
+        {% endfor %}
+      {% endif %}
+
+      {# Foods to include / reduce #}
+      <div style="display:grid;gap:.85rem;grid-template-columns:1fr 1fr;margin-top:1rem;">
+        <div style="background:#F0FDF4;border:1.5px solid #BBF7D0;border-radius:1rem;padding:1rem;">
+          <div style="font-family:Poppins,sans-serif;font-weight:800;font-size:.85rem;color:#065F46;margin-bottom:.6rem;">✅ Foods to Include</div>
+          {% set include_foods = ['Ragi Mudde — high calcium + iron', 'Horsegram Saaru — protein powerhouse', 'Drumstick Leaves — moringa superfood', 'Bisibelebath — complete protein meal', 'Green Gram Sprouts — live enzymes'] %}
+          {% for food in include_foods %}
+          <div style="font-size:.78rem;color:#166534;padding:.3rem 0;border-bottom:1px solid #BBF7D0;">✓ {{ food }}</div>
+          {% endfor %}
+        </div>
+        <div style="background:#FEF2F2;border:1.5px solid #FECACA;border-radius:1rem;padding:1rem;">
+          <div style="font-family:Poppins,sans-serif;font-weight:800;font-size:.85rem;color:#991B1B;margin-bottom:.6rem;">🚫 Foods to Reduce</div>
+          {% set reduce_foods = ['Packaged chips and biscuits', 'Sugary cold drinks and juices', 'Instant noodles and fast food', 'Deep-fried snacks daily', 'Excess sugar and sweets'] %}
+          {% for food in reduce_foods %}
+          <div style="font-size:.78rem;color:#7F1D1D;padding:.3rem 0;border-bottom:1px solid #FECACA;">✗ {{ food }}</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {# ═══════════════════════════════════════════════════════════════════════
+     § 3 — WEEKLY MEAL PLAN
+     ═══════════════════════════════════════════════════════════════════════ #}
+  <div class="hr-card hr-reveal">
+    <div class="hr-card-body">
+      <div class="hr-section-hdr">
+        <span class="hr-section-num">3</span>
+        <div class="hr-section-icon">🗓️</div>
+        <div>
+          <div class="hr-section-title">Weekly Meal Plan</div>
+          <div class="hr-section-sub">Full 7-day plan · Breakfast · Lunch · Evening Snack · Dinner · <span class="kn">ವಾರದ ಊಟದ ಯೋಜನೆ</span></div>
+        </div>
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table class="hr-meal-table">
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>🌅 Breakfast</th>
+              <th>☀️ Lunch</th>
+              <th>🍵 Evening Snack</th>
+              <th>🌙 Dinner</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for day in plan.week %}
+            <tr>
+              <td>
+                <div class="hr-meal-day">{{ day.day[:3] }}</div>
+                <div class="hr-meal-day-kn kn">{{ day.day_kn }}</div>
+              </td>
+              {% for meal in [day.breakfast, day.lunch, day.breakfast, day.dinner] %}
+              {% if loop.index == 3 %}
+              {# Evening snack = light version of breakfast or fruit #}
+              <td>
+                <div class="hr-meal-name" style="font-size:.72rem;">{{ day.breakfast.name_en[:22] }}…</div>
+                <div class="hr-meal-kn kn">{{ day.breakfast.name_kn }}</div>
+                <div class="hr-meal-meta">🍎 Light portion</div>
+              </td>
+              {% else %}
+              <td>
+                <div class="hr-meal-name">{{ meal.name_en }}</div>
+                <div class="hr-meal-kn kn">{{ meal.name_kn }}</div>
+                <div class="hr-meal-meta">🔥{{ meal.calories | round(0) | int }}cal · 💪{{ meal.protein_g | round(1) }}g · ₹{{ meal.cost_inr }}</div>
+              </td>
+              {% endif %}
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  {# ═══════════════════════════════════════════════════════════════════════
+     § 4 — FOOD BENEFITS
+     ═══════════════════════════════════════════════════════════════════════ #}
+  <div class="hr-card hr-reveal hr-d1">
+    <div class="hr-card-body">
+      <div class="hr-section-hdr">
+        <span class="hr-section-num">4</span>
+        <div class="hr-section-icon">🥗</div>
+        <div>
+          <div class="hr-section-title">Food Benefits</div>
+          <div class="hr-section-sub">Top Karnataka foods for protein, iron and calcium</div>
+        </div>
+      </div>
+
+      <div class="hr-benefits-grid">
+
+        <div class="hr-benefit-section" style="border:1.5px solid #BFDBFE;">
+          <div class="hr-benefit-hdr hr-benefit-hdr--protein">💪 Protein-Rich Foods</div>
+          {% for name, qty, desc in [
+            ('Horsegram Saaru',   '22g/100g', 'Highest protein lentil in Karnataka; supports muscle growth'),
+            ('Avarekalu Saaru',   '23g/100g', 'Winter superfood; complete plant protein'),
+            ('Eggs',              '13g/egg',  'Bioavailable protein; supports brain development'),
+            ('Green Gram Sprout', '8.8g/100g','Live enzymes + protein; easiest daily source'),
+            ('Bisibelebath',      '6.2g/100g','Rice-dal combination; complete amino acid profile'),
+          ] %}
+          <div class="hr-benefit-row" style="background:{{ '#EFF6FF' if loop.index % 2 == 1 else 'white' }}">
+            <div class="hr-benefit-food">{{ name }}</div>
+            <div class="hr-benefit-qty" style="color:#1D4ED8;">{{ qty }}</div>
+            <div class="hr-benefit-desc">{{ desc }}</div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="hr-benefit-section" style="border:1.5px solid #FECACA;">
+          <div class="hr-benefit-hdr hr-benefit-hdr--iron">🩸 Iron-Rich Foods</div>
+          {% for name, qty, desc in [
+            ('Drumstick Leaves',  '7.0mg/100g','Moringa surpasses spinach; highest iron vegetable'),
+            ('Horsegram',         '7.0mg/100g','Dual iron + protein; traditional winter staple'),
+            ('Ragi Mudde',        '3.9mg/100g','Finger millet; staple school meal with mineral density'),
+            ('Kelyache Shiite',   '5.6mg/100g','Banana flower; anti-anaemia coastal vegetable'),
+            ('Methi Paratha',     '3.5mg/100g','Fenugreek flatbread; iron + fibre winter breakfast'),
+          ] %}
+          <div class="hr-benefit-row" style="background:{{ '#FEF2F2' if loop.index % 2 == 1 else 'white' }}">
+            <div class="hr-benefit-food">{{ name }}</div>
+            <div class="hr-benefit-qty" style="color:#DC2626;">{{ qty }}</div>
+            <div class="hr-benefit-desc">{{ desc }}</div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="hr-benefit-section" style="border:1.5px solid #DDD6FE;">
+          <div class="hr-benefit-hdr hr-benefit-hdr--calcium">🦴 Calcium-Rich Foods</div>
+          {% for name, qty, desc in [
+            ('Drumstick Leaves',  '440mg/100g','440mg — exceeds milk; Karnataka calcium king'),
+            ('Ragi Mudde',        '344mg/100g','3× more calcium than rice or wheat'),
+            ('Ragi Dosa',         '310mg/100g','Fermented; probiotic + calcium in one meal'),
+            ('Horsegram Saaru',   '287mg/100g','Calcium-iron-protein triple benefit soup'),
+            ('Curd Rice',         '95mg/100g', 'Probiotic calcium; cooling summer food'),
+          ] %}
+          <div class="hr-benefit-row" style="background:{{ '#F5F3FF' if loop.index % 2 == 1 else 'white' }}">
+            <div class="hr-benefit-food">{{ name }}</div>
+            <div class="hr-benefit-qty" style="color:#7C3AED;">{{ qty }}</div>
+            <div class="hr-benefit-desc">{{ desc }}</div>
+          </div>
+          {% endfor %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  {# ═══════════════════════════════════════════════════════════════════════
+     § 5 — QR RECIPE ACCESS
+     ═══════════════════════════════════════════════════════════════════════ #}
+  <div class="hr-card hr-reveal hr-d2">
+    <div class="hr-card-body">
+      <div class="hr-section-hdr">
+        <span class="hr-section-num">5</span>
+        <div class="hr-section-icon">⬜</div>
+        <div>
+          <div class="hr-section-title">QR Recipe Access</div>
+          <div class="hr-section-sub">Scan with any smartphone camera — no app needed · opens recipe in English + Kannada</div>
+        </div>
+      </div>
+
+      <div style="background:#F0FDF4;border:1.5px solid #BBF7D0;border-radius:1rem;padding:.85rem 1.1rem;margin-bottom:1.1rem;font-size:.83rem;color:#065F46;font-weight:600;">
+        📱 <strong>How to use:</strong> Open your phone camera app → Point at any QR code → Tap the link that appears. Works on all Android and iPhone cameras without any app installation.
+      </div>
+
+      <div class="hr-qr-grid" id="qrRecipeGrid">
+        {# Populated by JavaScript below #}
+        <div style="grid-column:1/-1;padding:2rem;text-align:center;color:#94A3B8;font-size:.83rem;">
+          Generating QR codes…
+        </div>
+      </div>
+
+      {# Full plan QR #}
+      <div class="hr-qr-plan-tile" id="qrPlanTile">
+        <div id="qrPlanCanvas" style="flex-shrink:0;padding:8px;border:1.5px solid #BBF7D0;border-radius:.85rem;background:white;line-height:0;"></div>
+        <div>
+          <div class="hr-qr-plan-label">📄 Full Interactive Meal Plan</div>
+          <div class="hr-qr-plan-desc">
+            Scan to open the complete 7-day meal plan with all recipes, nutrition analysis and weekly breakdown.
+            Share this with parents via WhatsApp or print and stick on the school noticeboard.
+          </div>
+          <div class="hr-qr-plan-url" id="qrPlanUrl">{{ base_url }}plan/{{ share_token }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {# ═══════════════════════════════════════════════════════════════════════
+     § 6 — PARENT GUIDANCE
+     ═══════════════════════════════════════════════════════════════════════ #}
+  <div class="hr-card hr-reveal hr-d1">
+    <div class="hr-card-body">
+      <div class="hr-section-hdr">
+        <span class="hr-section-num">6</span>
+        <div class="hr-section-icon">👨‍👩‍👧</div>
+        <div>
+          <div class="hr-section-title">Parent Guidance</div>
+          <div class="hr-section-sub">Simple, actionable tips to support your child's nutrition at home · <span class="kn">ಮನೆಯಲ್ಲಿ ಪೋಷಣೆ</span></div>
+        </div>
+      </div>
+
+      {% set parent_tips = [
+        ('💧', 'Water Intake', '6–8 glasses of clean water daily reduces fatigue and improves classroom concentration significantly.', 'Send a 500ml water bottle to school. Remind at breakfast, after school and before bed.'),
+        ('🍎', 'Daily Fruits', 'One seasonal fruit daily — banana, guava, papaya or mango — provides vitamins and natural energy.', 'Offer fruit as after-school snack instead of biscuits or chips.'),
+        ('🚫', 'Reduce Processed Foods', 'Packaged snacks, instant noodles and sugary drinks displace real nutrition and spike blood sugar.', 'Replace one packaged snack per day with groundnut laddu, banana sheera or sprouted moong.'),
+        ('🥗', 'Balanced Plate', 'Every meal should have a grain (rice/ragi), a protein (dal/egg), a vegetable and a healthy fat.', 'Half plate vegetables, quarter grain, quarter protein. Add ghee to ragi mudde for calories.'),
+        ('🌙', 'Never Skip Dinner', 'Children who skip dinner show slower growth and lower haemoglobin. Dinner fuels overnight repair.', 'Even on busy nights: curd rice, khichdi or ragi mudde with sambar is sufficient.'),
+        ('🏃', 'Physical Activity', '30–45 min outdoor activity daily improves appetite, bone density and mental health.', 'Encourage school-ground play, cycling or walking. Limit screens to 2 hours on school days.'),
+      ] %}
+
+      {% set parent_recs = ai_parent_recommendations or [] %}
+      {% if parent_recs %}
+        <div class="hr-parent-grid">
+          {% for rec in parent_recs %}
+          <div class="hr-parent-tip">
+            <div class="hr-parent-tip-icon">💡</div>
+            <div>
+              <div class="hr-parent-tip-title">{{ rec.title }}</div>
+              <div class="hr-parent-tip-body">{{ rec.parent_guidance }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="hr-parent-grid">
+          {% for icon, title, body, action in parent_tips %}
+          <div class="hr-parent-tip">
+            <div class="hr-parent-tip-icon">{{ icon }}</div>
+            <div>
+              <div class="hr-parent-tip-title">{{ title }}</div>
+              <div class="hr-parent-tip-body">{{ body }}</div>
+              <div class="hr-parent-tip-action">✅ {{ action }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
       {% endif %}
     </div>
-    <div>
-      <p class="text-sm text-gray-500 mb-8">School Seal / <span class="kn text-sm">ಶಾಲಾ ಮುದ್ರೆ</span>:</p>
-      <div class="border-b-2 border-gray-300 w-48 mt-6"></div>
-      <p class="text-xs text-gray-400 mt-2">{{ plan.school_name }}</p>
+  </div>
+
+  {# ═══════════════════════════════════════════════════════════════════════
+     § 7 — SCHOOL RECOMMENDATION
+     ═══════════════════════════════════════════════════════════════════════ #}
+  <div class="hr-card hr-reveal hr-d2">
+    <div class="hr-card-body">
+      <div class="hr-section-hdr">
+        <span class="hr-section-num">7</span>
+        <div class="hr-section-icon">🏫</div>
+        <div>
+          <div class="hr-section-title">School Recommendation</div>
+          <div class="hr-section-sub">Official summary for school records and parent communication</div>
+        </div>
+      </div>
+
+      <div class="hr-reco-block">
+        <p class="hr-reco-para">
+          Based on the nutritional assessment carried out by the class teacher,
+          <strong>{{ plan.student_name }}</strong> (Age: {{ plan.age_group }} years,
+          Diet: {{ plan.diet_pref | title }}, Region: {{ plan.region | replace('_',' ') | title }})
+          has been assessed and a personalised 7-day meal plan has been generated using NutriPrint AI.
+        </p>
+        {% if plan.bmi_class == 'underweight' %}
+        <p class="hr-reco-para">
+          The student's BMI indicates <strong>underweight</strong> status. It is recommended that
+          the student receive increased calorie intake through energy-dense Karnataka foods such as
+          Ragi Mudde, Groundnut Laddu and Bisibelebath. The current plan provides an average of
+          <strong>{{ plan.avg_daily_cal | round(0) | int }} kcal/day</strong> with
+          {{ plan.avg_protein_g | round(1) }}g protein and {{ plan.avg_calcium_mg | round(0) | int }}mg calcium.
+          Monthly BMI monitoring is recommended; refer to the school health officer if no improvement
+          is seen within 8 weeks.
+        </p>
+        {% elif plan.bmi_class == 'normal' %}
+        <p class="hr-reco-para">
+          The student's BMI is within the <strong>healthy range</strong>. The current plan provides
+          {{ plan.avg_daily_cal | round(0) | int }} kcal/day, {{ plan.avg_protein_g | round(1) }}g protein
+          and {{ plan.avg_calcium_mg | round(0) | int }}mg calcium — well-aligned with ICMR RDA for
+          this age group. Continue the current dietary approach and monitor every 3 months.
+        </p>
+        {% elif plan.bmi_class in ['overweight', 'obese'] %}
+        <p class="hr-reco-para">
+          The student's BMI indicates <strong>{{ plan.bmi_class }}</strong> status. The meal plan
+          has been designed with a calorie-controlled approach. The school recommends reducing processed
+          food consumption and increasing daily physical activity to 45 minutes.
+        </p>
+        {% if plan.bmi_class == 'obese' %}
+        <p class="hr-reco-para hr-reco-urgent">
+          ⚕️ URGENT: Please consult a doctor or school health officer within two weeks.
+          Medical supervision is strongly advised for this student.
+        </p>
+        {% endif %}
+        {% else %}
+        <p class="hr-reco-para">
+          The 7-day plan provides {{ plan.avg_daily_cal | round(0) | int }} kcal/day,
+          {{ plan.avg_protein_g | round(1) }}g protein and {{ plan.avg_calcium_mg | round(0) | int }}mg
+          calcium per day. Regular use of this plan will help maintain healthy nutritional status
+          throughout the academic year.
+        </p>
+        {% endif %}
+        <p class="hr-reco-para" style="font-size:.8rem;color:#94A3B8;margin-bottom:0;">
+          This report was generated by NutriPrint AI, an AI-powered school nutrition platform developed at
+          Yenepoya Institute of Technology, Moodbidri. All recommendations follow ICMR Dietary Reference
+          Values and Indian Academy of Pediatrics growth standards. This does not constitute medical advice.
+        </p>
+      </div>
+
+      {# Signature block #}
+      <div class="hr-sig-grid">
+        <div class="hr-sig-block">
+          <div class="hr-sig-label">Teacher Signature</div>
+          <div class="hr-sig-line"></div>
+          <div class="hr-sig-name">{{ plan.teacher_name or '___________________________' }}</div>
+        </div>
+        <div class="hr-sig-block">
+          <div class="hr-sig-label">School Principal / HM</div>
+          <div class="hr-sig-line"></div>
+          <div class="hr-sig-name">___________________________</div>
+        </div>
+        <div class="hr-sig-block">
+          <div class="hr-sig-label">School Seal</div>
+          <div class="hr-sig-line"></div>
+          <div class="hr-sig-name">{{ plan.school_name }}</div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- ⑪ Action buttons (no-print) -->
-  <div class="flex flex-col sm:flex-row gap-3 no-print mb-4">
+  {# ── Action buttons ──────────────────────────────────────────────────── #}
+  <div class="hr-actions no-print">
     <a href="/plan/{{ share_token }}" target="_blank" rel="noopener noreferrer"
-      class="flex-1 bg-primary text-white font-bold py-3 rounded-xl text-center hover:bg-green-700 transition heading text-sm">
-      📄 View Full Meal Plan
-    </a>
-    <a href="/poster/{{ share_token }}/print" target="_blank" rel="noopener noreferrer"
-      class="flex-1 border-2 border-primary text-primary font-bold py-3 rounded-xl text-center hover:bg-green-50 transition heading text-sm">
-      🖨️ Print Poster
+       class="hr-action-btn hr-action-btn--green">
+      📄 View Meal Plan
     </a>
     <a href="/poster/{{ share_token }}/pdf" target="_blank" rel="noopener noreferrer"
-      class="flex-1 border-2 border-gray-300 text-gray-700 font-bold py-3 rounded-xl text-center hover:bg-gray-50 transition heading text-sm">
+       class="hr-action-btn hr-action-btn--outline">
       📥 Download PDF
     </a>
-    <button onclick="window.print()"
-      class="flex-1 bg-gray-700 text-white font-bold py-3 rounded-xl hover:bg-gray-800 transition heading text-sm">
-      🖨️ Print Report
+    <a href="/poster/{{ share_token }}/print" target="_blank" rel="noopener noreferrer"
+       class="hr-action-btn hr-action-btn--outline">
+      🖨 Print Poster
+    </a>
+    <button onclick="window.print()" class="hr-action-btn hr-action-btn--dark">
+      🖨 Print Report
+    </button>
+    <button onclick="shareWhatsAppReport()" class="hr-action-btn hr-action-btn--wa">
+      📲 Share via WhatsApp
     </button>
   </div>
 
-  <p class="text-center text-xs text-gray-400">
-    NutriPrint · Free for all Karnataka schools · ICMR RDA Standards · Yenepoya Institute of Technology
+  <p class="text-center text-xs text-slate-400 no-print" style="margin-bottom:2rem;">
+    NutriPrint · AI-Powered School Nutrition · Karnataka  ·
+    Free for all schools  ·  Yenepoya Institute of Technology, Moodbidri
   </p>
 
-</div>
+</div>{# /.hr-page #}
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/qr_system.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  const BASE   = {{ base_url | tojson }};
+  const TOKEN  = {{ share_token | tojson }};
+  const WEEK   = {{ plan.week | tojson }};
+
+  /* ── Collect unique meals from week ──────────────────────────────────── */
+  const seen  = new Set();
+  const meals = [];
+  for (const day of WEEK) {
+    for (const key of ['breakfast', 'lunch', 'dinner']) {
+      const m = day[key];
+      if (m && m.name_en && !seen.has(m.name_en)) {
+        seen.add(m.name_en);
+        meals.push(m);
+        if (meals.length >= 8) break;
+      }
+    }
+    if (meals.length >= 8) break;
+  }
+
+  /* ── Render recipe QR grid ────────────────────────────────────────────── */
+  function renderQRGrid() {
+    const grid = document.getElementById('qrRecipeGrid');
+    if (!grid || typeof QRCode === 'undefined') return;
+    grid.innerHTML = '';
+
+    meals.forEach(function (meal) {
+      const slug       = encodeURIComponent(meal.name_en.replace(/ /g, '_'));
+      const recipeUrl  = (BASE.replace(/\/$/, '')) + '/recipes/' + slug;
+
+      // Tile
+      const tile = document.createElement('a');
+      tile.href   = recipeUrl;
+      tile.target = '_blank';
+      tile.rel    = 'noopener noreferrer';
+      tile.className = 'hr-qr-tile';
+
+      // QR canvas wrapper
+      const canvasWrap = document.createElement('div');
+      canvasWrap.className = 'hr-qr-canvas';
+
+      new QRCode(canvasWrap, {
+        text         : recipeUrl,
+        width        : 100,
+        height       : 100,
+        colorDark    : '#0F5E46',
+        colorLight   : '#FFFFFF',
+        correctLevel : QRCode.CorrectLevel.M,
+      });
+
+      const name = document.createElement('div');
+      name.className   = 'hr-qr-food-name';
+      name.textContent = meal.name_en;
+
+      const kn = document.createElement('div');
+      kn.className   = 'hr-qr-food-kn kn';
+      kn.textContent = meal.name_kn || '';
+
+      const scan = document.createElement('div');
+      scan.className   = 'hr-qr-scan';
+      scan.textContent = '📱 Scan for recipe';
+
+      tile.appendChild(canvasWrap);
+      tile.appendChild(name);
+      tile.appendChild(kn);
+      tile.appendChild(scan);
+      grid.appendChild(tile);
+    });
+  }
+
+  /* ── Render full plan QR ──────────────────────────────────────────────── */
+  function renderPlanQR() {
+    const wrap = document.getElementById('qrPlanCanvas');
+    if (!wrap || typeof QRCode === 'undefined' || !TOKEN) return;
+    const planUrl = (BASE.replace(/\/$/, '')) + '/plan/' + TOKEN;
+    const urlEl   = document.getElementById('qrPlanUrl');
+    if (urlEl) urlEl.textContent = planUrl;
+    new QRCode(wrap, {
+      text         : planUrl,
+      width        : 120,
+      height       : 120,
+      colorDark    : '#0F5E46',
+      colorLight   : '#FFFFFF',
+      correctLevel : QRCode.CorrectLevel.M,
+    });
+  }
+
+  /* ── Scroll reveal ────────────────────────────────────────────────────── */
+  function initReveal() {
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('hr-visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.06, rootMargin: '0px 0px -24px 0px' });
+    document.querySelectorAll('.hr-reveal').forEach(function (el) { io.observe(el); });
+  }
+
+  /* ── WhatsApp share ────────────────────────────────────────────────────── */
+  window.shareWhatsAppReport = function () {
+    const url = (BASE.replace(/\/$/, '')) + '/plan/' + TOKEN;
+    const msg = encodeURIComponent(
+      'NutriPrint Nutrition Report for {{ plan.student_name }}\n' + url +
+      '\n\nGenerated by NutriPrint — Free AI School Nutrition Platform 🥗'
+    );
+    window.open('https://wa.me/?text=' + msg, '_blank', 'noopener,noreferrer');
+  };
+
+  /* ── Boot ─────────────────────────────────────────────────────────────── */
+  document.addEventListener('DOMContentLoaded', function () {
+    initReveal();
+    renderQRGrid();
+    renderPlanQR();
+  });
+})();
+</script>
 {% endblock %}

@@ -87,6 +87,27 @@ async function calculateBMI() {
       localStorage.setItem('nutriprint_last_bmi', JSON.stringify(data));
     } catch (_) {}
 
+    // ── Auto-save to progress tracker ──────────────────────────────────────
+    try {
+      const ptKey     = 'bmi_history_' + data.student_name;
+      const ptRecords = JSON.parse(localStorage.getItem(ptKey) || '[]');
+      ptRecords.push({
+        date           : new Date().toLocaleDateString('en-IN'),
+        bmi            : data.bmi_value,
+        classification : data.classification,
+        age            : data.age,
+        gender         : data.gender,
+        percentile     : data.percentile,
+        z_score        : data.z_score,
+        weight_kg      : parseFloat(document.getElementById('bmiWeight')?.value || 0),
+        height_cm      : parseFloat(document.getElementById('bmiHeight')?.value || 0),
+        label          : null,
+      });
+      localStorage.setItem(ptKey, JSON.stringify(ptRecords));
+      // If progress tracker is on the same page, refresh it
+      if (typeof window.ptRender === 'function') window.ptRender();
+    } catch (_) {}
+
     // Restore result el HTML structure before populating
     resultEl.innerHTML = `
       <div class="flex items-start justify-between gap-4">

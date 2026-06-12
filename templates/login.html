@@ -105,6 +105,22 @@
     window.location.replace('/dashboard');
   }
 
+  // Show "please login" banner when redirected from a protected page
+  (function () {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('msg') === 'protected') {
+      const banner = document.getElementById('loginError');
+      const msg    = document.getElementById('loginErrorMsg');
+      if (banner && msg) {
+        msg.textContent = 'Please login to continue using NutriPrint.';
+        banner.classList.remove('hidden');
+        // swap to blue info styling
+        banner.className = banner.className
+          .replace('border-red-200 bg-red-50 text-red-700', 'border-blue-200 bg-blue-50 text-blue-700');
+      }
+    }
+  })();
+
   function handleLogin(e) {
     e.preventDefault();
 
