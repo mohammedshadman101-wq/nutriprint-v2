@@ -696,7 +696,7 @@
   </style>
   {% block head %}{% endblock %}
 </head>
-<body>
+<body data-page="{% block page_id %}home{% endblock %}">
 {% set current_path = request.url.path %}
 
 <!-- ══════════════════════════════════════════════════════════
@@ -796,7 +796,7 @@
 <script src="/static/js/auth.js"></script>
 
 <!-- Demo Mode — loaded immediately after auth -->
-<script src="/static/js/demo_mode.js"></script>
+<script src="/static/js/demo.js"></script>
 
 <header class="sticky top-0 z-50 border-b border-white/70 bg-white/85 backdrop-blur-xl shadow-[0_1px_0_rgba(15,23,42,0.04)]">
   <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
@@ -835,6 +835,10 @@
         <span class="lang-en">ಕನ್ನಡ</span>
         <span class="lang-kn">English</span>
       </button>
+      <button id="startDemoBtn" onclick="window.startDemo && window.startDemo()"
+              class="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-xs font-bold text-indigo-700 shadow-sm transition hover:bg-indigo-100">
+        🎓 Auto Demo
+      </button>
       <!-- Login / Logout buttons (auth.js toggles visibility) -->
       <a href="/login" id="loginBtn"
          class="btn-primary px-4 py-2 text-sm"
@@ -868,6 +872,17 @@
     </button>
   </div>
 </header>
+
+<div id="demoModeBanner" class="hidden w-full bg-indigo-600 px-4 py-2 text-center text-sm font-medium text-white shadow-md z-[60] relative">
+  <div class="flex items-center justify-between max-w-7xl mx-auto">
+    <span>🎓 Live Demo — NutriPrint V2 · Yenepoya Institute of Technology <span id="demoProgressText" class="ml-2 opacity-80 text-xs font-bold"></span></span>
+    <div class="flex gap-2">
+      <button id="pauseDemoBtn" onclick="window.pauseAutoDemo && window.pauseAutoDemo()" class="rounded bg-indigo-800 px-2 py-1 text-xs hover:bg-indigo-700">⏸ Pause Demo</button>
+      <button id="resumeDemoBtn" onclick="window.resumeAutoDemo && window.resumeAutoDemo()" class="hidden rounded bg-indigo-800 px-2 py-1 text-xs hover:bg-indigo-700">▶ Resume Demo</button>
+      <button onclick="window.stopAutoDemo && window.stopAutoDemo()" class="rounded bg-red-600 px-2 py-1 text-xs hover:bg-red-500">Stop</button>
+    </div>
+  </div>
+</div>
 
 <main class="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8 {% block main_class %}{% endblock %}">
   {% block content %}{% endblock %}

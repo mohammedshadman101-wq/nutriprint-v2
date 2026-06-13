@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block title %}NutriPrint — Teacher Analytics Dashboard{% endblock %}
+{% block page_id %}dashboard{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="/static/css/progress_tracker.css"/>
@@ -808,7 +809,7 @@
 'use strict';
 
 // ── Auth guard (runs synchronously before render) ────────────────────────────
-if (typeof NutriAuth !== 'undefined' && !NutriAuth.isLoggedIn()) {
+if (typeof NutriAuth !== 'undefined' && !NutriAuth.isLoggedIn() && !(typeof NutriDemo !== 'undefined' && NutriDemo.isDemo())) {
   sessionStorage.setItem('np_login_redirect', '/dashboard');
   window.location.replace('/login');
 }
@@ -1342,7 +1343,7 @@ function daInitReveal() {
 
 /* ── Boot ───────────────────────────────────────────────────────────────── */
 window.addEventListener('DOMContentLoaded', async () => {
-  if (typeof NutriAuth !== 'undefined' && !NutriAuth.isLoggedIn()) {
+  if (typeof NutriAuth !== 'undefined' && !NutriAuth.isLoggedIn() && !(typeof NutriDemo !== 'undefined' && NutriDemo.isDemo())) {
     document.getElementById('notLoggedIn').classList.remove('hidden');
     return;
   }

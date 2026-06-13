@@ -361,4 +361,189 @@
   /* ─── Export ─────────────────────────────────────────────────────────── */
   window.NutriDemo = { isDemo, activate, exit, getStudents, getStats };
 
+  /* ═════════════════════════════════════════════════════════════════════════
+     FULL AUTO-DEMO NAVIGATION LOGIC
+     ═════════════════════════════════════════════════════════════════════════ */
+  const DEMO_STEPS = [
+    { path: '/', title: 'Home', text: 'Step 1 of 6 — Home: Viewing impact counters...', delay: 4000 },
+    { path: '/bmi', title: 'BMI Assessment', text: 'Step 2 of 6 — BMI Assessment: Calculating BMI for student Rahul Kumar...', delay: 4000, action: 'fillBmi' },
+    { path: '/meal-planner', title: 'Meal Planner', text: 'Step 3 of 6 — Meal Planner: Generating 7-day Karnataka meal plan...', delay: 4000, action: 'fillMeal' },
+    { path: '/food-catalog', title: 'Food Catalog', text: 'Step 4 of 6 — Food Catalog: Browsing Karnataka foods...', delay: 4000, action: 'scrollCatalog' },
+    { path: '/dashboard', title: 'Dashboard', text: 'Step 5 of 6 — Dashboard: Tracking class health...', delay: 4000 },
+    { path: '/about', title: 'About', text: 'Step 6 of 6 — About: Project information...', delay: 2000, action: 'skipSplash' }
+  ];
+
+  function getDemoState() {
+    try {
+      return JSON.parse(sessionStorage.getItem('autoDemoState')) || null;
+    } catch { return null; }
+  }
+  function setDemoState(state) {
+    sessionStorage.setItem('autoDemoState', JSON.stringify(state));
+  }
+  
+  function updateDemoUI(state) {
+    if (!state) return;
+    const banner = document.getElementById('demoModeBanner');
+    const text = document.getElementById('demoProgressText');
+    const resumeBtn = document.getElementById('resumeDemoBtn');
+    const pauseBtn = document.getElementById('pauseDemoBtn');
+    if (banner) banner.classList.remove('hidden');
+    if (text && state.step < DEMO_STEPS.length) {
+      text.innerText = '- ' + DEMO_STEPS[state.step].title;
+    }
+    if (resumeBtn && pauseBtn) {
+      if (state.paused) {
+        resumeBtn.classList.remove('hidden');
+        pauseBtn.classList.add('hidden');
+      } else {
+        resumeBtn.classList.add('hidden');
+        pauseBtn.classList.remove('hidden');
+      }
+    }
+    
+    // Show tooltip
+    if (state.step < DEMO_STEPS.length) {
+      let tooltip = document.getElementById('autoDemoTooltip');
+      if (!tooltip) {
+        tooltip = document.createElement('div');
+        tooltip.id = 'autoDemoTooltip';
+        Object.assign(tooltip.style, {
+          position: 'fixed', bottom: '2rem', right: '2rem', zIndex: '9999',
+          background: 'rgba(15, 23, 42, 0.9)', color: 'white', padding: '1rem',
+          borderRadius: '0.75rem', fontSize: '0.875rem', fontWeight: '600',
+          boxShadow: '0 10px 25px rgba(0,0,0,0.2)', transition: 'all 0.3s ease'
+        });
+        document.body.appendChild(tooltip);
+      }
+      tooltip.innerText = DEMO_STEPS[state.step].text;
+    }
+  }
+
+  function runStepAction(stepData) {
+    if (stepData.action === 'fillBmi') {
+      setTimeout(() => {
+        if(document.getElementById('bmiName')) document.getElementById('bmiName').value = 'Rahul Kumar';
+        if(document.getElementById('bmiAge')) document.getElementById('bmiAge').value = '12';
+        if(document.getElementById('bmiGender')) document.getElementById('bmiGender').value = 'boy';
+        if(document.getElementById('bmiHeight')) document.getElementById('bmiHeight').value = '148';
+        if(document.getElementById('bmiWeight')) document.getElementById('bmiWeight').value = '52';
+      }, 500);
+      setTimeout(() => {
+        const btn = document.querySelector('button[onclick="calculateBMI()"]');
+        if (btn) btn.click();
+      }, 1500);
+    } else if (stepData.action === 'fillMeal') {
+      setTimeout(() => {
+        if(document.getElementById('studentName')) document.getElementById('studentName').value = 'Rahul Kumar';
+        if(document.getElementById('budget')) document.getElementById('budget').value = '150';
+        if(document.getElementById('region')) document.getElementById('region').value = 'coastal_karnataka';
+        if(document.getElementById('dietPref')) document.getElementById('dietPref').value = 'vegetarian';
+      }, 500);
+      setTimeout(() => {
+        const btn = document.querySelector('button[onclick="generateMeal()"]');
+        if (btn) btn.click();
+      }, 1500);
+    } else if (stepData.action === 'scrollCatalog') {
+      setTimeout(() => {
+        window.scrollBy({ top: 800, behavior: 'smooth' });
+      }, 1500);
+    }
+  }
+
+  function showSummary() {
+    const summary = document.createElement('div');
+    Object.assign(summary.style, {
+      position: 'fixed', inset: '0', zIndex: '10000', background: 'rgba(0,0,0,0.8)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center'
+    });
+    summary.innerHTML = `
+      <div style="background: white; padding: 2.5rem; border-radius: 1rem; text-align: center; max-width: 500px;">
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: #1D9E75; margin-bottom: 1rem;">Demo Complete ✅</h2>
+        <p style="color: #475569; margin-bottom: 1.5rem; line-height: 1.6;">NutriPrint V2 assessed 1 student, generated a 7-day meal plan, and tracked class health in under 60 seconds.</p>
+        <button onclick="window.stopAutoDemo()" style="background: #1D9E75; color: white; padding: 0.75rem 1.5rem; border-radius: 9999px; font-weight: 700;">Finish</button>
+      </div>
+    `;
+    document.body.appendChild(summary);
+  }
+
+  function checkDemoFlow() {
+    let state = getDemoState();
+    if (!state || !state.active || state.paused) return;
+    
+    const stepData = DEMO_STEPS[state.step];
+    if (window.location.pathname !== stepData.path) {
+      window.location.href = stepData.path;
+      return;
+    }
+    
+    updateDemoUI(state);
+    runStepAction(stepData);
+    
+    setTimeout(() => {
+      state = getDemoState(); // refresh in case user paused
+      if (!state || !state.active || state.paused) return;
+      
+      state.step++;
+      setDemoState(state);
+      
+      if (state.step >= DEMO_STEPS.length) {
+        showSummary();
+      } else {
+        window.location.href = DEMO_STEPS[state.step].path;
+      }
+    }, stepData.delay);
+  }
+
+  window.startAutoDemo = function() {
+    // Also activate local mock data just to ensure it's there
+    localStorage.setItem(SESSION_KEY, JSON.stringify(DEMO_SESSION));
+    _seed();
+    setDemoState({ active: true, step: 0, paused: false });
+    window.location.href = '/';
+  };
+  
+  window.pauseAutoDemo = function() {
+    let state = getDemoState();
+    if (state) {
+      state.paused = true;
+      setDemoState(state);
+      updateDemoUI(state);
+    }
+  };
+  
+  window.resumeAutoDemo = function() {
+    let state = getDemoState();
+    if (state) {
+      state.paused = false;
+      setDemoState(state);
+      updateDemoUI(state);
+      checkDemoFlow();
+    }
+  };
+  
+  window.stopAutoDemo = function() {
+    sessionStorage.removeItem('autoDemoState');
+    const banner = document.getElementById('demoModeBanner');
+    if (banner) banner.classList.add('hidden');
+    const tooltip = document.getElementById('autoDemoTooltip');
+    if (tooltip) tooltip.remove();
+    _clean();
+    window.location.href = '/';
+  };
+
+  // URL override hook
+  if (window.location.search.includes('demo=true') && !getDemoState()?.active) {
+    window.startAutoDemo();
+  } else {
+    // If active and not paused, resume check
+    const state = getDemoState();
+    if (state && state.active) {
+      updateDemoUI(state);
+      if (!state.paused) {
+        checkDemoFlow();
+      }
+    }
+  }
+
 })();

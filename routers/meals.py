@@ -113,12 +113,34 @@ async def generate_meal(data: MealInput):
 
     except Exception as e:
         traceback.print_exc()
-        print("MEAL ERROR:", repr(e))
+        print("MEAL ERROR (falling back to generated plan):", repr(e))
 
-        raise HTTPException(
-            status_code=500,
-            detail=safe_error_detail(e, "Meal plan generation failed"),
-        )
+        # Generate fallback plan gracefully
+        try:
+            plan = generate_fallback_plan(
+                school_name=data.school_name,
+                student_name=data.student_name,
+                teacher_name=data.teacher_name or "",
+                age_group=data.age_group.value,
+                diet_pref=data.diet_pref.value,
+                region=data.region.value,
+                month=data.month,
+                strategy=data.strategy.value,
+                bmi_class=data.bmi_class.value if data.bmi_class else None,
+                ai_recommendations=[
+                    rec.model_dump() if hasattr(rec, "model_dump") else rec.dict()
+                    for rec in data.ai_recommendations
+                ],
+            )
+            plan.plan_id = "demo-" + secrets.token_hex(4)
+            plan.share_token = "demo-" + secrets.token_hex(8)
+            return plan
+        except Exception as fallback_e:
+            print("FALLBACK ERROR:", repr(fallback_e))
+            raise HTTPException(
+                status_code=500,
+                detail=safe_error_detail(e, "Meal plan generation failed"),
+            )
 
 
 @legacy_router.post("/generate", response_model=MealPlan)

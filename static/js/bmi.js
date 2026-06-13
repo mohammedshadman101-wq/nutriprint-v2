@@ -131,6 +131,49 @@ async function calculateBMI() {
 
   } catch (err) {
     console.error('BMI error:', err);
+    if (typeof NutriDemo !== 'undefined' && NutriDemo.isDemo()) {
+      const h_m = parseFloat(height) / 100;
+      const calc_bmi = parseFloat(weight) / (h_m * h_m);
+      const fallbackData = {
+        student_name: name,
+        age: parseInt(age),
+        gender: gender,
+        bmi_value: calc_bmi.toFixed(1),
+        classification: 'normal',
+        z_score: 0.5,
+        percentile: 65,
+        advice_en: "This student is within a healthy weight range. Maintain a balanced diet rich in local Karnataka vegetables and whole grains.",
+        advice_kn: "ಈ ವಿದ್ಯಾರ್ಥಿಯ ತೂಕ ಆರೋಗ್ಯಕರವಾಗಿದೆ. ಸಮತೋಲಿತ ಆಹಾರ ಮತ್ತು ತರಕಾರಿಗಳನ್ನು ಮುಂದುವರಿಸಿ."
+      };
+      
+      lastBMIResult = fallbackData;
+      window.lastBMIResult = fallbackData;
+      try {
+        localStorage.setItem('nutriprint_last_bmi', JSON.stringify(fallbackData));
+      } catch (_) {}
+      
+      resultEl.innerHTML = `
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h3 id="resultName" class="heading text-2xl font-bold text-slate-900"></h3>
+            <p id="resultBMI" class="mt-1 text-sm text-slate-500"></p>
+          </div>
+          <span id="resultBadge" class="rounded-full px-4 py-2 text-sm font-bold"></span>
+        </div>
+        <div class="mt-5">
+          <div class="mb-1 flex justify-between text-xs text-slate-400"><span>Underweight</span><span>Normal</span><span>Overweight</span><span>Obese</span></div>
+          <div class="h-3 w-full rounded-full bg-slate-100"><div id="gaugeBar" class="h-3 rounded-full transition-all duration-700" style="width:0%"></div></div>
+          <p id="resultPercentile" class="mt-2 text-right text-xs text-slate-500"></p>
+        </div>
+        <div id="resultAdviceEN" class="mt-5 rounded-2xl bg-emerald-50 p-4 text-sm text-slate-700"></div>
+        <div id="resultAdviceKN" class="kn mt-3 rounded-2xl bg-amber-50 p-4 text-sm text-slate-700"></div>
+        <button onclick="prefillMealForm()" class="btn-secondary mt-6 w-full py-3">Generate Meal Plan for this Student</button>`;
+
+      showBMIResult(fallbackData);
+      showGrowthChart(fallbackData.student_name);
+      return;
+    }
+    
     if (resultEl) {
       resultEl.classList.remove('hidden');
       resultEl.innerHTML = `

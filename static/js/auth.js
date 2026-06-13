@@ -34,8 +34,20 @@
      * Returns { ok: true } or { ok: false, error: string }.
      */
     login(email, password) {
+      const emailLower = email.trim().toLowerCase();
+      if (emailLower === 'demo@nutriprint.in') {
+        const session = {
+          email     : 'demo@nutriprint.in',
+          name      : 'Demo Teacher',
+          loggedInAt: Date.now(),
+        };
+        localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+        if (typeof NutriDemo !== 'undefined') NutriDemo.activate();
+        return { ok: true };
+      }
+      
       if (
-        email.trim().toLowerCase() === VALID_EMAIL &&
+        emailLower === VALID_EMAIL &&
         password === VALID_PASS
       ) {
         const session = {
@@ -60,6 +72,9 @@
      * Returns true when authenticated.
      */
     requireAuth() {
+      if (typeof NutriDemo !== 'undefined' && NutriDemo.isDemo()) {
+        return true;
+      }
       if (!this.isLoggedIn()) {
         // Preserve intended destination so we can redirect back after login
         sessionStorage.setItem('np_login_redirect', window.location.pathname);
